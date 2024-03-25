@@ -1,34 +1,21 @@
-import React from "react";
-import styled from "styled-components";
-import LogIn from "./pages/LogIn";
+import React, { Suspense, lazy } from "react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Layout from "./layouts/Layout";
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-  background-color: #eee;
-`;
-
-const MainContainer = styled.div`
-  width: 375px;
-  height: 100vh;
-  background-color: #fff;
-  overflow-x: hidden;
-
-  @media (max-width: 575px) {
-    width: 100vw;
-  }
-`;
+const LoginPage = lazy(() => import("./pages/LogIn"));
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [{ path: "/login", element: <LoginPage /> }],
+  },
+]);
 
 const App = () => {
   return (
-    <Container>
-      <MainContainer>
-        <LogIn />
-      </MainContainer>
-    </Container>
+    <Suspense fallback={<div>Loading...</div>}>
+      <RouterProvider router={router} />
+    </Suspense>
   );
 };
 
