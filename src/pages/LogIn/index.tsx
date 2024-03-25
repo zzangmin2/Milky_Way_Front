@@ -1,6 +1,6 @@
 import React from "react";
-import { BottomSection, Box, TopSection } from "./styles";
-import Input from "../../components/Input";
+import { BottomSection, TopSection } from "./styles";
+
 const LogIn = () => {
   return (
     <>
