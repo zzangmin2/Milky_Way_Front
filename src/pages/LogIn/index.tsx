@@ -1,5 +1,7 @@
 import React from "react";
 import { BottomSection, TopSection } from "./styles";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
 
 const LogIn = () => {
   return (
@@ -11,12 +13,12 @@ const LogIn = () => {
         <div></div>
       </TopSection>
       <BottomSection>
-        <input type="text" />
-        <input type="text" />
-        <button>로그인</button>
+        <Input placeholder="아이디를 입력해 주세요" />
+        <Input placeholder="비밀번호를 입력해 주세요" />
+        <Button text={"로그인"} />
         <div>
-          <p>아직 회원이 아니신가요</p>
-          <p>회원가입하기</p>
+          <p>아직 회원이 아니신가요?</p>
+          <p>회원가입 하기</p>
         </div>
       </BottomSection>
     </>
