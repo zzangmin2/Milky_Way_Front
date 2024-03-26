@@ -1,12 +1,5 @@
 import styled from "styled-components";
 
-export const Box = styled.div`
-  width: 100%;
-  height: 40px;
-  border-bottom: 1px solid black;
-  box-sizing: border-box;
-`;
-
 export const TopSection = styled.section`
   width: 100%;
   display: flex;
@@ -33,8 +26,25 @@ export const TopSection = styled.section`
 
 export const BottomSection = styled.section`
   display: flex;
+  padding: 20px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border: 1px solid red;
+
+  > div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  > div > p:nth-child(1) {
+    color: #717171;
+    margin-right: 20px;
+  }
+
+  > div > p:nth-child(2) {
+    color: #133488;
+    font-weight: bold;
+    text-decoration: underline;
+  }
 `;
