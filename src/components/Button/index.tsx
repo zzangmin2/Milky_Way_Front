@@ -1,14 +1,15 @@
-import { FC } from "react";
 import { StyledButton } from "./styles";
+import React from "react";
 
 interface Props {
   text: string;
+  color?: string;
 }
 
-const Button: React.FC<Props> = ({ text }) => {
+const Button: React.FC<Props> = ({ text, color }) => {
   return (
     <>
-      <StyledButton>{text}</StyledButton>
+      <StyledButton color={color}>{text}</StyledButton>
     </>
   );
 };
