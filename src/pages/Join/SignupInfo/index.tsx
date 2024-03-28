@@ -9,6 +9,7 @@ import {
 } from "../styles";
 
 const SignupInfo = () => {
+  const onClickLoginPass = () => {};
   return (
     <>
       <Box>
@@ -37,7 +38,7 @@ const SignupInfo = () => {
           </div>
         </TopSection>
         <BottomSection>
-          <Button text={"회원가입하기"} color={"#133488"} />
+          <Button text={"회원가입하기"} color={"#133488"}></Button>
         </BottomSection>
       </Box>
     </>
