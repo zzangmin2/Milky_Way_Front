@@ -5,6 +5,7 @@ import Navigation from "./layouts/Navigation";
 
 const LoginPage = lazy(() => import("./pages/LogIn"));
 const HomePage = lazy(() => import("./pages/Home"));
+const SearchPage = lazy(() => import("./pages/Search"));
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <HomePage />,
+          },
+          {
+            path: "search",
+            element: <SearchPage />,
           },
         ],
       },
