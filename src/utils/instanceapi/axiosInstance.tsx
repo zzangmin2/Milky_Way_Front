@@ -32,6 +32,5 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 api.defaults.timeout = 1000;
 export default api;
