@@ -6,6 +6,7 @@ import Loading from "../pages/RoutePage/Loading";
 import SignupEmail from "../pages/Join/SignupEmail";
 import SignupIdCompare from "../pages/Join/SignupIdCompare";
 import SignupInfo from "../pages/Join/SignupInfo";
+import Search from "../pages/Search";
 const LoginPage = lazy(() => import("../pages/LogIn"));
 const HomePage = lazy(() => import("../pages/Home"));
 
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
             path: "",
             element: <HomePage />,
           },
+          { path: "search", element: <Search /> },
         ],
       },
       {

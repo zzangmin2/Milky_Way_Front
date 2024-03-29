@@ -1,4 +1,5 @@
 import Button from "../../../components/Button";
+import Input from "../../../components/Input";
 import {
   BottomSection,
   TopSection,
@@ -24,6 +25,10 @@ const SignupInfo = () => {
             </p>
           </div>
           <div>
+            <Input placeholder="이름을 입력해 주세요" />
+            <Input placeholder="소속된 과를 입력해 주세요" />
+            <Input placeholder="전화번호를 입력해 주세요" />
+            {/* 
             <input
               type="text"
               autoFocus
@@ -33,7 +38,7 @@ const SignupInfo = () => {
               type="text"
               placeholder={"소속된 과를 입력 해주세요"}
             ></input>
-            <input type="text" placeholder={"전화번호를 입력 해주세요"}></input>
+            <input type="text" placeholder={"전화번호를 입력 해주세요"}></input> */}
           </div>
         </TopSection>
         <BottomSection>
