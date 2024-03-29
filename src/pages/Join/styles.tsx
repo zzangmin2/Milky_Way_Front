@@ -2,30 +2,29 @@ import styled from "styled-components";
 
 export const Box = styled.section`
   width: 100%;
-  height: 100%;
+  height: 95%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   margin: 20px 0;
-  overflow: hidden;
 `;
 
 export const TopSection = styled.section`
   width: 100%;
   flex: 1;
   display: flex;
-  padding: 20px;
+  padding-top: 20%;
   flex-basis: 20px;
+  align-items: center;
   flex-direction: column;
 
   & > div:nth-child(2) {
-    width:100%;
+    width: 100%;
   }
-
 
   & > div > input {
     padding: 15px;
-    width: 100%;
+    width: 300px;
     border: none;
     height: 20px;
     border-radius: 10px;
