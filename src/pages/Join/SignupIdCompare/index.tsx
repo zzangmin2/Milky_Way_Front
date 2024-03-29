@@ -36,7 +36,7 @@ const SignupIdCompare = () => {
           </div>
         </TopSection>
         <BottomSection>
-          <Button text={"다음"} color={"#a8a8a8"} />
+          <Button text={"다음"} color={"#a8a8a8"} url={"/users/signupinfo"} />
         </BottomSection>
       </Box>
     </>

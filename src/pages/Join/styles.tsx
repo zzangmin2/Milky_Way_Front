@@ -7,21 +7,25 @@ export const Box = styled.section`
   justify-content: center;
   flex-direction: column;
   margin: 20px 0;
+  overflow: hidden;
 `;
 
 export const TopSection = styled.section`
   width: 100%;
   flex: 1;
   display: flex;
-  padding-top: 20%;
+  padding: 20px;
   flex-basis: 20px;
-  align-items: center;
   flex-direction: column;
+
+  & > div:nth-child(2) {
+    width:100%;
+  }
 
 
   & > div > input {
     padding: 15px;
-    width: 300px;
+    width: 100%;
     border: none;
     height: 20px;
     border-radius: 10px;

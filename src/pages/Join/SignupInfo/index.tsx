@@ -38,7 +38,11 @@ const SignupInfo = () => {
           </div>
         </TopSection>
         <BottomSection>
-          <Button text={"회원가입하기"} color={"#133488"}></Button>
+          <Button
+            text={"회원가입하기"}
+            color={"#133488"}
+            url={"/users/login"}
+          />
         </BottomSection>
       </Box>
     </>
