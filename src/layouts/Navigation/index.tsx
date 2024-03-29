@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { BottomNav, Header, NavigationLayout } from "./styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,21 +9,23 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Navigation = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <NavigationLayout>
         <Header>
-          <div></div>
+          <div onClick={() => navigate("/home")}></div>
           <FontAwesomeIcon icon={faUser} />
         </Header>
         <Outlet />
         <BottomNav>
           <ul>
-            <li>
+            <li onClick={() => navigate("/home")}>
               <FontAwesomeIcon icon={faHome} />
               <div>홈</div>
             </li>
-            <li>
+            <li onClick={() => navigate("/home/search")}>
               <FontAwesomeIcon icon={faPen} />
               <div>스터디 / 프로젝트</div>
             </li>
