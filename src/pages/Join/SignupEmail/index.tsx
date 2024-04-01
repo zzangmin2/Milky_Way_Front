@@ -1,4 +1,6 @@
+import { useState } from "react";
 import Button from "../../../components/Button";
+import Input from "../../../components/Input";
 import {
   BottomSection,
   TopSection,
@@ -9,6 +11,8 @@ import {
 } from "../styles";
 
 const SignupEmail = () => {
+  const [email, setEmail] = useState();
+
   return (
     <>
       <Box>
@@ -24,11 +28,12 @@ const SignupEmail = () => {
             </p>
           </div>
           <div>
-            <input
+            {/* <input
               type="email"
               autoFocus
               placeholder={"이메일을 입력해주세요"}
-            ></input>
+            ></input> */}
+            <Input placeholder="이메일을 입력해 주세요" type={"email"} />
           </div>
         </TopSection>
         <BottomSection>

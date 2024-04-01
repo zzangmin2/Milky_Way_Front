@@ -1,13 +1,10 @@
 import Input from "../../components/Input";
-import MentoTag from "../../components/MentoTag";
 import StudyInfoCard from "../../components/StudyInfoCard";
-import StudyProjectTag from "../../components/StudyProjectTag";
 import {
   FilterWrap,
   SearchWrap,
   ListWrap,
   StudyProjectTypeNavWrap,
-  SimpleStudyInfoCard,
 } from "./styles";
 
 const Search = () => {

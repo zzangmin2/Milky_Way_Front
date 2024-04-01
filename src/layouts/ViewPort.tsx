@@ -21,11 +21,11 @@ const MainContainer = styled.div`
     width: 100vw;
   }
 `;
-interface LayoutProps {
-  children: ReactNode;
-}
+// interface LayoutProps {
+//   children: ReactNode;
+// }
 
-const Layout = () => {
+const ViewPort = () => {
   return (
     <Container>
       <MainContainer>
@@ -35,4 +35,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default ViewPort;

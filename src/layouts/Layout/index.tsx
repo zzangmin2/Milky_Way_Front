@@ -6,16 +6,29 @@ import {
   faPen,
   faFile,
   faHome,
+  faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
+import { FC } from "react";
 
-const Navigation = () => {
+interface Props {
+  type: string;
+}
+const Layout: FC<Props> = ({ type }) => {
   const navigate = useNavigate();
 
   return (
     <>
       <NavigationLayout>
         <Header>
-          <div onClick={() => navigate("/home")}></div>
+          {type === "home" ? (
+            <div
+              className="milkyWayLogo"
+              onClick={() => navigate("/home")}
+            ></div>
+          ) : (
+            <FontAwesomeIcon icon={faArrowLeft} />
+          )}
+
           <FontAwesomeIcon icon={faUser} />
         </Header>
         <Outlet />
@@ -40,4 +53,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default Layout;
