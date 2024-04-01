@@ -5,7 +5,7 @@ interface Props {
   tagType: string;
 }
 
-const StudyProjectTag: FC<Props> = ({ tagType }) => {
+const StudyTag: FC<Props> = ({ tagType }) => {
   return (
     <>
       <StyledStudyProjectTag>{tagType}</StyledStudyProjectTag>
@@ -13,4 +13,4 @@ const StudyProjectTag: FC<Props> = ({ tagType }) => {
   );
 };
 
-export default StudyProjectTag;
+export default StudyTag;

@@ -12,6 +12,7 @@ import {
 
 const SignupEmail = () => {
   const [email, setEmail] = useState();
+
   return (
     <>
       <Box>

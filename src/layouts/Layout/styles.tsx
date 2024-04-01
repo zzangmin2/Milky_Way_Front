@@ -1,5 +1,8 @@
 import styled from "styled-components";
 
+interface HeaderProps {
+  type: string;
+}
 export const NavigationLayout = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,7 +15,7 @@ export const Header = styled.section`
   justify-content: space-between;
   box-sizing: border-box;
 
-  > div:nth-child(1) {
+  > div.milkyWayLogo {
     width: 155px;
     height: 22px;
     background-image: url("/images/HeaderLogoImg.svg");
