@@ -7,6 +7,7 @@ import {
   ProgressText,
   ProgressBar,
 } from "../styles";
+import { isEmailInState } from "../../../utils/recoil/atom";
 
 const SignupEmail = () => {
   return (
@@ -29,14 +30,17 @@ const SignupEmail = () => {
               autoFocus
               placeholder={"이메일을 입력해주세요"}
             ></input>
+            <div>
+              <Button text={"이메일 인증하기"} />
+            </div>
           </div>
         </TopSection>
         <BottomSection>
-          <Button
-            text={"다음"}
-            color={"#a8a8a8"}
-            url={"/users/signupcompare"}
-          />
+          {isEmailInState ? (
+            <Button text={"다음"} color={"#a8a8a8"} />
+          ) : (
+            <Button text={"다음"} color={"#133488"} />
+          )}
         </BottomSection>
       </Box>
     </>

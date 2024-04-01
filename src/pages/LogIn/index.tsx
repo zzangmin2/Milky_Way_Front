@@ -2,8 +2,11 @@ import React from "react";
 import { BottomSection, TopSection } from "./styles";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
+import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <TopSection>
@@ -18,7 +21,7 @@ const LogIn = () => {
         <Button text={"로그인"} />
         <div>
           <p>아직 회원이 아니신가요?</p>
-          <p>회원가입 하기</p>
+          <p onClick={() => navigate("/users/signupemail")}>회원가입 하기</p>
         </div>
       </BottomSection>
     </>

@@ -22,6 +22,17 @@ export const TopSection = styled.section`
     width: 100%;
   }
 
+  & > div > div > Button {
+    width: 100%;
+    margin-top: 20px;
+    height: 50%;
+    text-align:center;
+    padding: 2px;
+    justify-content: center;
+    outline : none;
+    font-weight: 40px;
+  }
+
   & > div > input {
     padding: 15px;
     width: 300px;
