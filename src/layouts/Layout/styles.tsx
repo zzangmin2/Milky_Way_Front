@@ -51,6 +51,10 @@ export const BottomNav = styled.nav`
     cursor: pointer;
   }
 
+  > ul > li.activePage {
+    color: #ff9078;
+  }
+
   > ul > li > svg {
     font-size: 1rem;
     margin-bottom: 5px;

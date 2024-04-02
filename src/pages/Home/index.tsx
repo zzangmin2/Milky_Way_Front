@@ -29,7 +29,7 @@ const Home = () => {
           </div>
           <div>
             <h3>실시간 인기 스터디 /프로젝트</h3>
-            <StudyInfoCard CardType="main" />
+            <StudyInfoCard cardType="main" navigateRoute="/detail" />
           </div>
         </BottomSection>
       </Section>

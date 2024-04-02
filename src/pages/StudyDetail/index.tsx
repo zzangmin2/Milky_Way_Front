@@ -11,8 +11,15 @@ import {
   TopSection,
 } from "./styles";
 import Button from "../../components/Button";
+import { useState } from "react";
 
 const StudyDetail = () => {
+  const [activeTab, setActiveTab] = useState("intro");
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+  };
+
   return (
     <>
       <StudyDetailWrap>
@@ -53,8 +60,18 @@ const StudyDetail = () => {
         </TopSection>
         <StudyDetailPageNavWrap>
           <ul>
-            <li>스터디 소개</li>
-            <li>Q&A</li>
+            <li
+              className={activeTab === "intro" ? "activeTab" : ""}
+              onClick={() => handleTabClick("intro")}
+            >
+              스터디 소개
+            </li>
+            <li
+              className={activeTab === "qna" ? "activeTab" : ""}
+              onClick={() => handleTabClick("qna")}
+            >
+              Q&A
+            </li>
           </ul>
         </StudyDetailPageNavWrap>
         <StudyIntrowrap>

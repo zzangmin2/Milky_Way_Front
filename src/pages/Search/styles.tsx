@@ -23,9 +23,11 @@ export const StudyProjectTypeNavWrap = styled.nav`
     text-align: center;
     font-size: 0.75rem;
     border-bottom: 1px solid #d9d9d9;
+    cursor: pointer;
+    transition: all 0.3s ease;
   }
 
-  & > ul > li:nth-child(1) {
+  & > ul > li.activeTab {
     font-weight: bold;
     color: #ff9078;
     border-bottom: 2px solid #ff9078;

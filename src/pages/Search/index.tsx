@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Input from "../../components/Input";
 import StudyInfoCard from "../../components/StudyInfoCard";
 import {
@@ -8,6 +9,12 @@ import {
 } from "./styles";
 
 const Search = () => {
+  const [activeTab, setActiveTab] = useState("all");
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+  };
+
   return (
     <>
       <SearchWrap>
@@ -17,9 +24,24 @@ const Search = () => {
 
         <StudyProjectTypeNavWrap>
           <ul>
-            <li>ALL</li>
-            <li>스터디</li>
-            <li>프로젝트</li>
+            <li
+              className={activeTab === "all" ? "activeTab" : ""}
+              onClick={() => handleTabClick("all")}
+            >
+              ALL
+            </li>
+            <li
+              className={activeTab === "study" ? "activeTab" : ""}
+              onClick={() => handleTabClick("study")}
+            >
+              스터디
+            </li>
+            <li
+              className={activeTab === "project" ? "activeTab" : ""}
+              onClick={() => handleTabClick("project")}
+            >
+              프로젝트
+            </li>
           </ul>
         </StudyProjectTypeNavWrap>
 
@@ -41,7 +63,7 @@ const Search = () => {
               <option value="">인기순</option>
             </select>
           </div>
-          <StudyInfoCard CardType="" />
+          <StudyInfoCard navigateRoute="/detail" />
         </ListWrap>
       </SearchWrap>
     </>
