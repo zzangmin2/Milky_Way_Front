@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BottomSection, TopSection } from "./styles";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 const LogIn = () => {
   const navigate = useNavigate();
+  const [loginPwd, setLoginPwd] = useState("");
+  const [loginId, setLoginId] = useState("");
 
   return (
     <>

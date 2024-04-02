@@ -25,7 +25,7 @@ export const TopSection = styled.section`
   & > div > div > Button {
     width: 100%;
     margin-top: 20px;
-    height: 50%;
+    height: 80%;
     text-align:center;
     padding: 2px;
     justify-content: center;
