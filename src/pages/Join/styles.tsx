@@ -9,6 +9,22 @@ export const Box = styled.section`
   flex-direction: column;
 `;
 
+export const Input = styled.input`
+  padding: 16px;
+  width: 300px;
+  border: none;
+  height: 20px;
+  border-radius: 10px;
+  background-color: #f8f8f8;
+  font-weight: lighter;
+  margin-top: 30px;
+  outline: none;
+  & > div > input:focus {
+    border: 1px solid #717171;
+    background-color: #fff;
+  }
+`;
+
 export const TopSection = styled.section`
   /* width: 100%; */
   flex: 1;
@@ -22,22 +38,7 @@ export const TopSection = styled.section`
     width: 100%;
     display: block;
   }
-  /* & > div > input {
-    padding: 15px;
-    width: 300px;
-    border: none;
-    height: 20px;
-    border-radius: 10px;
-    background-color: #f8f8f8;
-    font-weight: lighter;
-    margin-top: 20px;
-    outline: none;
-  }  */
-  /* & > div > input:focus {
-    border: 1px solid #717171;
-    background-color: #fff;
-    
-  } */
+
   & > div > p {
     font-weight: bold;
     line-height: 20px;

@@ -1,5 +1,5 @@
 import Button from "../../../components/Button";
-import Input from "../../../components/Input";
+import SignupInput from "../SignupInput";
 import {
   BottomSection,
   TopSection,
@@ -8,8 +8,28 @@ import {
   ProgressText,
   ProgressBar,
 } from "../styles";
-
+import { sendUserInfo } from "../../../utils/apimodule/member";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 const SignupInfo = () => {
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [dpt, setDpt] = useState("");
+  const [number, setNumber] = useState("");
+
+  const sendUserInfoOnClick = async () => {
+    console.log("sendUserInfo");
+    try {
+      const result = await sendUserInfo(name, dpt, parseInt(number));
+      if (result.success) {
+        navigate("/users/login");
+      } else {
+        throw result;
+      }
+    } catch (error: any) {
+      alert(`다시 시도해주세요: ${error.message}`);
+    }
+  };
   return (
     <>
       <Box>
@@ -24,25 +44,34 @@ const SignupInfo = () => {
               입력해주세요
             </p>
           </div>
+
           <div>
-            <Input placeholder="이름을 입력해 주세요" />
-            <Input placeholder="소속된 과를 입력해 주세요" />
-            <Input placeholder="전화번호를 입력해 주세요" />
-            {/* 
-            <input
+            <SignupInput
               type="text"
-              autoFocus
+              name="name"
               placeholder={"이름을 입력해주세요"}
-            ></input>
-            <input
+              onChange={setName}
+            />
+            <SignupInput
               type="text"
+              name="dpt"
               placeholder={"소속된 과를 입력 해주세요"}
-            ></input>
-            <input type="text" placeholder={"전화번호를 입력 해주세요"}></input> */}
+              onChange={setDpt}
+            />
+            <SignupInput
+              type="text"
+              name="number"
+              placeholder={"전화번호를 입력 해주세요"}
+              onChange={setNumber}
+            />
           </div>
         </TopSection>
         <BottomSection>
-          <Button text={"회원가입하기"} color={"#133488"} />
+          <Button
+            text={"회원가입하기"}
+            color={"#133488"}
+            onClick={sendUserInfoOnClick}
+          />
         </BottomSection>
       </Box>
     </>
