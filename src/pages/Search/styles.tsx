@@ -2,6 +2,24 @@ import styled from "styled-components";
 
 export const SearchWrap = styled.section`
   padding: 20px 20px 0px 20px;
+  overflow: hidden;
+`;
+
+export const StudyAddButton = styled.button`
+  position: fixed;
+  display: block;
+  bottom: 100px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #133488;
+  color: #fff;
+  font-size: 2rem;
+  padding: 0;
+  margin: 0;
+  /* left: 300px; */
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
 `;
 
 export const StudyProjectTypeNavWrap = styled.nav`
@@ -64,4 +82,15 @@ export const SimpleStudyInfoCard = styled.div`
   border: 1px solid #d9d9d9;
   border-radius: 20px;
   padding: 20px;
+`;
+
+export const StudyInfoCardWrap = styled.section`
+  width: 100%;
+  height: 60vh;
+  overflow-y: scroll;
+  z-index: 999;
+
+  > section {
+    margin-bottom: 10px;
+  }
 `;

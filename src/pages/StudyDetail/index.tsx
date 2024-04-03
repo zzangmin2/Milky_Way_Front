@@ -100,6 +100,13 @@ const StudyDetail = () => {
         <div className="buttonWrap">
           <Button text="참여 신청하기" />
         </div>
+
+        <section style={{ marginBottom: "100px" }}>
+          <h3>스터디 신청현황</h3>
+          <ul>
+            <li></li>
+          </ul>
+        </section>
       </StudyDetailWrap>
     </>
   );

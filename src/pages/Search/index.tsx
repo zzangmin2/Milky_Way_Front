@@ -2,6 +2,8 @@ import { useState } from "react";
 import Input from "../../components/Input";
 import StudyInfoCard from "../../components/StudyInfoCard";
 import {
+  StudyAddButton,
+  StudyInfoCardWrap,
   FilterWrap,
   SearchWrap,
   ListWrap,
@@ -63,7 +65,18 @@ const Search = () => {
               <option value="">인기순</option>
             </select>
           </div>
-          <StudyInfoCard navigateRoute="/detail" />
+          <StudyAddButton>+</StudyAddButton>
+
+          <StudyInfoCardWrap>
+            <StudyInfoCard navigateRoute="/detail" />
+            <StudyInfoCard navigateRoute="/detail" />
+            <StudyInfoCard navigateRoute="/detail" />
+            <StudyInfoCard navigateRoute="/detail" />
+            <StudyInfoCard navigateRoute="/detail" />
+            <StudyInfoCard navigateRoute="/detail" />
+            <StudyInfoCard navigateRoute="/detail" />
+            <StudyInfoCard navigateRoute="/detail" />
+          </StudyInfoCardWrap>
         </ListWrap>
       </SearchWrap>
     </>

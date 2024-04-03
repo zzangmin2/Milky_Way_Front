@@ -62,7 +62,6 @@ export const StudyInfoStateWrap = styled.div`
 `;
 
 export const StudyInfoSummaryWrap = styled.div`
-  /* display: flex; */
   > div:nth-child(1) {
     display: flex;
   }
