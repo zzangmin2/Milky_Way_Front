@@ -62,7 +62,7 @@ const sendUserInfo = async (name: string, dpt: string, number: number) => {
 };
 
 const sendLogin = async (loginId: string, loginPwd: string) => {
-  const username: any = useSetRecoilState(isLoggedInUserName);
+  const username: any = useSetRecoilState(isLoggedInUserName); //유저 이름 저장
   try {
     const response = await api.post("", {
       loginId: loginId,
