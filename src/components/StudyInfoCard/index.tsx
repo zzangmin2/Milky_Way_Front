@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { StudyInfoCardWrap, StudyInfoWrap, StudyStateWrap } from "./styles";
 import MentoTag from "../MentoTag";
-import StudyProjectTag from "../StudyProjectTag";
+import StudyTag from "../StudyTag";
 import { FC } from "react";
 
 interface Props {
@@ -14,7 +14,7 @@ const StudyInfoCard: FC<Props> = ({ CardType }) => {
     <>
       <StudyInfoCardWrap>
         <div style={{ display: "flex" }}>
-          <StudyProjectTag tagType={"스터디"} />
+          <StudyTag tagType={"스터디"} />
           <MentoTag />
         </div>
         <StudyInfoWrap>

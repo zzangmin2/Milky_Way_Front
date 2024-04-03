@@ -1,4 +1,5 @@
 import Button from "../../../components/Button";
+import SignupInput from "../SignupInput";
 import {
   BottomSection,
   TopSection,
@@ -46,7 +47,7 @@ const SignupEmail = () => {
     return new Promise((resolve, reject) => {
       try {
         userCompare(newValue);
-        navigate("/users/signupinfo");
+        navigate("/users/signupcompare");
         resolve();
       } catch (error) {
         reject(error);
@@ -69,20 +70,19 @@ const SignupEmail = () => {
             </p>
           </div>
           <div>
-            <input
+            <SignupInput
               type="email"
-              autoFocus
               name="email"
               placeholder={"이메일을 입력해주세요"}
-              onChange={(e) => setEmail(e.target.value)}
-            ></input>
+              onChange={setEmail}
+            />
             <div>
               <Button text={"이메일 인증하기"} onClick={sendEmailedOn} />
             </div>
           </div>
         </TopSection>
         <BottomSection>
-          {emailInState ? (
+          {!emailInState ? (
             <Button text={"다음"} color={"#133488"} onClick={stateUserInfo} /> //성공시 url활성화("button/index.ts)_fix하기"
           ) : (
             <Button text={"다음"} color={"#a8a8a8"} />

@@ -1,16 +1,32 @@
 import styled from "styled-components";
 
 export const Box = styled.section`
-  width: 100%;
-  height: 95%;
+  /* width: 100%; */
+  height: 100vh;
   display: flex;
+  padding: 0 20px;
   justify-content: center;
   flex-direction: column;
-  margin: 20px 0;
+`;
+
+export const Input = styled.input`
+  padding: 16px;
+  width: 300px;
+  border: none;
+  height: 20px;
+  border-radius: 10px;
+  background-color: #f8f8f8;
+  font-weight: lighter;
+  margin-top: 30px;
+  outline: none;
+  & > div > input:focus {
+    border: 1px solid #717171;
+    background-color: #fff;
+  }
 `;
 
 export const TopSection = styled.section`
-  width: 100%;
+  /* width: 100%; */
   flex: 1;
   display: flex;
   padding-top: 20%;
@@ -18,37 +34,11 @@ export const TopSection = styled.section`
   align-items: center;
   flex-direction: column;
 
-  & > div:nth-child(2) {
+  & > div:nth-child(3) {
     width: 100%;
+    display: block;
   }
 
-  & > div > div > Button {
-    width: 100%;
-    margin-top: 20px;
-    height: 80%;
-    text-align:center;
-    padding: 2px;
-    justify-content: center;
-    outline : none;
-    font-weight: 40px;
-  }
-
-  & > div > input {
-    padding: 15px;
-    width: 300px;
-    border: none;
-    height: 20px;
-    border-radius: 10px;
-    background-color: #f8f8f8;
-    font-weight: lighter;
-    margin-top: 20px;
-    outline: none;
-  } 
-  & > div > input:focus {
-    border: 1px solid #717171;
-    background-color: #fff;
-    
-  }
   & > div > p {
     font-weight: bold;
     line-height: 20px;
@@ -59,10 +49,10 @@ export const TopSection = styled.section`
     width: 100%;
     justify-content: flex-start;
     display: flex;
-    margin-left: 40px;
+    /* margin-left: 40px; */
   }
   & > div:nth-child(3) {
-    margin-top:0
+    margin-top: 0;
     justify-content: center;
     flex-direction: column;
     display: flex;
@@ -72,7 +62,7 @@ export const TopSection = styled.section`
 export const ProgressContainer = styled.div`
   position: relative;
   display: flex;
-  width: 90%;
+  width: 100%;
   & > progress {
     color: #ff9f89;
     background-color: #f3f3f3;
@@ -97,7 +87,6 @@ export const ProgressText = styled.p`
 
 export const BottomSection = styled.section`
   display: flex;
-  padding: 20px;
   flex: 2;
   align-items: center;
   justify-content: flex-end;

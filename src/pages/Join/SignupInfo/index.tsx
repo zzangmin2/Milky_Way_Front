@@ -1,4 +1,5 @@
 import Button from "../../../components/Button";
+import SignupInput from "../SignupInput";
 import {
   BottomSection,
   TopSection,
@@ -43,23 +44,26 @@ const SignupInfo = () => {
               입력해주세요
             </p>
           </div>
+
           <div>
-            <input
+            <SignupInput
               type="text"
-              autoFocus
               name="name"
               placeholder={"이름을 입력해주세요"}
-            ></input>
-            <input
+              onChange={setName}
+            />
+            <SignupInput
               type="text"
-              name="d"
+              name="dpt"
               placeholder={"소속된 과를 입력 해주세요"}
-            ></input>
-            <input
+              onChange={setDpt}
+            />
+            <SignupInput
               type="text"
               name="number"
               placeholder={"전화번호를 입력 해주세요"}
-            ></input>
+              onChange={setNumber}
+            />
           </div>
         </TopSection>
         <BottomSection>

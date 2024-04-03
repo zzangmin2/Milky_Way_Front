@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { BottomSection, TopSection } from "./styles";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
+import { sendLogin } from "../../utils/apimodule/member";
 
 const LogIn = () => {
   const navigate = useNavigate();
   const [loginPwd, setLoginPwd] = useState("");
   const [loginId, setLoginId] = useState("");
+
+  const sendLoginData = async () => {
+    console.log("sendUserInfo");
+    try {
+      const result = await sendLogin(loginId, loginPwd);
+      if (result.success) {
+        navigate("/home");
+      } else {
+        throw result;
+      }
+    } catch (error: any) {
+      alert(`실패: ${error.message}`);
+    }
+  };
 
   return (
     <>
@@ -18,9 +33,9 @@ const LogIn = () => {
         <div></div>
       </TopSection>
       <BottomSection>
-        <Input placeholder="아이디를 입력해 주세요" />
-        <Input placeholder="비밀번호를 입력해 주세요" />
-        <Button text={"로그인"} />
+        <Input placeholder="아이디를 입력해 주세요" onChange={setLoginId} />
+        <Input placeholder="비밀번호를 입력해 주세요" onChange={setLoginPwd} />
+        <Button text={"로그인"} onClick={sendLoginData} />
         <div>
           <p>아직 회원이 아니신가요?</p>
           <p onClick={() => navigate("/users/signupemail")}>회원가입 하기</p>

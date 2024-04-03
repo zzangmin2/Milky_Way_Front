@@ -20,6 +20,12 @@ export const isLoggedInState = atom<boolean>({
   default: localStorage.getItem("token") ? true : false,
 });
 
+export const isLoggedInUserName = atom<String>({
+  // api모듈에서 받거나 auth에서 response받은 데이터.username?userid 저장
+  key: "isLoggedIn",
+  default: "",
+});
+
 export const userCompareState = atom<UserCompareState>({
   key: "userCompareState",
   default: {

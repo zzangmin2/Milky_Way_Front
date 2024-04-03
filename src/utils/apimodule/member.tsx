@@ -1,4 +1,6 @@
 import api from "../api/axiosInstance";
+import { isLoggedInUserName } from "../recoil/atom";
+import { useSetRecoilState } from "recoil";
 
 // 인터페이스 써먹고싶다
 
@@ -59,4 +61,24 @@ const sendUserInfo = async (name: string, dpt: string, number: number) => {
   }
 };
 
-export { sendUserCompareInfo, sendEmailUserInfo, sendUserInfo };
+const sendLogin = async (loginId: string, loginPwd: string) => {
+  const username: any = useSetRecoilState(isLoggedInUserName);
+  try {
+    const response = await api.post("", {
+      loginId: loginId,
+      loginPwd: loginPwd,
+    });
+
+    if (response.data.success) {
+      username(response.data.username); // response로 가입시 받은 username?: 이름 등 받아서 뿌리기
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+export { sendUserCompareInfo, sendEmailUserInfo, sendUserInfo, sendLogin };

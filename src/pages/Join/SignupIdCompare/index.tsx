@@ -15,6 +15,7 @@ import {
   userCompareValues,
 } from "../../../utils/recoil/atom";
 import { useSetRecoilState } from "recoil";
+import SignupInput from "../SignupInput";
 
 const SignupIdCompare = () => {
   const userCompare = useSetRecoilState(userCompareState);
@@ -88,31 +89,25 @@ const SignupIdCompare = () => {
             </p>
           </div>
           <div>
-            <input
+            <SignupInput
               placeholder={"아이디를 입력 해주세요"}
               type="text"
               name="id"
-              onChange={(e) => {
-                setId(e.target.value);
-              }}
-            ></input>
-            {/* <button onClick={sendUserInfo}></button> */}
-            <input
+              onChange={setId}
+            />
+            <Button onClick={sendUserInfo} />
+            <SignupInput
               placeholder={"비밀번호를 입력 해주세요"}
               name="password"
               type="password"
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            ></input>
-            <input
+              onChange={setPassword}
+            />
+            <SignupInput
               placeholder={"비밀번호 확인을 위해 한번 더 입력 해주세요"}
               type="password"
               name="confirmPassword"
-              onChange={(e) => {
-                setConfirmPassword(e.target.value);
-              }}
-            ></input>
+              onChange={setConfirmPassword}
+            />
           </div>
         </TopSection>
         <BottomSection>
