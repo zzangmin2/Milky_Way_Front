@@ -10,10 +10,7 @@ import {
 } from "../styles";
 import { useNavigate } from "react-router-dom";
 import { sendUserCompareInfo } from "../../../utils/apimodule/member";
-import {
-  userCompareState,
-  userCompareValues,
-} from "../../../utils/recoil/atom";
+import { userCompareState } from "../../../utils/recoil/atom";
 import { useSetRecoilState } from "recoil";
 import SignupInput from "../SignupInput";
 
@@ -24,11 +21,7 @@ const SignupIdCompare = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [compareInState, setCompareInState] = useState(false);
-  const [usersInfo, setUsersInfo] = useState({
-    id: "",
-    password: "",
-    confirmpassword: "",
-  });
+
   const navigate = useNavigate();
 
   const sendUserInfo = async () => {
@@ -65,7 +58,7 @@ const SignupIdCompare = () => {
         return;
       }
       try {
-        userCompare(userInfo); // 배열 수정
+        userCompare(userInfo);
         navigate("/users/signupinfo");
         resolve();
       } catch (error) {
@@ -94,8 +87,10 @@ const SignupIdCompare = () => {
               type="text"
               name="id"
               onChange={setId}
-            />
-            <Button onClick={sendUserInfo} />
+            >
+              <Button onClick={sendUserInfo} text={"중복확인"} />
+            </SignupInput>
+
             <SignupInput
               placeholder={"비밀번호를 입력 해주세요"}
               name="password"

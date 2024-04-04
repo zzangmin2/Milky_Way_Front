@@ -2,9 +2,11 @@ import api from "../api/axiosInstance";
 import { isLoggedInUserName } from "../recoil/atom";
 import { useSetRecoilState } from "recoil";
 
-// 인터페이스 써먹고싶다
-
-// email인증 (버튼 활성화 및 검사)
+/**
+ * signupemail에서 이메일 최초인증 axios => 성공시 버튼 활성화
+ * @param email @type number | string
+ * @return success
+ */
 const sendEmailUserInfo = async (email: number | string) => {
   try {
     const response = await api.post("checking", {
@@ -20,7 +22,13 @@ const sendEmailUserInfo = async (email: number | string) => {
     return { success: false, error: "error" };
   }
 };
-// signupidcompare 에서 유저 정보
+/**
+ * signupcompare에서 유저 아이디 및 패스워드 넘기기 => 성공시 버튼 활성화
+ * @param id
+ * @param password
+ * @type string | number
+ * @return success
+ */
 const sendUserCompareInfo = async (
   id: number | string,
   password: string | number
@@ -41,7 +49,16 @@ const sendUserCompareInfo = async (
     return { success: false, error: "error" };
   }
 };
-// signupinfo 에서 이름, 학과, 전화번호 넘기기
+
+/**
+ * signupinfo에서 이름, 학과, 전화번호 넘기기 => 성공시 버튼 활성화
+ * @param name
+ * @param dpt
+ * @param number
+ * @type string | number
+ * @return success
+ */
+
 const sendUserInfo = async (name: string, dpt: string, number: number) => {
   try {
     const response = await api.post("", {
@@ -60,6 +77,15 @@ const sendUserInfo = async (name: string, dpt: string, number: number) => {
     return { success: false, error: "error" };
   }
 };
+
+/**
+ * login으로 id, password넘긴후 accesstoken, refreshtoken 확인필요 => 성공시 success:true
+ * auth.tsx 별도 파일 관리? 필요
+ * @param loginId
+ * @param loginPwd
+ * @type string
+ * @return success
+ */
 
 const sendLogin = async (loginId: string, loginPwd: string) => {
   const username: any = useSetRecoilState(isLoggedInUserName); //유저 이름 저장

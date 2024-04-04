@@ -1,5 +1,9 @@
 import Axios from "axios";
 
+/**
+ * api인스턴스
+ * @todo cors설정
+ */
 const api = Axios.create({
   baseURL: "process.env.REACT_APP_API_URL",
   withCredentials: true, // 백에서도 동일하게 true설정(default값 확인)
