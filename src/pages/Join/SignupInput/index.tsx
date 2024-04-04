@@ -3,10 +3,11 @@ import useInput from "../../../hooks/useInput";
 import { StyledInput } from "./styles";
 
 interface Props {
-  placeholder: string;
+  placeholder?: string;
   type?: string;
   name?: string;
   onChange?: any;
+  children?: React.ReactNode;
 }
 
 const SignupInput: FC<Props> = ({ type, placeholder, name }) => {
