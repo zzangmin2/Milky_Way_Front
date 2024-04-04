@@ -43,6 +43,7 @@ export const TopSection = styled.section`
     font-weight: bold;
     line-height: 20px;
     font-size: 18px;
+    margin-bottom: 20%;
   }
   & > div:nth-child(2) {
     font-weight: bold;
@@ -52,10 +53,11 @@ export const TopSection = styled.section`
     /* margin-left: 40px; */
   }
   & > div:nth-child(3) {
-    margin-top: 0;
     justify-content: center;
     flex-direction: column;
     display: flex;
+  }
+  & > div:nth-child(4) {
   }
 `;
 

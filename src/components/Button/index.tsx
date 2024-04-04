@@ -2,7 +2,7 @@ import React from "react";
 import { StyledButton } from "./styles";
 
 interface Props {
-  text: string;
+  text?: string;
   color?: string;
   url?: string;
   onClick?: () => void; // 컴포넌트 이벤트처리
