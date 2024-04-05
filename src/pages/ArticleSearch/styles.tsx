@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-export const SearchWrap = styled.section`
+export const ArticleSearchWrap = styled.section`
   padding: 20px 20px 0px 20px;
   overflow: hidden;
 `;
 
-export const StudyAddButton = styled.button`
+export const ArticleAddButton = styled.button`
   position: fixed;
   display: block;
   bottom: 100px;
@@ -22,7 +22,7 @@ export const StudyAddButton = styled.button`
     rgba(0, 0, 0, 0.22) 0px 15px 12px;
 `;
 
-export const StudyProjectTypeNavWrap = styled.nav`
+export const ArticleProjectTypeNavWrap = styled.nav`
   width: 100%;
 
   & > ul {
@@ -52,7 +52,7 @@ export const StudyProjectTypeNavWrap = styled.nav`
   }
 `;
 
-export const FilterWrap = styled.div`
+export const ArticleFilterWrap = styled.div`
   display: flex;
   margin-top: 20px;
 
@@ -62,7 +62,7 @@ export const FilterWrap = styled.div`
   }
 `;
 
-export const ListWrap = styled.div`
+export const ArticleListWrap = styled.div`
   & > div:nth-child(1) {
     width: 100%;
     display: flex;
@@ -78,13 +78,13 @@ export const ListWrap = styled.div`
   }
 `;
 
-export const SimpleStudyInfoCard = styled.div`
+export const SimpleArticleInfoCard = styled.div`
   border: 1px solid #d9d9d9;
   border-radius: 20px;
   padding: 20px;
 `;
 
-export const StudyInfoCardWrap = styled.section`
+export const ArticleInfoCardWrap = styled.section`
   width: 100%;
   height: 60vh;
   overflow-y: scroll;

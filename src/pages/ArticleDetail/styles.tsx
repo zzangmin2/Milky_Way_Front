@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { StudyProjectTypeNavWrap } from "../Search/styles";
 
-export const StudyDetailWrap = styled.section`
+export const ArticleDetailWrap = styled.section`
   width: 100%;
   padding: 0 20px;
   box-sizing: border-box;
@@ -26,7 +25,7 @@ export const TopSection = styled.section`
   margin-bottom: 20px;
 `;
 
-export const StudyInfoStateWrap = styled.div`
+export const ArticleInfoStateWrap = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 16px;
@@ -36,7 +35,7 @@ export const StudyInfoStateWrap = styled.div`
     align-items: center;
   }
 
-  > div.studyPeriod > div.studyPeriodState {
+  > div.articlePeriod > div.articlePeriodState {
     width: 10px;
     height: 10px;
     border-radius: 50%;
@@ -44,43 +43,43 @@ export const StudyInfoStateWrap = styled.div`
     margin-right: 10px;
   }
 
-  > div.studyPeriod > div:nth-child(2) {
+  > div.articlePeriod > div:nth-child(2) {
     font-size: 0.75rem;
     line-height: 0.75rem;
   }
 
-  > div.studyLike > svg {
+  > div.articleLike > svg {
     font-size: 0.75rem;
     color: #d1d1d1;
     margin-right: 5px;
   }
 
-  > div.studyLike > p {
+  > div.articleLike > p {
     font-size: 0.75rem;
     margin: 0;
   }
 `;
 
-export const StudyInfoSummaryWrap = styled.div`
+export const ArticleInfoSummaryWrap = styled.div`
   > div:nth-child(1) {
     display: flex;
   }
 
-  > div.StudyInfoSummary {
+  > div.articleInfoSummary {
     display: flex;
     flex-direction: column;
   }
 
-  > div.StudyInfoSummary > div {
+  > div.articleInfoSummary > div {
     display: flex;
   }
 
-  > div.StudyInfoSummary > div.StudyRecruiter > p {
+  > div.articleInfoSummary > div.articleRecruiter > p {
     margin: 0 0 10px 0;
     font-size: 0.85rem;
     line-height: 0.85rem;
   }
-  > div.StudyInfoSummary > div.StudyRecruiter > p:nth-child(1)::after {
+  > div.articleInfoSummary > div.articleRecruiter > p:nth-child(1)::after {
     display: inline-block;
     content: "";
     width: 1px;
@@ -89,29 +88,32 @@ export const StudyInfoSummaryWrap = styled.div`
     margin-left: 5px;
     margin-right: 5px;
   }
-  > div.StudyInfoSummary > div.StudyState > div {
+  > div.articleInfoSummary > div.articleState > div {
     margin-right: 16px;
   }
-  > div.StudyInfoSummary > div.StudyState > div > p {
+  > div.articleInfoSummary > div.articleState > div > p {
     font-size: 0.75rem;
 
     margin: 0;
   }
 
-  > div.StudyInfoSummary > div.StudyState > div:nth-child(1) > p:nth-child(2) {
+  > div.articleInfoSummary
+    > div.articleState
+    > div:nth-child(1)
+    > p:nth-child(2) {
     color: #ff4646;
   }
-  > div.StudyInfoSummary > div.StudyState > div > p:nth-child(1) {
+  > div.articleInfoSummary > div.articleState > div > p:nth-child(1) {
     font-weight: bold;
     margin-right: 5px;
   }
 
-  > div.StudyInfoSummary > div > div {
+  > div.articleInfoSummary > div > div {
     display: flex;
   }
 `;
 
-export const StudyDetailPageNavWrap = styled.div`
+export const ArticleDetailPageNavWrap = styled.div`
   width: 100%;
 
   & > ul {
@@ -141,6 +143,6 @@ export const StudyDetailPageNavWrap = styled.div`
   }
 `;
 
-export const StudyIntrowrap = styled.div`
+export const ArticleIntrowrap = styled.div`
   line-height: 160%;
 `;

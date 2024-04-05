@@ -11,7 +11,7 @@ interface Props {
   navigateRoute: string;
 }
 
-const StudyInfoCard: FC<Props> = ({ cardType, navigateRoute }) => {
+const ArticleInfoCard: FC<Props> = ({ cardType, navigateRoute }) => {
   const navigate = useNavigate();
 
   return (
@@ -48,4 +48,4 @@ const StudyInfoCard: FC<Props> = ({ cardType, navigateRoute }) => {
   );
 };
 
-export default StudyInfoCard;
+export default ArticleInfoCard;

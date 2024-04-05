@@ -1,16 +1,17 @@
 import { useState } from "react";
 import Input from "../../components/Input";
-import StudyInfoCard from "../../components/StudyInfoCard";
+import StudyInfoCard from "../../components/ArticleInfoCard";
 import {
-  StudyAddButton,
-  StudyInfoCardWrap,
-  FilterWrap,
-  SearchWrap,
-  ListWrap,
-  StudyProjectTypeNavWrap,
+  ArticleAddButton,
+  ArticleFilterWrap,
+  ArticleInfoCardWrap,
+  ArticleListWrap,
+  ArticleProjectTypeNavWrap,
+  ArticleSearchWrap,
 } from "./styles";
+import ArticleInfoCard from "../../components/ArticleInfoCard";
 
-const Search = () => {
+const ArticleSearch = () => {
   const [activeTab, setActiveTab] = useState("all");
 
   const handleTabClick = (tab: string) => {
@@ -19,12 +20,12 @@ const Search = () => {
 
   return (
     <>
-      <SearchWrap>
+      <ArticleSearchWrap>
         <section>
           <Input placeholder="스터디/프로젝트를 찾아 보세요!" />
         </section>
 
-        <StudyProjectTypeNavWrap>
+        <ArticleProjectTypeNavWrap>
           <ul>
             <li
               className={activeTab === "all" ? "activeTab" : ""}
@@ -45,9 +46,9 @@ const Search = () => {
               프로젝트
             </li>
           </ul>
-        </StudyProjectTypeNavWrap>
+        </ArticleProjectTypeNavWrap>
 
-        <FilterWrap>
+        <ArticleFilterWrap>
           <select name="" id="">
             <option value="">모집 중</option>
             <option value="">모집 완료</option>
@@ -57,30 +58,30 @@ const Search = () => {
             <option value="">카테고리</option>
             <option value="">언어</option>
           </select>
-        </FilterWrap>
-        <ListWrap>
+        </ArticleFilterWrap>
+        <ArticleListWrap>
           <div>
             <select name="" id="">
               <option value="">최신순</option>
               <option value="">인기순</option>
             </select>
           </div>
-          <StudyAddButton>+</StudyAddButton>
+          <ArticleAddButton>+</ArticleAddButton>
 
-          <StudyInfoCardWrap>
-            <StudyInfoCard navigateRoute="/detail" />
-            <StudyInfoCard navigateRoute="/detail" />
-            <StudyInfoCard navigateRoute="/detail" />
-            <StudyInfoCard navigateRoute="/detail" />
-            <StudyInfoCard navigateRoute="/detail" />
-            <StudyInfoCard navigateRoute="/detail" />
-            <StudyInfoCard navigateRoute="/detail" />
-            <StudyInfoCard navigateRoute="/detail" />
-          </StudyInfoCardWrap>
-        </ListWrap>
-      </SearchWrap>
+          <ArticleInfoCardWrap>
+            <ArticleInfoCard navigateRoute="/detail" />
+            <ArticleInfoCard navigateRoute="/detail" />
+            <ArticleInfoCard navigateRoute="/detail" />
+            <ArticleInfoCard navigateRoute="/detail" />
+            <ArticleInfoCard navigateRoute="/detail" />
+            <ArticleInfoCard navigateRoute="/detail" />
+            <ArticleInfoCard navigateRoute="/detail" />
+            <ArticleInfoCard navigateRoute="/detail" />
+          </ArticleInfoCardWrap>
+        </ArticleListWrap>
+      </ArticleSearchWrap>
     </>
   );
 };
 
-export default Search;
+export default ArticleSearch;
