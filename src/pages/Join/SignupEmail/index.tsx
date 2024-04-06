@@ -13,17 +13,38 @@ import { sendEmailUserInfo } from "../../../utils/apimodule/member";
 import { useNavigate } from "react-router-dom";
 import { userCompareState } from "../../../utils/recoil/atom";
 import { useSetRecoilState } from "recoil";
+import { sendEmailVerify } from "../../../utils/apimodule/member";
 const SignupEmail = () => {
   const [email, setEmail] = useState("");
   const [emailInState, setEmailInState] = useState(false);
+  const [emailSendon, setEmailSendon] = useState(false);
+  const [verifyEmail, setVerifyEmail] = useState("");
   const userCompare = useSetRecoilState(userCompareState);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
+  /**
+   * 최초 인증하기 버튼
+   */
   const sendEmailedOn = async () => {
-    // email 비교후 성공하면 버튼 url활성화
-    console.log("sendUserInfo");
     try {
       const result = await sendEmailUserInfo(email);
+      if (result.success) {
+        setEmailSendon(true);
+      } else {
+        throw result;
+      }
+    } catch (error: any) {
+      alert(`실패: ${error.message}`);
+    }
+  };
+
+  /**
+   * sendEmailVeify로 인증번호 일치 확인
+   */
+
+  const sendEmailedVerify = async () => {
+    try {
+      const result = await sendEmailVerify(verifyEmail);
       if (result.success) {
         setEmailInState(true);
       } else {
@@ -77,12 +98,24 @@ const SignupEmail = () => {
               onChange={setEmail}
             />
             <div>
-              <Button text={"이메일 인증하기"} onClick={sendEmailedOn} />
+              {!sendEmailedOn ? (
+                <Button text={"이메일 인증하기"} onClick={sendEmailedOn} />
+              ) : (
+                <>
+                  <SignupInput
+                    type="text"
+                    name="emailVerify"
+                    placeholder="인증번호를 입력해주세요"
+                    onChange={setVerifyEmail}
+                  />
+                  <Button text={"인증 하기"} onClick={sendEmailedVerify} />
+                </>
+              )}
             </div>
           </div>
         </TopSection>
         <BottomSection>
-          {!emailInState ? (
+          {emailInState ? (
             <Button text={"다음"} color={"#133488"} onClick={stateUserInfo} /> //성공시 url활성화("button/index.ts)_fix하기"
           ) : (
             <Button text={"다음"} color={"#a8a8a8"} />
