@@ -3,7 +3,7 @@ import { BottomSection, TopSection } from "./styles";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
-import { sendLogin } from "../../utils/apimodule/member";
+import { loginedIn } from "../../utils/auth/auth";
 
 const LogIn = () => {
   const navigate = useNavigate();
@@ -11,9 +11,8 @@ const LogIn = () => {
   const [loginId, setLoginId] = useState("");
 
   const sendLoginData = async () => {
-    console.log("sendUserInfo");
     try {
-      const result = await sendLogin(loginId, loginPwd);
+      const result = await loginedIn(loginId, loginPwd);
       if (result.success) {
         navigate("/home");
       } else {
