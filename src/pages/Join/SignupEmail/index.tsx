@@ -8,7 +8,7 @@ import {
   ProgressText,
   ProgressBar,
 } from "../styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { sendEmailUserInfo } from "../../../utils/apimodule/member";
 import { useNavigate } from "react-router-dom";
 import { userCompareState } from "../../../utils/recoil/atom";
@@ -19,7 +19,7 @@ const SignupEmail = () => {
   const [emailInState, setEmailInState] = useState(false);
   const [emailSendon, setEmailSendon] = useState(false);
   const [verifyEmail, setVerifyEmail] = useState("");
-  const userCompare = useSetRecoilState(userCompareState);
+  const setUserCompare = useSetRecoilState(userCompareState);
 
   const navigate = useNavigate();
   /**
@@ -55,6 +55,18 @@ const SignupEmail = () => {
     }
   };
 
+  useEffect(() => {
+    const defaultUserCompareState = {
+      email: "",
+      id: "",
+      password: "",
+      name: "",
+      dpt: "",
+      number: "",
+    };
+    setUserCompare(defaultUserCompareState);
+  }, [setUserCompare]);
+
   const newValue = {
     email: email,
     id: "",
@@ -64,10 +76,9 @@ const SignupEmail = () => {
     number: "",
   };
   const stateUserInfo = (): Promise<void | undefined> => {
-    //전체 수정 필요
     return new Promise((resolve, reject) => {
       try {
-        userCompare(newValue);
+        setUserCompare(newValue);
         navigate("/users/signupcompare");
         resolve();
       } catch (error) {
