@@ -13,15 +13,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import ErrorPage from "../../RoutePage/ErrorPage";
-import { emailSuccess, compareSuccess } from "../../../utils/recoil/atom";
+import { emailSuccesses, compareSuccesses } from "../../../utils/recoil/atom";
 const SignupInfo = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [dpt, setDpt] = useState("");
   const [number, setNumber] = useState("");
 
-  const emailSuccessIn = useRecoilValue(emailSuccess);
-  const compareSuccessIn = useRecoilValue(compareSuccess);
+  const emailSuccessIn = useRecoilValue(emailSuccesses);
+  const compareSuccessIn = useRecoilValue(compareSuccesses);
 
   const sendUserInfoOnClick = async () => {
     console.log("sendUserInfo");
@@ -39,7 +39,7 @@ const SignupInfo = () => {
   return (
     <>
       <Box>
-        {emailSuccess && compareSuccess ? (
+        {emailSuccessIn && compareSuccessIn ? (
           <>
             <TopSection>
               <ProgressContainer>

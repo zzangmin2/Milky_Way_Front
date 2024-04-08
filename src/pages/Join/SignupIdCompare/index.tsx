@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../../components/Button";
 import {
   BottomSection,
@@ -10,19 +10,19 @@ import {
 } from "../styles";
 import { useNavigate } from "react-router-dom";
 import { sendUserCompareInfo } from "../../../utils/apimodule/member";
-import { userCompareState, compareSuccess } from "../../../utils/recoil/atom";
+import { userCompareState, compareSuccesses } from "../../../utils/recoil/atom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import SignupInput from "../SignupInput";
-import { emailSuccess } from "../../../utils/recoil/atom";
+import { emailSuccesses } from "../../../utils/recoil/atom";
 import ErrorPage from "../../RoutePage/ErrorPage";
 
 const SignupIdCompare = () => {
-  const emailSuccessIn = useRecoilValue(emailSuccess);
+  const emailSuccessIn = useRecoilValue(emailSuccesses);
   const userCompare = useSetRecoilState(userCompareState);
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const compareSuccessIn = useSetRecoilState(compareSuccess);
+  const compareSuccessIn = useSetRecoilState(compareSuccesses);
 
   const [compareInState, setCompareInState] = useState(false);
 
@@ -30,8 +30,6 @@ const SignupIdCompare = () => {
 
   const sendUserInfo = async () => {
     // 아이디체크
-
-    console.log("sendUserInfo");
     try {
       const result = await sendUserCompareInfo(id, password);
       if (result.success) {
@@ -112,7 +110,7 @@ const SignupIdCompare = () => {
             </div>
           </TopSection>
           <BottomSection>
-            {compareInState ? (
+            {!compareInState ? (
               <Button text={"다음"} color={"#133488"} onClick={stateUserInfo} />
             ) : (
               <Button text={"다음"} color={"#a8a8a8"} />

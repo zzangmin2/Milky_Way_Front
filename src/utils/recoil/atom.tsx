@@ -14,7 +14,7 @@ interface UserCompareState {
  * @type {boolean}
  */
 
-export const emailSuccess = atom<boolean>({
+export const emailSuccesses = atom<boolean>({
   key: "emailSuccessIn",
   default: false,
 });
@@ -24,7 +24,7 @@ export const emailSuccess = atom<boolean>({
  * @type {boolean}
  */
 
-export const compareSuccess = atom<boolean>({
+export const compareSuccesses = atom<boolean>({
   key: "compareSuccessIn",
   default: false,
 });
@@ -34,10 +34,10 @@ export const compareSuccess = atom<boolean>({
  * @type {string}
  */
 
-export const isLoggedInUserName = atom<string>({
-  key: "isLoggedInUserName",
-  default: "",
-});
+// export const isLoggedInUserName = atom<string>({
+//   key: "isLoggedInUserName",
+//   default: "",
+// });
 
 /**
  * 회원가입 state, 필요한지 따져봐야함k

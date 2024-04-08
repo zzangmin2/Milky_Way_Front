@@ -18,12 +18,12 @@ const api = axios.create({
  * 요청 인터셉터
  * 로컬 스토리지에 access_token이 없으면 요청 url을 /users/login으로 변경
  */
-api.interceptors.request.use((config) => {
-  if (!localStorage.getItem("access_token")) {
-    config.url = "/users/login";
-  }
-  return config;
-});
+// api.interceptors.request.use((config) => {
+//   if (!localStorage.getItem("access_token")) {
+//     config.url = "http://localhost:3000/users/login";
+//   }
+//   return config;
+// });
 
 /**
  * 응답 인터셉터

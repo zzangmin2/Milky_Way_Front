@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { sendEmailUserInfo } from "../../../utils/apimodule/member";
 import { useNavigate } from "react-router-dom";
-import { userCompareState, emailSuccess } from "../../../utils/recoil/atom";
+import { userCompareState, emailSuccesses } from "../../../utils/recoil/atom";
 import { useSetRecoilState } from "recoil";
 import { sendEmailVerify } from "../../../utils/apimodule/member";
 const SignupEmail = () => {
@@ -21,13 +21,14 @@ const SignupEmail = () => {
   const [verifyEmail, setVerifyEmail] = useState("");
   const setUserCompare = useSetRecoilState(userCompareState);
 
-  const emailSuccessIn = useSetRecoilState(emailSuccess);
+  const emailSuccessIn = useSetRecoilState(emailSuccesses);
   // 라우터 프로텍트 위한 아톰
   const navigate = useNavigate();
   /**
    * 최초 인증하기 버튼
    */
   const sendEmailedOn = async () => {
+    console.log(email);
     try {
       const result = await sendEmailUserInfo(email);
       if (result.success) {
@@ -67,7 +68,7 @@ const SignupEmail = () => {
       number: "",
     };
     setUserCompare(defaultUserCompareState);
-  }, [setUserCompare]);
+  }, []);
 
   const newValue = {
     email: email,
@@ -109,10 +110,11 @@ const SignupEmail = () => {
               type="email"
               name="email"
               placeholder={"이메일을 입력해주세요"}
-              onChange={setEmail}
+              onChange={(e: any) => setEmail(e.target.value)}
             />
+
             <div>
-              {!sendEmailedOn ? (
+              {!emailSendon ? (
                 <Button text={"이메일 인증하기"} onClick={sendEmailedOn} />
               ) : (
                 <>
