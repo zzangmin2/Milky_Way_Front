@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { sendEmailUserInfo } from "../../../utils/apimodule/member";
 import { useNavigate } from "react-router-dom";
-import { userCompareState } from "../../../utils/recoil/atom";
+import { userCompareState, emailSuccess } from "../../../utils/recoil/atom";
 import { useSetRecoilState } from "recoil";
 import { sendEmailVerify } from "../../../utils/apimodule/member";
 const SignupEmail = () => {
@@ -21,6 +21,8 @@ const SignupEmail = () => {
   const [verifyEmail, setVerifyEmail] = useState("");
   const setUserCompare = useSetRecoilState(userCompareState);
 
+  const emailSuccessIn = useSetRecoilState(emailSuccess);
+  // 라우터 프로텍트 위한 아톰
   const navigate = useNavigate();
   /**
    * 최초 인증하기 버튼
@@ -76,6 +78,7 @@ const SignupEmail = () => {
     number: "",
   };
   const stateUserInfo = (): Promise<void | undefined> => {
+    emailSuccessIn(true);
     return new Promise((resolve, reject) => {
       try {
         setUserCompare(newValue);
@@ -127,7 +130,7 @@ const SignupEmail = () => {
         </TopSection>
         <BottomSection>
           {emailInState ? (
-            <Button text={"다음"} color={"#133488"} onClick={stateUserInfo} /> //성공시 url활성화("button/index.ts)_fix하기"
+            <Button text={"다음"} color={"#133488"} onClick={stateUserInfo} />
           ) : (
             <Button text={"다음"} color={"#a8a8a8"} />
           )}

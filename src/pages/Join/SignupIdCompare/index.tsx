@@ -10,15 +10,19 @@ import {
 } from "../styles";
 import { useNavigate } from "react-router-dom";
 import { sendUserCompareInfo } from "../../../utils/apimodule/member";
-import { userCompareState } from "../../../utils/recoil/atom";
-import { useSetRecoilState } from "recoil";
+import { userCompareState, compareSuccess } from "../../../utils/recoil/atom";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import SignupInput from "../SignupInput";
+import { emailSuccess } from "../../../utils/recoil/atom";
+import ErrorPage from "../../RoutePage/ErrorPage";
 
 const SignupIdCompare = () => {
+  const emailSuccessIn = useRecoilValue(emailSuccess);
   const userCompare = useSetRecoilState(userCompareState);
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const compareSuccessIn = useSetRecoilState(compareSuccess);
 
   const [compareInState, setCompareInState] = useState(false);
 
@@ -58,6 +62,7 @@ const SignupIdCompare = () => {
         return;
       }
       try {
+        compareSuccessIn(true);
         userCompare(userInfo);
         navigate("/users/signupinfo");
         resolve();
@@ -69,50 +74,54 @@ const SignupIdCompare = () => {
 
   return (
     <>
-      <Box>
-        <TopSection>
-          <ProgressContainer>
-            <ProgressText>2/3</ProgressText>
-            <ProgressBar value={60} max={90}></ProgressBar>
-          </ProgressContainer>
-          <div>
-            <p>
-              아이디와 <br />
-              비밀번호를 입력해주세요
-            </p>
-          </div>
-          <div>
-            <SignupInput
-              placeholder={"아이디를 입력 해주세요"}
-              type="text"
-              name="id"
-              onChange={setId}
-            >
-              <Button onClick={sendUserInfo} text={"중복확인"} />
-            </SignupInput>
+      {emailSuccessIn ? (
+        <Box>
+          <TopSection>
+            <ProgressContainer>
+              <ProgressText>2/3</ProgressText>
+              <ProgressBar value={60} max={90}></ProgressBar>
+            </ProgressContainer>
+            <div>
+              <p>
+                아이디와 <br />
+                비밀번호를 입력해주세요
+              </p>
+            </div>
+            <div>
+              <SignupInput
+                placeholder={"아이디를 입력 해주세요"}
+                type="text"
+                name="id"
+                onChange={setId}
+              >
+                <Button onClick={sendUserInfo} text={"중복확인"} />
+              </SignupInput>
 
-            <SignupInput
-              placeholder={"비밀번호를 입력 해주세요"}
-              name="password"
-              type="password"
-              onChange={setPassword}
-            />
-            <SignupInput
-              placeholder={"비밀번호 확인을 위해 한번 더 입력 해주세요"}
-              type="password"
-              name="confirmPassword"
-              onChange={setConfirmPassword}
-            />
-          </div>
-        </TopSection>
-        <BottomSection>
-          {compareInState ? ( // 성공시 url활성화("button/index.ts)_fix하기"
-            <Button text={"다음"} color={"#133488"} onClick={stateUserInfo} />
-          ) : (
-            <Button text={"다음"} color={"#a8a8a8"} />
-          )}
-        </BottomSection>
-      </Box>
+              <SignupInput
+                placeholder={"비밀번호를 입력 해주세요"}
+                name="password"
+                type="password"
+                onChange={setPassword}
+              />
+              <SignupInput
+                placeholder={"비밀번호 확인을 위해 한번 더 입력 해주세요"}
+                type="password"
+                name="confirmPassword"
+                onChange={setConfirmPassword}
+              />
+            </div>
+          </TopSection>
+          <BottomSection>
+            {compareInState ? (
+              <Button text={"다음"} color={"#133488"} onClick={stateUserInfo} />
+            ) : (
+              <Button text={"다음"} color={"#a8a8a8"} />
+            )}
+          </BottomSection>
+        </Box>
+      ) : (
+        <ErrorPage />
+      )}
     </>
   );
 };

@@ -10,6 +10,26 @@ interface UserCompareState {
 }
 
 /**
+ * signupemail -> signupcompare state상태
+ * @type {boolean}
+ */
+
+export const emailSuccess = atom<boolean>({
+  key: "emailSuccessIn",
+  default: false,
+});
+
+/**
+ * signupcompare -> signupinfo state상태
+ * @type {boolean}
+ */
+
+export const compareSuccess = atom<boolean>({
+  key: "compareSuccessIn",
+  default: false,
+});
+
+/**
  * sendLogin 성공시 로그인 유저네임 저장
  * @type {string}
  */

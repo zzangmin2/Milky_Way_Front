@@ -13,13 +13,11 @@ const LoginPage = lazy(() => import("../pages/LogIn"));
 const HomePage = lazy(() => import("../pages/Home"));
 const StudyDetailPage = lazy(() => import("../pages/StudyDetail"));
 
-const EmailSuccess = false;
-const CompareSuccess = false;
-
 const router = createBrowserRouter([
   {
     path: "/",
     element: <ViewPortPage />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "users/login",
@@ -55,16 +53,13 @@ const router = createBrowserRouter([
         path: "users/signupemail",
         element: <SignupEmail />,
       },
-      // 2단계: 1단계 완료 후 접근 가능
       {
         path: "users/signupcompare",
-        element: EmailSuccess ? <SignupIdCompare /> : <ErrorPage />,
+        element: <SignupIdCompare />,
       },
-      // 3단계: 1, 2단계 모두 완료 후 접근 가능
       {
         path: "users/signupinfo",
-        element:
-          EmailSuccess && CompareSuccess ? <SignupInfo /> : <ErrorPage />,
+        element: <SignupInfo />,
       },
     ],
   },
