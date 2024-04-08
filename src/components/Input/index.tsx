@@ -1,34 +1,21 @@
-import { FC, ChangeEvent, useEffect } from "react";
-import useInput from "../../hooks/useInput";
+import { FC, ChangeEvent } from "react";
 import { StyledInput } from "./styles";
 
 interface Props {
   placeholder: string;
-  type?: string;
   name?: string;
-  onChange?: (value: string) => void;
+  value: string;
+  setValue: (value: string) => void;
 }
 
-const Input: FC<Props> = ({ type = "text", placeholder, name, onChange }) => {
-  const [value, setValue] = useInput("");
-
-  useEffect(() => {
-    if (!type) {
-      type = "text";
-    }
-  }, [type]);
-
+const Input: FC<Props> = ({ placeholder, name, value, setValue }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue: any = e.target.value;
-    setValue(newValue);
-    if (onChange) {
-      onChange(newValue);
-    }
+    setValue(e.target.value);
   };
 
   return (
     <StyledInput
-      type={type}
+      type="text"
       placeholder={placeholder}
       onChange={handleChange}
       value={value}

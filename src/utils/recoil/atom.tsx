@@ -103,3 +103,24 @@ export const userCompareValues = selector<UserCompareState>({
     set(userCompareState, newValue);
   },
 });
+
+//스터디 게시물
+
+/**
+ * <atom> 게시글 상세
+ */
+export const ArticleState = atom({
+  key: "articleState",
+  default: {
+    articleMemberId: "",
+    articleType: "",
+    articleTitle: "",
+    articleContent: "",
+    articleLikes: "",
+    aritcleApply: "",
+    articleApplyNow: "",
+    articleStartDay: "",
+    articleEndDay: "",
+    articleFindMentor: "",
+  },
+});
