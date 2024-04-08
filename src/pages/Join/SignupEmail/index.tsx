@@ -29,6 +29,7 @@ const SignupEmail = () => {
    */
   const sendEmailedOn = async () => {
     console.log(email);
+
     try {
       const result = await sendEmailUserInfo(email);
       if (result.success) {
@@ -106,23 +107,30 @@ const SignupEmail = () => {
             </p>
           </div>
           <div>
-            <SignupInput
-              type="email"
-              name="email"
-              placeholder={"이메일을 입력해주세요"}
-              onChange={(e: any) => setEmail(e.target.value)}
-            />
-
             <div>
               {!emailSendon ? (
-                <Button text={"이메일 인증하기"} onClick={sendEmailedOn} />
+                <>
+                  <SignupInput
+                    type="email"
+                    name="email"
+                    placeholder={"이메일을 입력해주세요"}
+                    setValue={setEmail}
+                  />
+                  <Button text={"이메일 인증하기"} onClick={sendEmailedOn} />
+                </>
               ) : (
                 <>
+                  <SignupInput
+                    type="email"
+                    name="email"
+                    placeholder={email}
+                    disable={true}
+                  />
                   <SignupInput
                     type="text"
                     name="emailVerify"
                     placeholder="인증번호를 입력해주세요"
-                    onChange={setVerifyEmail}
+                    setValue={setVerifyEmail}
                   />
                   <Button text={"인증 하기"} onClick={sendEmailedVerify} />
                 </>

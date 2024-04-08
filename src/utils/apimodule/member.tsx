@@ -11,7 +11,6 @@ const sendEmailUserInfo = async (email: number | string) => {
     const response = await api.post("users/signupemailform", {
       signupEmail: email,
     });
-    console.log(response.data.email);
     if (response.data.success) {
       return { success: true };
     } else {

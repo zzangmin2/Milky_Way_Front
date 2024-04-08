@@ -38,54 +38,52 @@ const SignupInfo = () => {
   };
   return (
     <>
-      <Box>
-        {emailSuccessIn && compareSuccessIn ? (
-          <>
-            <TopSection>
-              <ProgressContainer>
-                <ProgressText>3/3</ProgressText>
-                <ProgressBar value={90} max={90}></ProgressBar>
-              </ProgressContainer>
-              <div>
-                <p>
-                  간단한 정보를 <br />
-                  입력해주세요
-                </p>
-              </div>
+      {emailSuccessIn && compareSuccessIn ? (
+        <Box>
+          <TopSection>
+            <ProgressContainer>
+              <ProgressText>3/3</ProgressText>
+              <ProgressBar value={90} max={90}></ProgressBar>
+            </ProgressContainer>
+            <div>
+              <p>
+                간단한 정보를 <br />
+                입력해주세요
+              </p>
+            </div>
 
-              <div>
-                <SignupInput
-                  type="text"
-                  name="name"
-                  placeholder={"이름을 입력해주세요"}
-                  onChange={setName}
-                />
-                <SignupInput
-                  type="text"
-                  name="dpt"
-                  placeholder={"소속된 과를 입력 해주세요"}
-                  onChange={setDpt}
-                />
-                <SignupInput
-                  type="text"
-                  name="number"
-                  placeholder={"전화번호를 입력 해주세요"}
-                  onChange={setNumber}
-                />
-              </div>
-            </TopSection>
-            <BottomSection>
-              <Button
-                text={"회원가입하기"}
-                color={"#133488"}
-                onClick={sendUserInfoOnClick}
+            <div>
+              <SignupInput
+                type="text"
+                name="name"
+                placeholder={"이름을 입력해주세요"}
+                onChange={setName}
               />
-            </BottomSection>
-          </>
-        ) : (
-          <ErrorPage />
-        )}
-      </Box>
+              <SignupInput
+                type="text"
+                name="dpt"
+                placeholder={"소속된 과를 입력 해주세요"}
+                onChange={setDpt}
+              />
+              <SignupInput
+                type="text"
+                name="number"
+                placeholder={"전화번호를 입력 해주세요"}
+                onChange={setNumber}
+              />
+            </div>
+          </TopSection>
+          <BottomSection>
+            <Button
+              text={"회원가입하기"}
+              color={"#133488"}
+              onClick={sendUserInfoOnClick}
+            />
+          </BottomSection>
+        </Box>
+      ) : (
+        <ErrorPage />
+      )}
     </>
   );
 };

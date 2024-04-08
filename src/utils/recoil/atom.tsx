@@ -34,10 +34,10 @@ export const compareSuccesses = atom<boolean>({
  * @type {string}
  */
 
-// export const isLoggedInUserName = atom<string>({
-//   key: "isLoggedInUserName",
-//   default: "",
-// });
+export const isLoggedInUserName = atom<string>({
+  key: "isLoggedInUserName",
+  default: "",
+});
 
 /**
  * 회원가입 state, 필요한지 따져봐야함k
