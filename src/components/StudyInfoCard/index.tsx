@@ -4,26 +4,22 @@ import { StudyInfoCardWrap, StudyInfoWrap, StudyStateWrap } from "./styles";
 import MentoTag from "../MentoTag";
 import StudyTag from "../StudyTag";
 import { FC } from "react";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
-  cardType?: string;
-  navigateRoute: string;
+  CardType: string;
 }
 
-const ArticleInfoCard: FC<Props> = ({ cardType, navigateRoute }) => {
-  const navigate = useNavigate();
-
+const StudyInfoCard: FC<Props> = ({ CardType }) => {
   return (
     <>
-      <StudyInfoCardWrap onClick={() => navigate(navigateRoute)}>
+      <StudyInfoCardWrap>
         <div style={{ display: "flex" }}>
           <StudyTag tagType={"스터디"} />
           <MentoTag />
         </div>
         <StudyInfoWrap>
           <h4>토익 스터디원 모집!</h4>
-          {cardType === "main" ? (
+          {CardType === "main" ? (
             <p>
               800점을 목표로 하고 있습니다. 일주일에 두 번이상 오프라인 만남을
               할 예정 입니다. 관심있으신분들
@@ -48,4 +44,4 @@ const ArticleInfoCard: FC<Props> = ({ cardType, navigateRoute }) => {
   );
 };
 
-export default ArticleInfoCard;
+export default StudyInfoCard;

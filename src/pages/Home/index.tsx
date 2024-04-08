@@ -2,7 +2,7 @@ import Button from "../../components/Button";
 import { BottomSection, Section, TopSection } from "./styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
-import ArticleInfoCard from "../../components/ArticleInfoCard";
+import StudyInfoCard from "../../components/StudyInfoCard";
 
 const Home = () => {
   return (
@@ -29,7 +29,7 @@ const Home = () => {
           </div>
           <div>
             <h3>실시간 인기 스터디 /프로젝트</h3>
-            <ArticleInfoCard cardType="main" navigateRoute="/detail" />
+            <StudyInfoCard CardType="main" />
           </div>
         </BottomSection>
       </Section>

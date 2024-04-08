@@ -4,13 +4,13 @@ import Loading from "../pages/RoutePage/Loading";
 import SignupEmail from "../pages/Join/SignupEmail";
 import SignupIdCompare from "../pages/Join/SignupIdCompare";
 import SignupInfo from "../pages/Join/SignupInfo";
+import Search from "../pages/Search";
 
 const ViewPortPage = lazy(() => import("../layouts/ViewPort"));
 const LayoutPage = lazy(() => import("../layouts/Layout"));
 const LoginPage = lazy(() => import("../pages/LogIn"));
 const HomePage = lazy(() => import("../pages/Home"));
-const ArticleDetailPage = lazy(() => import("../pages/ArticleDetail"));
-const ArticleSearchPage = lazy(() => import("../pages/ArticleSearch"));
+const StudyDetailPage = lazy(() => import("../pages/StudyDetail"));
 
 const router = createBrowserRouter([
   {
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
             path: "",
             element: <HomePage />,
           },
-          { path: "search", element: <ArticleSearchPage /> },
+          { path: "search", element: <Search /> },
         ],
       },
       {
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <ArticleDetailPage />,
+            element: <StudyDetailPage />,
           },
         ],
       },

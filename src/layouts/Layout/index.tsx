@@ -8,18 +8,12 @@ import {
   faHome,
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
-import { FC, useState } from "react";
+import { FC } from "react";
 
 interface Props {
   type: string;
 }
 const Layout: FC<Props> = ({ type }) => {
-  const [activePage, setActivePage] = useState("home");
-
-  const handlePageClick = (tab: string) => {
-    setActivePage(tab);
-  };
-
   const navigate = useNavigate();
 
   return (
@@ -32,7 +26,7 @@ const Layout: FC<Props> = ({ type }) => {
               onClick={() => navigate("/home")}
             ></div>
           ) : (
-            <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)} />
+            <FontAwesomeIcon icon={faArrowLeft} />
           )}
 
           <FontAwesomeIcon icon={faUser} />
@@ -40,23 +34,11 @@ const Layout: FC<Props> = ({ type }) => {
         <Outlet />
         <BottomNav>
           <ul>
-            <li
-              className={activePage === "home" ? "activePage" : ""}
-              onClick={() => {
-                navigate("/home");
-                handlePageClick("home");
-              }}
-            >
+            <li onClick={() => navigate("/home")}>
               <FontAwesomeIcon icon={faHome} />
               <div>홈</div>
             </li>
-            <li
-              className={activePage === "search" ? "activePage" : ""}
-              onClick={() => {
-                navigate("/home/search");
-                handlePageClick("search");
-              }}
-            >
+            <li onClick={() => navigate("/home/search")}>
               <FontAwesomeIcon icon={faPen} />
               <div>스터디 / 프로젝트</div>
             </li>
