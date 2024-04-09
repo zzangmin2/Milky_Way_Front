@@ -5,7 +5,7 @@ interface Props {
   text?: string;
   color?: string;
   url?: string;
-  onClick?: () => void; // 컴포넌트 이벤트처리
+  onClick?: () => void;
 }
 
 const Button: React.FC<Props> = ({ text, color, onClick }) => {

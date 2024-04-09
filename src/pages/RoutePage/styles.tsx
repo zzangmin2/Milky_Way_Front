@@ -14,4 +14,9 @@ export const RoutePage = styled.div`
     width: 200px;
     height: 200px;
   }
+  & > p {
+    font-size: 15px;
+    width: 100%;
+    text-align: center;
+  }
 `;

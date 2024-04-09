@@ -7,6 +7,7 @@ import {
   ProgressContainer,
   ProgressText,
   ProgressBar,
+  EmailText,
 } from "../styles";
 import { useEffect, useState } from "react";
 import { sendEmailUserInfo } from "../../../utils/apimodule/member";
@@ -133,6 +134,11 @@ const SignupEmail = () => {
                     setValue={setVerifyEmail}
                   />
                   <Button text={"인증 하기"} onClick={sendEmailedVerify} />
+                  {emailInState ? (
+                    <EmailText>✅ 이메일 인증 완료!</EmailText>
+                  ) : (
+                    <></>
+                  )}
                 </>
               )}
             </div>

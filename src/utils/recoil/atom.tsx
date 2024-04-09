@@ -1,12 +1,12 @@
 import { atom, selector } from "recoil";
 
 interface UserCompareState {
-  email: string;
-  id: string;
-  password: string;
-  name: string;
-  dpt: string;
-  number: string;
+  email?: string;
+  id?: string;
+  password?: string;
+  name?: string;
+  dpt?: string;
+  number?: string;
 }
 
 /**

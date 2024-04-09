@@ -14,28 +14,32 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import ErrorPage from "../../RoutePage/ErrorPage";
 import { emailSuccesses, compareSuccesses } from "../../../utils/recoil/atom";
+
 const SignupInfo = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [dpt, setDpt] = useState("");
   const [number, setNumber] = useState("");
 
+  // 이 부분을 본문(body) 내부로 이동합니다.
   const emailSuccessIn = useRecoilValue(emailSuccesses);
   const compareSuccessIn = useRecoilValue(compareSuccesses);
 
   const sendUserInfoOnClick = async () => {
-    console.log("sendUserInfo");
     try {
-      const result = await sendUserInfo(name, dpt, parseInt(number));
+      const result = await sendUserInfo(name, dpt, number);
       if (result.success) {
+        alert(`${name}님! 회원가입이 완료되었습니다.`);
         navigate("/users/login");
       } else {
         throw result;
       }
     } catch (error: any) {
+      console.log(`${error.message}`);
       alert(`다시 시도해주세요: ${error.message}`);
     }
   };
+
   return (
     <>
       {emailSuccessIn && compareSuccessIn ? (
@@ -57,19 +61,19 @@ const SignupInfo = () => {
                 type="text"
                 name="name"
                 placeholder={"이름을 입력해주세요"}
-                onChange={setName}
+                setValue={setName}
               />
               <SignupInput
                 type="text"
                 name="dpt"
                 placeholder={"소속된 과를 입력 해주세요"}
-                onChange={setDpt}
+                setValue={setDpt}
               />
               <SignupInput
                 type="text"
                 name="number"
-                placeholder={"전화번호를 입력 해주세요"}
-                onChange={setNumber}
+                placeholder={"-를 제외한 전화번호를 입력 해주세요"}
+                setValue={setNumber}
               />
             </div>
           </TopSection>

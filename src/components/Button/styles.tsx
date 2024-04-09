@@ -10,4 +10,7 @@ export const StyledButton = styled.button`
   border-radius: 10px;
   background-color: ${(props) => props.color || "#133488"};
   color: #fff;
+  &:focus {
+    outline: none;
+  }
 `;

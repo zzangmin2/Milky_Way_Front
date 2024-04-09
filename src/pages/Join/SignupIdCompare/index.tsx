@@ -43,8 +43,6 @@ const SignupIdCompare = () => {
     }
   };
 
-  const userInfo: any = { id: id, password: password }; // 타입 값 수정 필요
-
   const stateUserInfo = (): Promise<void | undefined> => {
     //전체 수정 필요
     return new Promise((resolve, reject) => {
@@ -61,13 +59,32 @@ const SignupIdCompare = () => {
       }
       try {
         compareSuccessIn(true);
-        userCompare(userInfo);
+        userCompare(newValue);
         navigate("/users/signupinfo");
         resolve();
       } catch (error) {
         reject(error);
       }
     });
+  };
+
+  useEffect(() => {
+    const defaultUserCompareState = {
+      id: "",
+      password: "",
+      name: "",
+      dpt: "",
+      number: "",
+    };
+    userCompare(defaultUserCompareState);
+  }, []);
+
+  const newValue = {
+    id: id,
+    password: password,
+    name: "",
+    dpt: "",
+    number: "",
   };
 
   return (
@@ -90,7 +107,7 @@ const SignupIdCompare = () => {
                 placeholder={"아이디를 입력 해주세요"}
                 type="text"
                 name="id"
-                onChange={setId}
+                setValue={setId}
               >
                 <Button onClick={sendUserInfo} text={"중복확인"} />
               </SignupInput>
@@ -99,13 +116,13 @@ const SignupIdCompare = () => {
                 placeholder={"비밀번호를 입력 해주세요"}
                 name="password"
                 type="password"
-                onChange={setPassword}
+                setValue={setPassword}
               />
               <SignupInput
                 placeholder={"비밀번호 확인을 위해 한번 더 입력 해주세요"}
                 type="password"
                 name="confirmPassword"
-                onChange={setConfirmPassword}
+                setValue={setConfirmPassword}
               />
             </div>
           </TopSection>

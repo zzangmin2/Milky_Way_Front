@@ -1,4 +1,8 @@
 import api from "../api/axiosInstance";
+import { userCompareState } from "../recoil/atom";
+import { useSetRecoilState } from "recoil";
+
+// const userCompareInfoState = useSetRecoilState(userCompareState);
 
 /**
  * signupemail에서 이메일 최초인증 axios => 성공시 verify 버튼 활성화
@@ -79,11 +83,15 @@ const sendUserCompareInfo = async (
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
 
-const sendUserInfo = async (name: string, dpt: string, number: number) => {
+const sendUserInfo = async (
+  name: string,
+  dpt: string,
+  number: number | string
+) => {
   try {
-    const response = await api.post("", {
+    const response = await api.post("/users/signupinfo", {
       signupName: name,
-      signupPwd: dpt,
+      signupDpt: dpt,
       signupNumber: number,
     });
 
