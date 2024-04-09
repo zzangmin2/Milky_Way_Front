@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledStudyProjectTag = styled.div`
+export const StyledArticleProjectTag = styled.div`
   padding: 2px 10px;
   text-align: center;
   background-color: #ff9078;
