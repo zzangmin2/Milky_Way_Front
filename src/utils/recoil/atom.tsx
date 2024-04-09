@@ -87,7 +87,25 @@ export const userCompareValues = selector<UserCompareState>({
 //스터디 게시물
 
 /**
- * <atom> 게시글 상세
+ * <atom> article 등록
+ */
+
+export const ArticleRegisterState = atom({
+  key: "articleRegisterState",
+  default: {
+    articleType: "",
+    articleApply: 0,
+    findMentor: false,
+    mentorTag: "",
+    articleStartDay: "",
+    articleEndDay: "",
+    articleTitle: "",
+    articleContent: "",
+  },
+});
+
+/**
+ * <atom> article 상세 조회
  */
 export const ArticleState = atom({
   key: "articleState",
@@ -101,6 +119,7 @@ export const ArticleState = atom({
     articleApplyNow: "",
     articleStartDay: "",
     articleEndDay: "",
-    articleFindMentor: "",
+    articleMentorNeeded: "",
+    articleMentorTag: {},
   },
 });
