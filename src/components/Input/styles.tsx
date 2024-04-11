@@ -9,10 +9,12 @@ export const StyledInput = styled.input`
   border-radius: 10px;
   background-color: #f8f8f8;
   box-sizing: border-box;
+  border: 1px solid #f8f8f8;
 
-  :focus {
-    border: 1px solid #717171;
+  &:focus {
+    border: 1px solid #a9a9a9;
     background-color: #fff;
     outline: none;
+    box-sizing: border-box;
   }
 `;

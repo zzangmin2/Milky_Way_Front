@@ -4,13 +4,14 @@ import Loading from "../pages/RoutePage/Loading";
 import SignupEmail from "../pages/Join/SignupEmail";
 import SignupIdCompare from "../pages/Join/SignupIdCompare";
 import SignupInfo from "../pages/Join/SignupInfo";
-import Search from "../pages/Search";
 
 const ViewPortPage = lazy(() => import("../layouts/ViewPort"));
 const LayoutPage = lazy(() => import("../layouts/Layout"));
 const LoginPage = lazy(() => import("../pages/LogIn"));
 const HomePage = lazy(() => import("../pages/Home"));
-const StudyDetailPage = lazy(() => import("../pages/StudyDetail"));
+const ArticleDetailPage = lazy(() => import("../pages/ArticleDetail"));
+const ArticleSearchPage = lazy(() => import("../pages/ArticleSearch"));
+const ArticleRegisterPage = lazy(() => import("../pages/ArticleRegister"));
 
 const router = createBrowserRouter([
   {
@@ -29,16 +30,26 @@ const router = createBrowserRouter([
             path: "",
             element: <HomePage />,
           },
-          { path: "search", element: <Search /> },
+          { path: "search", element: <ArticleSearchPage /> },
         ],
       },
       {
         path: "/detail",
-        element: <LayoutPage type={"detail"} />,
+        element: <LayoutPage type={"prev"} />,
         children: [
           {
             path: "",
-            element: <StudyDetailPage />,
+            element: <ArticleDetailPage />,
+          },
+        ],
+      },
+      {
+        path: "/articleregister",
+        element: <LayoutPage type={"prev"} />,
+        children: [
+          {
+            path: "",
+            element: <ArticleRegisterPage />,
           },
         ],
       },
