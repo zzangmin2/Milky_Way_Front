@@ -35,7 +35,7 @@ const Home = () => {
           </div>
           <div>
             <h3>실시간 인기 스터디 /프로젝트</h3>
-            <ArticleInfoCard cardType="main" navigateRoute="/detail" />
+            <ArticleInfoCard cardType="main" navigateRoute="/articledetail/1" />
           </div>
         </BottomSection>
       </Section>

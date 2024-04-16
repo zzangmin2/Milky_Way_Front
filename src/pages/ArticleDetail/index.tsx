@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MentoTag from "../../components/MentoTag";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import {
+  ArticleApplyStateTableWrap,
   ArticleDetailPageNavWrap,
   ArticleDetailWrap,
   ArticleInfoStateWrap,
@@ -10,11 +11,60 @@ import {
   TopSection,
 } from "./styles";
 import Button from "../../components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ArticleTag from "../../components/ArticleTag";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { ArticleCurrentState } from "../../utils/recoil/atom";
+import { useParams } from "react-router-dom";
+import { viewCurrentArticle } from "../../utils/apimodule/article";
 
 const ArticleDetail = () => {
+  const articleData = useRecoilValue(ArticleCurrentState);
+  const setArticleCurrentState = useSetRecoilState(ArticleCurrentState);
+
   const [activeTab, setActiveTab] = useState("intro");
+  const { articleId } = useParams();
+
+  useEffect(() => {
+    loadCurrentArticle();
+    console.log(articleId);
+  }, []);
+
+  useEffect(() => {
+    console.log("Article data updated:", articleData);
+  }, [articleData]);
+
+  const loadCurrentArticle = async () => {
+    try {
+      if (articleId) {
+        const result = await viewCurrentArticle(parseInt(articleId));
+        console.log(result);
+        if (result) {
+          console.log("불러오기 성공!");
+          console.log(result);
+          setArticleCurrentState({
+            articleId: result.articleId,
+            articleMemberId: result.articleMemberId,
+            articleType: result.articleType,
+            articleTitle: result.articleTitle,
+            articleContent: result.articleContent,
+            articleLikes: result.articleLikes,
+            articleApply: result.articleApply,
+            articleApplyNow: result.articleApplyNow,
+            articleStartDay: result.articleStartDay,
+            articleEndDay: result.articleEndDay,
+            articleMentorNeeded: result.articleMentorNeeded,
+            articleMentorTag: result.articleMentorTag,
+            articleApplyState: result.articleApplyState,
+          });
+        } else {
+          throw result;
+        }
+      }
+    } catch (error: any) {
+      console.log(`다시 시도해주세요: ${error.message}`);
+    }
+  };
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
@@ -27,11 +77,12 @@ const ArticleDetail = () => {
           <ArticleInfoStateWrap>
             <div className="articlePeriod">
               <div className="articlePeriodState"></div>
-              <div>2024.03.20 까지</div>
+
+              <div>{articleData.articleEndDay} 까지</div>
             </div>
             <div className="articleLike">
               <FontAwesomeIcon icon={faStar} />
-              <p>10</p>
+              <p>{articleData.articleLikes}</p>
             </div>
           </ArticleInfoStateWrap>
           <ArticleInfoSummaryWrap>
@@ -40,19 +91,21 @@ const ArticleDetail = () => {
               <MentoTag />
             </div>
             <div className="articleInfoSummary">
-              <h3>[토익] 스터디원 모집합니다.</h3>
+              <h3>{articleData.articleTitle}</h3>
               <div className="articleRecruiter">
                 <p>컴퓨터정보학부</p>
-                <p>홍길동</p>
+                <p>{articleData.articleMemberId}</p>
               </div>
               <div className="articleState">
                 <div>
                   <p>모집 현황</p>
-                  <p>2/4</p>
+                  <p>
+                    {articleData.articleApplyNow}/{articleData.articleApply}
+                  </p>
                 </div>
                 <div>
                   <p>모집 시작 날짜</p>
-                  <p>2023.03.20</p>
+                  <p>{articleData.articleStartDay}</p>
                 </div>
               </div>
             </div>
@@ -75,27 +128,15 @@ const ArticleDetail = () => {
           </ul>
         </ArticleDetailPageNavWrap>
         <ArticleIntrowrap>
+          <p>우리에게 필요한 멘토는?</p>
           <p>
-            안녕하십니까 !<br />
-            <br /> 컴퓨터정보학부 200030001 홍길동입니다. 취업 준비를 위한 토익
-            스터디를 진행하려고 합니다. <br />
-            목표 점수는 800점이며, 매주 화요일, 목요일 오후 6시부터 8시까지
-            전산관에서 스터디를 진행하고자 합니다.
-            <br /> 관심 있으신 분들은 신청바라며, 추가적으로 궁금하신 사항이
-            있으시다면 Q&A 게시판에 남겨주시기 바랍니다. <br />
-            컴퓨터정보학부 200030001 홍길동입니다. 취업 준비를 위한 토익
-            스터디를 진행하려고 합니다. <br />
-            목표 점수는 800점이며, 매주 화요일, 목요일 오후 6시부터 8시까지
-            전산관에서 스터디를 진행하고자 합니다.
-            <br /> 관심 있으신 분들은 신청바라며, 추가적으로 궁금하신 사항이
-            있으시다면 Q&A 게시판에 남겨주시기 바랍니다. <br />
-            컴퓨터정보학부 200030001 홍길동입니다. 취업 준비를 위한 토익
-            스터디를 진행하려고 합니다. <br />
-            목표 점수는 800점이며, 매주 화요일, 목요일 오후 6시부터 8시까지
-            전산관에서 스터디를 진행하고자 합니다.
-            <br /> 관심 있으신 분들은 신청바라며, 추가적으로 궁금하신 사항이
-            있으시다면 Q&A 게시판에 남겨주시기 바랍니다. <br />
+            {articleData.articleMentorTag
+              ? articleData.articleMentorTag.map((tag, idx) => {
+                  return <p>#{tag}</p>;
+                })
+              : ""}
           </p>
+          <p>{articleData.articleContent}</p>
         </ArticleIntrowrap>
         <div className="buttonWrap">
           <Button text="참여 신청하기" />
@@ -103,9 +144,24 @@ const ArticleDetail = () => {
 
         <section style={{ marginBottom: "100px" }}>
           <h3>스터디 신청현황</h3>
-          <ul>
-            <li></li>
-          </ul>
+          <ArticleApplyStateTableWrap>
+            <div className="tableRow tableRowTop">
+              <div className="tableCell">번호</div>
+              <div className="tableCell">신청자명</div>
+              <div className="tableCell">신청일</div>
+              <div className="tableCell">상태</div>
+            </div>
+            {articleData.articleApplyState.map((applicant, idx) => {
+              return (
+                <div className="tableRow" key={idx}>
+                  <div className="tableCell">{applicant.id}</div>
+                  <div className="tableCell">{applicant.applicantName}</div>
+                  <div className="tableCell">{applicant.applicationDate}</div>
+                  <div className="tableCell">{applicant.status}</div>
+                </div>
+              );
+            })}
+          </ArticleApplyStateTableWrap>
         </section>
       </ArticleDetailWrap>
     </>

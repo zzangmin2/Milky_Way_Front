@@ -107,19 +107,29 @@ export const ArticleRegisterState = atom({
 /**
  * <atom> article 상세 조회
  */
-export const ArticleState = atom({
-  key: "articleState",
+export const ArticleCurrentState = atom({
+  key: "articleCurrentState",
   default: {
+    articleId: 0,
     articleMemberId: "",
+    //articleMemberName 필요
     articleType: "",
     articleTitle: "",
     articleContent: "",
     articleLikes: "",
-    aritcleApply: "",
-    articleApplyNow: "",
+    articleApply: 0,
+    articleApplyNow: 0,
     articleStartDay: "",
     articleEndDay: "",
-    articleMentorNeeded: "",
-    articleMentorTag: {},
+    articleMentorNeeded: false,
+    articleMentorTag: [],
+    articleApplyState: [
+      {
+        id: 0,
+        applicantName: "",
+        applicationDate: "",
+        status: "",
+      },
+    ],
   },
 });

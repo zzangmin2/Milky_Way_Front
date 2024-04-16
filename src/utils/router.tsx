@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/detail",
+        path: "/articledetail/:articleId",
         element: <LayoutPage type={"prev"} />,
         children: [
           {

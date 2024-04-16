@@ -6,13 +6,18 @@ import {
   ArticleTypeSelectWrap,
   ArticleTypeWrap,
 } from "./styles";
-import { ArticleRegisterState } from "../../utils/recoil/atom";
+import {
+  ArticleRegisterState,
+  isLoggedInUserName,
+} from "../../utils/recoil/atom";
 import { useEffect, useState, ChangeEvent } from "react";
 import Button from "../../components/Button";
 import { sendNewArticle } from "../../utils/apimodule/article";
 
 const ArticleRegister = () => {
-  const articleRegister = useSetRecoilState(ArticleRegisterState);
+  // const articleRegister = useSetRecoilState(ArticleRegisterState);
+  const userName: any = useSetRecoilState(isLoggedInUserName);
+
   const [articleType, setArticleType] = useState("study");
   const [articleApply, setArticleApply] = useState("");
   const [articleMentorNeeded, setArticleMentorNeeded] = useState("yes");
@@ -55,25 +60,29 @@ const ArticleRegister = () => {
     }
   };
 
-  const handleSubmitButtonClick = async (e: ChangeEvent<HTMLButtonElement>) => {
+  const handleSubmitButtonClick = async (
+    e: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => {
     e.preventDefault();
 
-    if (buttonState === "inactive") {
-      alert(" 칸을 모두 입력하슈"); // 추후 각 input에 alert 표시
-      return;
-    }
+    // if (buttonState === "inactive") {
+    //   alert(" 칸을 모두 입력하슈"); // 추후 각 input에 alert 표시
+    //   return;
+    // }
 
     //등록 버튼 클릭 -> http 통신
     const newArticleData = {
+      articleMemberId: "userName", // 추후 id로 변경
       articleType: articleType,
       articleApply: parseInt(articleApply),
       articleMentorNeeded: articleMentorNeeded === "yes" ? true : false,
-      mentorTag: articleMentorTagArr.join(", "),
+      articlementorTag: articleMentorTagArr.join(", "),
       articleEndDay: articleEndDay,
       articleTitle: articleTitle,
       articleContent: articleContent,
     };
 
+    console.log(newArticleData);
     try {
       const result = await sendNewArticle(newArticleData);
       if (result.success) {
@@ -82,7 +91,7 @@ const ArticleRegister = () => {
         throw result;
       }
     } catch (error: any) {
-      alert(`실패: ${error.message}`);
+      console.log(`실패: ${error.message}`);
     }
   };
 
@@ -220,7 +229,7 @@ const ArticleRegister = () => {
               (articleType === "study" ? "스터디" : "프로젝트") + " 등록하기"
             }
             buttonState={buttonState}
-            // onClick={handleSubmitButtonClick}
+            onClick={handleSubmitButtonClick}
           />
         </div>
       </ArticleRegisterWrap>

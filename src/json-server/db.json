@@ -1,0 +1,53 @@
+{
+  "currentArticle": [
+    {
+      "articleId": 1,
+      "articleMemberId": "user",
+      "articleType": "study",
+      "articleTitle": "[됐다] 스터디원 모집합니다.",
+      "articleContent": "안녕하십니까 !\n\n 컴퓨터정보학부 200030001 홍길동입니다. 취업 준비를 위한 토익스터디를 진행하려고 합니다. \n목표 점수는 800점이며, 매주 화요일, 목요일 오후 6시부터 8시까지 전산관에서 스터디를 진행하고자 합니다. \n 관심 있으신 분들은 신청바라며, 추가적으로 궁금하신 사항이 있으시다면 Q&A 게시판에 남겨주시기 바랍니다. \n",
+      "articleLikes": "4",
+      "articleApply": 4,
+      "articleApplyNow": 1,
+      "articleStartDay": "2024-03-02",
+      "articleEndDay": "2024-05-02",
+      "articleMentorNeeded": false,
+      "articleMentorTag": ["열정적인", "잘 도와주는", "멋진"],
+      "articleApplyState": [
+        {
+          "id": 1,
+          "applicantName": "김복이",
+          "applicationDate": "2024-01-22",
+          "status": "선정"
+        },
+        {
+          "id": 2,
+          "applicantName": "김마니",
+          "applicationDate": "2024-01-29",
+          "status": "신청"
+        },
+        {
+          "id": 3,
+          "applicantName": "김정민",
+          "applicationDate": "2024-01-25",
+          "status": "반려"
+        }
+      ],
+      "id": "f145"
+    },
+    {
+      "articleId": 2,
+      "articleMemberId": "user",
+      "articleType": "study",
+      "articleTitle": "[리액트] 스터디원 모집합니다.",
+      "articleContent": "안녕하십니까 !\n 컴퓨터정보학부 200030001 홍길동입니다. 취업 준비를 위한 토익스터디를 진행하려고 합니다. \n목표 점수는 800점이며, 매주 화요일, 목요일 오후 6시부터 8시까지 전산관에서 스터디를 진행하고자 합니다. \n 관심 있으신 분들은 신청바라며, 추가적으로 궁금하신 사항이 있으시다면 Q&A 게시판에 남겨주시기 바랍니다. \n",
+      "articleLikes": "4",
+      "articleApply": 6,
+      "articleApplyNow": 1,
+      "articleStartDay": "2024-03-02",
+      "articleEndDay": "2024-05-02",
+      "articleMentorNeeded": false,
+      "articleMentorTag": ["열정적인", "잘 도와주는", "멋진"]
+    }
+  ]
+}
