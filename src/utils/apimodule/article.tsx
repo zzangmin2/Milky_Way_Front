@@ -1,45 +1,58 @@
 import { useSetRecoilState } from "recoil";
 import api from "../api/axiosInstance";
-import { isLoggedInUserName } from "../recoil/atom";
+import { ArticleCurrentState, isLoggedInUserName } from "../recoil/atom";
 
-interface article {
+interface Article {
   articleMemberId: string;
   articleType: string;
   articleApply: number;
-  findMentor: boolean;
-  mentorTag: string;
-  articleStartDay: string;
+  articleMentorNeeded: boolean;
+  articlementorTag: string;
   articleEndDay: string;
   articleTitle: string;
   articleContent: string;
 }
 
+interface CurrentArticle extends Article {
+  articleLikes: number;
+  articleApplyNow: number;
+  articleStartDay: string;
+  articleId: number;
+}
+
 /**
- * articleAdd 에서 작성자, article유형, 모집인원, 멘토필요 여부, 멘토 태그?, 모집 시작 날, 모집 끝나는 날, article 제목, article 내용 넘기기
- * @param articleMemberId
+ * articleRegister 에서 작성자, article유형, 모집인원, 멘토필요 여부, 멘토 태그?, 모집 시작 날, 모집 끝나는 날, article 제목, article 내용 넘기기
  * @param articleType
  * @param articleApply
- * @param findMentor
+ * @param articleMentorNeeded
  * @param mentorTag
- * @param articleStartDay
  * @param articleEndDay
  * @param articleTitle
  * @param articleContent
+
  */
 
-const sendNewArticle = async (newArticleData: article) => {
-  const userName: any = useSetRecoilState(isLoggedInUserName);
+const sendNewArticle = async (newArticleData: Article) => {
+  const {
+    articleMemberId,
+    articleType,
+    articleApply,
+    articleMentorNeeded,
+    articlementorTag,
+    articleEndDay,
+    articleTitle,
+    articleContent,
+  } = newArticleData;
   try {
-    const response = await api.post("", {
-      articleMemberId: newArticleData.articleMemberId,
-      articleType: newArticleData.articleType,
-      articleApply: newArticleData.articleApply,
-      findMentor: newArticleData.findMentor,
-      mentorTag: newArticleData.mentorTag,
-      articleStartDay: newArticleData.articleStartDay,
-      articleEndDay: newArticleData.articleEndDay,
-      articleTitle: newArticleData.articleTitle,
-      articleContent: newArticleData.articleContent,
+    const response = await api.post("http://localhost:3000/currentArticle", {
+      articleMemberId: articleMemberId,
+      articleType: articleType,
+      articleApply: articleApply,
+      findMentor: articleMentorNeeded,
+      mentorTag: articlementorTag,
+      articleEndDay: articleEndDay,
+      articleTitle: articleTitle,
+      articleContent: articleContent,
     });
 
     if (response.data.success) {
@@ -53,4 +66,20 @@ const sendNewArticle = async (newArticleData: article) => {
   }
 };
 
-export { sendNewArticle };
+const viewCurrentArticle = async (articleId: number) => {
+  try {
+    const response = await api.get(
+      `http://localhost:3000/currentArticle?articleId=${articleId}`
+    );
+    if (response.data) {
+      return response.data[0]; // response.data가 배열 형태 -> 객체로 바꾸기
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+export { sendNewArticle, viewCurrentArticle };
