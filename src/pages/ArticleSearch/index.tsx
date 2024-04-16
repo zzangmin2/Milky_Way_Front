@@ -69,14 +69,12 @@ const ArticleSearch = () => {
           <ArticleAddButton>+</ArticleAddButton>
 
           <ArticleInfoCardWrap>
-            <ArticleInfoCard navigateRoute="/detail" />
-            <ArticleInfoCard navigateRoute="/detail" />
-            <ArticleInfoCard navigateRoute="/detail" />
-            <ArticleInfoCard navigateRoute="/detail" />
-            <ArticleInfoCard navigateRoute="/detail" />
-            <ArticleInfoCard navigateRoute="/detail" />
-            <ArticleInfoCard navigateRoute="/detail" />
-            <ArticleInfoCard navigateRoute="/detail" />
+            <ArticleInfoCard navigateRoute="/articledetail/1" />
+            <ArticleInfoCard navigateRoute="/articledetail/1" />
+            <ArticleInfoCard navigateRoute="/articledetail/1" />
+            <ArticleInfoCard navigateRoute="/articledetail/1" />
+            <ArticleInfoCard navigateRoute="/articledetail/1" />
+            <ArticleInfoCard navigateRoute="/articledetail/1" />
           </ArticleInfoCardWrap>
         </ArticleListWrap>
       </ArticleSearchWrap>
