@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent, MouseEventHandler } from "react";
 import { StyledButton } from "./styles";
 import { useNavigate } from "react-router-dom";
 
@@ -6,7 +6,9 @@ interface Props {
   text?: string;
   color?: string;
   url?: string;
-  onClick?: () => void; // 컴포넌트 이벤트처리
+  onClick?: (
+    e: React.MouseEvent<HTMLElement, MouseEvent>
+  ) => Promise<void> | (() => void); // 컴포넌트 이벤트처리
   buttonState?: string; // 'active' -> 버튼 활성화, 'Inactive' -> 버튼 비활성화
 }
 
