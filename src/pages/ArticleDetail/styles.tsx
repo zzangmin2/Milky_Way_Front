@@ -8,15 +8,15 @@ export const ArticleDetailWrap = styled.section`
 
   > .buttonWrap {
     position: fixed;
-    width: 90%;
+    width: 340px;
     left: 50%;
     transform: translateX(-50%);
     bottom: 70px;
   }
 
-  @media (min-width: 575px) {
+  @media (max-width: 575px) {
     > .buttonWrap {
-      width: 50%;
+      width: 90%;
     }
   }
 `;
@@ -145,4 +145,32 @@ export const ArticleDetailPageNavWrap = styled.div`
 
 export const ArticleIntrowrap = styled.div`
   line-height: 160%;
+  margin-bottom: 60px;
+`;
+
+export const ArticleApplyStateWrap = styled.section`
+  margin-bottom: 100px;
+`;
+export const ArticleApplyStateTableWrap = styled.div`
+  display: grid;
+  width: 100%;
+  grid-template-rows: repeat(4, 1fr);
+  font-size: 0.9rem;
+
+  .tableRow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid #d1d1d1;
+    padding: 5px;
+  }
+
+  .tableRowTop {
+    border-bottom: 2px solid #d1d1d1;
+    padding: 0 5px;
+  }
+
+  .tableCell {
+    padding: 5px;
+    text-align: center;
+  }
 `;
