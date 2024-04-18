@@ -5,6 +5,15 @@ export const StudyInfoCardWrap = styled.section`
   border-radius: 20px;
   padding: 20px 20px 10px 20px;
   cursor: pointer;
+
+  > div > div.articlePeriodState {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #22ee68;
+    margin-right: 10px;
+    margin-top: 5px;
+  }
 `;
 export const TagWrap = styled.section`
   display: flex;
