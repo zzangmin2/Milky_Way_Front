@@ -10,7 +10,7 @@ const LayoutPage = lazy(() => import("../layouts/Layout"));
 const LoginPage = lazy(() => import("../pages/LogIn"));
 const HomePage = lazy(() => import("../pages/Home"));
 const ArticleDetailPage = lazy(() => import("../pages/ArticleDetail"));
-const ArticleSearchPage = lazy(() => import("../pages/ArticleSearch"));
+const ArticleListPage = lazy(() => import("../pages/ArticleList"));
 const ArticleRegisterPage = lazy(() => import("../pages/ArticleRegister"));
 
 const router = createBrowserRouter([
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
             path: "",
             element: <HomePage />,
           },
-          { path: "search", element: <ArticleSearchPage /> },
+          { path: "articlelist", element: <ArticleListPage /> },
         ],
       },
       {
