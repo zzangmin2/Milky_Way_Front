@@ -51,14 +51,14 @@ const Layout: FC<Props> = ({ type }) => {
               <div>홈</div>
             </li>
             <li
-              className={activePage === "search" ? "activePage" : ""}
+              className={activePage === "list" ? "activePage" : ""}
               onClick={() => {
-                navigate("/home/search");
-                handlePageClick("search");
+                navigate("/home/articlelist");
+                handlePageClick("list");
               }}
             >
               <FontAwesomeIcon icon={faPen} />
-              <div>스터디 / 프로젝트</div>
+              <div>스터디 / 프로젝트 찾기</div>
             </li>
             <li>
               <FontAwesomeIcon icon={faFile} />
