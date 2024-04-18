@@ -133,3 +133,41 @@ export const ArticleCurrentState = atom({
     ],
   },
 });
+
+/**
+ * <atom> article 리스트 조회
+ */
+
+export const ArticleListState = atom({
+  key: "articleListState",
+  default: [],
+});
+
+/**
+ * <atom> 현재 리스트 필터링 기준
+ */
+export const ArticleListFilterState = atom({
+  key: "articleListFilterState",
+  default: "all", // "all", "study", "project"
+});
+
+/**
+ * <selector> 필터링 된 article 리스트 조회
+ */
+export const filteredArticleListState = selector({
+  key: "filteredArticleListState",
+  get: ({ get }) => {
+    const filter = get(ArticleListFilterState);
+    const list = get(ArticleListState);
+
+    switch (filter) {
+      case "study":
+        return list.filter((article) => article.articleType === "study");
+      case "project":
+        return list.filter((article) => article.articleType === "project");
+
+      default:
+        return list;
+    }
+  },
+});
