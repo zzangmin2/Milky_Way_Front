@@ -30,7 +30,25 @@ const router = createBrowserRouter([
             path: "",
             element: <HomePage />,
           },
-          { path: "articlelist", element: <ArticleListPage /> },
+          {
+            path: "articlelist",
+            element: <ArticleListPage />,
+            children: [
+              {
+                path: "all",
+                element: <ArticleListPage />,
+              },
+
+              {
+                path: "study",
+                element: <ArticleListPage />,
+              },
+              {
+                path: "project",
+                element: <ArticleListPage />,
+              },
+            ],
+          },
         ],
       },
       {

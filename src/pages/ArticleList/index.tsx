@@ -10,28 +10,42 @@ import {
 } from "./styles";
 import ArticleInfoCard from "../../components/ArticleInfoCard";
 import { viewArticleList } from "../../utils/apimodule/article";
-import { useRecoilState } from "recoil";
-import { ArticleListState } from "../../utils/recoil/atom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  ArticleListFilterState,
+  ArticleListState,
+  filteredArticleListState,
+} from "../../utils/recoil/atom";
+import { useNavigate } from "react-router-dom";
 
 const ArticleList = () => {
-  const [articleListState, setArticleListState] =
-    useRecoilState(ArticleListState);
-  // const setArticleListState = useSetRecoilState(ArticleListState);
-  const [activeTab, setActiveTab] = useState("all");
+  const setArticleListState = useSetRecoilState(ArticleListState);
+  const [articleListFilterState, setArticleListFilterState] = useRecoilState(
+    ArticleListFilterState
+  );
 
-  const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
-  };
+  const filteredArticleList = useRecoilValue(filteredArticleListState);
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadArticleList();
   }, []);
 
+  //모두/스터디/프로젝트 네비게이션 변경 시
+  useEffect(() => {
+    navigate(`/home/articlelist/${articleListFilterState}`);
+  }, [articleListFilterState]);
+
+  //네비게이션 변경 함수
+  const handleTabClick = (tab: string) => {
+    setArticleListFilterState(tab);
+  };
+
+  //현재 article 데이터 불러오는 함수
   const loadArticleList = async () => {
     try {
       const result = await viewArticleList();
       if (result) {
-        console.log(result);
         setArticleListState(result);
       }
     } catch (error: any) {
@@ -49,19 +63,21 @@ const ArticleList = () => {
         <ArticleProjectTypeNavWrap>
           <ul>
             <li
-              className={activeTab === "all" ? "activeTab" : ""}
+              className={articleListFilterState === "all" ? "activeTab" : ""}
               onClick={() => handleTabClick("all")}
             >
               ALL
             </li>
             <li
-              className={activeTab === "study" ? "activeTab" : ""}
+              className={articleListFilterState === "study" ? "activeTab" : ""}
               onClick={() => handleTabClick("study")}
             >
               스터디
             </li>
             <li
-              className={activeTab === "project" ? "activeTab" : ""}
+              className={
+                articleListFilterState === "project" ? "activeTab" : ""
+              }
               onClick={() => handleTabClick("project")}
             >
               프로젝트
@@ -90,8 +106,8 @@ const ArticleList = () => {
           <ArticleAddButton>+</ArticleAddButton>
 
           <ArticleInfoCardWrap>
-            {articleListState &&
-              articleListState?.map((article, idx) => {
+            {filteredArticleList &&
+              filteredArticleList?.map((article, idx) => {
                 return (
                   <ArticleInfoCard
                     key={idx}
