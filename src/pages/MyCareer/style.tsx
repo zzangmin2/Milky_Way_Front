@@ -19,7 +19,7 @@ export const TopSection = styled.section`
 `;
 
 export const MyInfoTitle = styled.section`
-  flex: 1;
+  flex-grow: 0.5;
   display: flex;
   font-weight: bold;
   font-size: 20px;
@@ -29,7 +29,7 @@ export const MyInfoTitle = styled.section`
 export const MyInfoContent = styled.section`
   flex-directon: column;
   flex: 1;
-  margin-top: 15px;
+  margin-top: 20px;
 `;
 export const MyInfoCareer = styled.section`
   flex: 1;
@@ -47,7 +47,7 @@ export const MyInfoText = styled.section`
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
+  margin-top: 25px;
 `;
 
 export const InfoContentTitle = styled.div`
@@ -55,18 +55,9 @@ export const InfoContentTitle = styled.div`
   color: #143488;
   font-weight: bold;
   font-size: 18px;
-`;
-
-export const InfoBorderLine = styled.line`
-  border-bottom: 0.1px solid gray;
-  text-align: center;
-  display: flex;
-  flex-direction: center;
-  margin: none;
-  width: 100%;
-  height: 10px;
-  align-items: center;
-  margin-bottom: 10px;
+  border-bottom: 1px solid #f1f1f1;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 `;
 
 export const InfoContentText = styled.div`
@@ -86,4 +77,10 @@ export const BottomSection = styled.section`
     color: #717171;
     margin-bottom: 5px;
   }
+`;
+
+export const CareerInput = styled.input`
+  width: 100%;
+  justify-content: center;
+  border-bottom: 1px solid #f1f1f1;
 `;

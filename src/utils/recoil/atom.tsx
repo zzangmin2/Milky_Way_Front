@@ -9,6 +9,13 @@ interface UserCompareState {
   number?: string;
 }
 
+interface UserCareerState {
+  userName?: any;
+  userCareer?: any;
+  userCertificate?: any;
+  userLineText?: any;
+}
+
 /**
  * signupemail -> signupcompare state상태
  * @type {boolean}
@@ -104,23 +111,79 @@ export const userCompareValues = selector<UserCompareState>({
   },
 });
 
+/**
+ * 이력서페이지 정보조회
+ */
+export const userCareerState = atom<UserCareerState>({
+  key: "userCareerState",
+  default: {
+    userName: "",
+    userCareer: [],
+    userCertificate: [],
+    userLineText: "",
+  },
+});
+
+/**
+ * 마이페이지 정보조회
+ */
+export const userInfoState = atom<any>({
+  key: "userInfoState",
+  default: {
+    userName: "",
+    userEmail: "",
+    userNickName: "",
+    userCareerCard: "",
+    userNumber: "",
+  },
+});
+
 //스터디 게시물
 
 /**
- * <atom> 게시글 상세
+ * <atom> article 등록
  */
-export const ArticleState = atom({
-  key: "articleState",
+
+export const ArticleRegisterState = atom({
+  key: "articleRegisterState",
   default: {
+    articleType: "",
+    articleApply: 0,
+    findMentor: false,
+    mentorTag: "",
+    articleStartDay: "",
+    articleEndDay: "",
+    articleTitle: "",
+    articleContent: "",
+  },
+});
+
+/**
+ * <atom> article 상세 조회
+ */
+export const ArticleCurrentState = atom({
+  key: "articleCurrentState",
+  default: {
+    articleId: 0,
     articleMemberId: "",
+    //articleMemberName 필요
     articleType: "",
     articleTitle: "",
     articleContent: "",
     articleLikes: "",
-    aritcleApply: "",
-    articleApplyNow: "",
+    articleApply: 0,
+    articleApplyNow: 0,
     articleStartDay: "",
     articleEndDay: "",
-    articleFindMentor: "",
+    articleMentorNeeded: false,
+    articleMentorTag: [],
+    articleApplyState: [
+      {
+        id: 0,
+        applicantName: "",
+        applicationDate: "",
+        status: "",
+      },
+    ],
   },
 });

@@ -78,17 +78,6 @@ const SignupIdCompare = () => {
     });
   };
 
-  // useEffect(() => {
-  //   const defaultUserCompareState = {
-  //     id: "",
-  //     password: "",
-  //     name: "",
-  //     dpt: "",
-  //     number: "",
-  //   };
-  //   userCompare(defaultUserCompareState);
-  // }, []);
-
   const newValue = {
     id: id,
     password: password,
@@ -96,7 +85,7 @@ const SignupIdCompare = () => {
 
   return (
     <>
-      {emailSuccessIn ? (
+      {!emailSuccessIn ? (
         <Box>
           <TopSection>
             <ProgressContainer>

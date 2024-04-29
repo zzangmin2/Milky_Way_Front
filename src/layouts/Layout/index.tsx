@@ -8,12 +8,18 @@ import {
   faHome,
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
-import { FC } from "react";
+import { FC, useState } from "react";
 
 interface Props {
   type: string;
 }
 const Layout: FC<Props> = ({ type }) => {
+  const [activePage, setActivePage] = useState("home");
+
+  const handlePageClick = (tab: string) => {
+    setActivePage(tab);
+  };
+
   const navigate = useNavigate();
 
   return (
@@ -26,7 +32,7 @@ const Layout: FC<Props> = ({ type }) => {
               onClick={() => navigate("/home")}
             ></div>
           ) : (
-            <FontAwesomeIcon icon={faArrowLeft} />
+            <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)} />
           )}
 
           <FontAwesomeIcon
@@ -37,15 +43,33 @@ const Layout: FC<Props> = ({ type }) => {
         <Outlet />
         <BottomNav>
           <ul>
-            <li onClick={() => navigate("/home")}>
+            <li
+              className={activePage === "home" ? "activePage" : ""}
+              onClick={() => {
+                navigate("/home");
+                handlePageClick("home");
+              }}
+            >
               <FontAwesomeIcon icon={faHome} />
               <div>홈</div>
             </li>
-            <li onClick={() => navigate("/home/search")}>
+            <li
+              className={activePage === "search" ? "activePage" : ""}
+              onClick={() => {
+                navigate("/home/search");
+                handlePageClick("search");
+              }}
+            >
               <FontAwesomeIcon icon={faPen} />
               <div>스터디 / 프로젝트</div>
             </li>
-            <li onClick={() => navigate("/home/mycareer")}>
+            <li
+              className={activePage === "career" ? "activePage" : ""}
+              onClick={() => {
+                navigate("/home/mycareer");
+                handlePageClick("career");
+              }}
+            >
               <FontAwesomeIcon icon={faFile} />
               <div>이력서</div>
             </li>

@@ -7,7 +7,7 @@ import axios from "axios";
  */
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true, // 백에서도 동일하게 true설정(default값 확인)
+  withCredentials: false, // 백에서도 동일하게 true설정(default값 확인)
   headers: {
     access_token: localStorage.getItem("access_token"),
     "Content-Type": "application/json",
@@ -51,7 +51,7 @@ const api = axios.create({
 //   }
 // );
 
-// 타임아웃 얘기 및 수정? 필요
-api.defaults.timeout = 3000;
+// // 타임아웃 얘기 및 수정? 필요
+// api.defaults.timeout = 3000;
 
 export default api;

@@ -25,6 +25,7 @@ const SignupInfo = () => {
   const [dpt, setDpt] = useState("");
   const [number, setNumber] = useState("");
   const userCompare = useSetRecoilState(userCompareState);
+  const userCompares = useRecoilValue(userCompareState);
   const emailSuccessIn = useRecoilValue(emailSuccesses);
   const compareSuccessIn = useRecoilValue(compareSuccesses);
 
@@ -41,6 +42,8 @@ const SignupInfo = () => {
     } catch (error: any) {
       console.log(`${error.message}`);
       alert(`다시 시도해주세요: ${error.message}`);
+      console.log(newValue);
+      console.log(userCompares);
     }
   };
 

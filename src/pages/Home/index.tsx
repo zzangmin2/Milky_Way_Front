@@ -2,9 +2,12 @@ import Button from "../../components/Button";
 import { BottomSection, Section, TopSection } from "./styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
-import StudyInfoCard from "../../components/StudyInfoCard";
+import ArticleInfoCard from "../../components/ArticleInfoCard";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Section>
@@ -17,7 +20,10 @@ const Home = () => {
           </div>
           <div></div>
         </TopSection>
-        <Button text={"스터디 / 프로젝트 등록"} />
+        <Button
+          text={"스터디 / 프로젝트 등록"}
+          onClick={() => navigate("/articleregister")}
+        />
         <BottomSection>
           <div>
             <h3>내가 참여 중인 스터디 /프로젝트</h3>
@@ -29,7 +35,7 @@ const Home = () => {
           </div>
           <div>
             <h3>실시간 인기 스터디 /프로젝트</h3>
-            <StudyInfoCard CardType="main" />
+            <ArticleInfoCard cardType="main" navigateRoute="/articledetail/1" />
           </div>
         </BottomSection>
       </Section>

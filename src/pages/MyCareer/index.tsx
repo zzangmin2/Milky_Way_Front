@@ -8,55 +8,110 @@ import {
   MyInfocertificate,
   MyInfoText,
   InfoContentTitle,
-  InfoBorderLine,
   InfoContentText,
+  CareerInput,
 } from "./style";
 import Button from "../../components/Button";
+import { useState, useEffect } from "react";
+import { viewMyCareer } from "../../utils/apimodule/article";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import { userCareerState } from "../../utils/recoil/atom";
 
 const MyCareer = () => {
+  const careerValue = useSetRecoilState(userCareerState);
+  const { userName, userCareer, userCertificate, userLineText } =
+    useRecoilValue(userCareerState);
+  const [edit, setEdit] = useState(true);
+
+  useEffect(() => {
+    userInfoData();
+  }, []);
+
+  const userInfoData = async () => {
+    try {
+      const data = await viewMyCareer();
+      const result = data.data;
+      careerValue({
+        userName: result.userName,
+        userCareer: result.userCareer,
+        userCertificate: result.userCertificate,
+        userLineText: result.userLineText,
+      });
+    } catch (error) {
+      console.error("error", error);
+    }
+  };
+
+  const toggleEdit = () => {
+    setEdit((prevEdit) => !prevEdit);
+  };
+
   return (
-    <>
-      <Section>
-        <TopSection>
-          <MyInfoTitle>
-            <div>이력서</div>
-          </MyInfoTitle>
-          <MyInfoContent>
-            <InfoContentTitle>홍길동 @ktg5679</InfoContentTitle>
-            <InfoBorderLine />
-            <div>대림대학교</div>
-            <div>컴퓨터정보학부</div>
-            <div>010-2992-5679</div>
-          </MyInfoContent>
-          <MyInfoCareer>
-            <InfoContentTitle>경력</InfoContentTitle>
-            <InfoBorderLine />
+    <Section>
+      <TopSection>
+        <MyInfoTitle>
+          <div>이력서</div>
+        </MyInfoTitle>
+        <MyInfoContent>
+          <InfoContentTitle>{userName}@ktg5679</InfoContentTitle>
+          <div>대림대학교</div>
+          <div>컴퓨터정보학부</div>
+          <div>010-2992-5679</div>
+        </MyInfoContent>
+        <MyInfoCareer>
+          <InfoContentTitle>경력</InfoContentTitle>
+          {userCareer.length > 0 ? (
+            userCareer.map((career: any) => (
+              <InfoContentText key={career.id}>
+                <div>{career.careerCompany}</div>
+                <div>{career.careerDate}</div>
+              </InfoContentText>
+            ))
+          ) : (
             <InfoContentText>
-              <div>교내gs25아르바이트</div>
-              <div>2020-03-25~</div>
+              <div>등록된 경력이 없습니다.</div>
             </InfoContentText>
-          </MyInfoCareer>
-          <MyInfocertificate>
-            <InfoContentTitle>자격증</InfoContentTitle>
-            <InfoBorderLine />
-            <InfoContentText>
-              <div>정보처리산업기사</div>
-              <div>2020-03-25~</div>
-            </InfoContentText>
-            <InfoContentText>
-              <div>빅데이터분석기사</div>
-              <div>2020-03-25~</div>
-            </InfoContentText>
-          </MyInfocertificate>
-          <MyInfoText>
-            <InfoContentTitle>한줄소개</InfoContentTitle>
-          </MyInfoText>
-        </TopSection>
-        <BottomSection>
-          <Button text={"이력서 수정하기"} />
-        </BottomSection>
-      </Section>
-    </>
+          )}
+          {edit ? (
+            <></>
+          ) : (
+            <>
+              <label>
+                sef
+                <CareerInput />
+              </label>
+            </>
+          )}
+        </MyInfoCareer>
+        <MyInfocertificate>
+          <InfoContentTitle>자격증</InfoContentTitle>
+          {userCertificate.length > 0 ? (
+            userCertificate.map((certificate: any) => (
+              <InfoContentText key={certificate.id}>
+                <div>{certificate.certificateName}</div>
+                <div>{certificate.certificateDate}</div>
+              </InfoContentText>
+            ))
+          ) : (
+            <InfoContentText>등록된 자격증이 없습니다.</InfoContentText>
+          )}
+          {edit ? (
+            <></>
+          ) : (
+            <>
+              <CareerInput>asef</CareerInput>
+            </>
+          )}
+        </MyInfocertificate>
+        <MyInfoText>
+          <InfoContentTitle>한줄소개</InfoContentTitle>
+          <InfoContentText>{userLineText}</InfoContentText>
+        </MyInfoText>
+      </TopSection>
+      <BottomSection>
+        <Button text={"이력서 수정하기"} onClick={() => toggleEdit} />
+      </BottomSection>
+    </Section>
   );
 };
 
