@@ -35,7 +35,7 @@ const SignupInput: FC<Props> = ({
         value={value}
         name={name}
         disabled={disable}
-      />
+      ></StyledInput>
     </>
   );
 };

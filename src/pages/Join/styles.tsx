@@ -76,7 +76,7 @@ export const EmailText = styled.div`
   // position: relative;
   font-size: 15px;
   padding: 2px;
-  color: green;
+  color: ${(props) => props.color || "green"};
   margin-top: -10px;
 `;
 

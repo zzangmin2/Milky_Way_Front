@@ -10,26 +10,35 @@ import {
 } from "../styles";
 import { useNavigate } from "react-router-dom";
 import { sendUserCompareInfo } from "../../../utils/apimodule/member";
-import { userCompareState, compareSuccesses } from "../../../utils/recoil/atom";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import {
+  userCompareState,
+  compareSuccesses,
+  userCompareValues,
+} from "../../../utils/recoil/atom";
+import {
+  useSetRecoilState,
+  useRecoilValue,
+  useRecoilValueLoadable,
+} from "recoil";
 import SignupInput from "../SignupInput";
 import { emailSuccesses } from "../../../utils/recoil/atom";
 import ErrorPage from "../../RoutePage/ErrorPage";
 
 const SignupIdCompare = () => {
   const emailSuccessIn = useRecoilValue(emailSuccesses);
+  const userCompareValuesConsole = useRecoilValueLoadable(userCompareValues);
   const userCompare = useSetRecoilState(userCompareState);
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const compareSuccessIn = useSetRecoilState(compareSuccesses);
+  const [confirmSuccess, setConfirmSuccess] = useState(false);
 
   const [compareInState, setCompareInState] = useState(false);
 
   const navigate = useNavigate();
 
   const sendUserInfo = async () => {
-    // 아이디체크
     try {
       const result = await sendUserCompareInfo(id, password);
       if (result.success) {
@@ -44,7 +53,6 @@ const SignupIdCompare = () => {
   };
 
   const stateUserInfo = (): Promise<void | undefined> => {
-    //전체 수정 필요
     return new Promise((resolve, reject) => {
       if (!id || !password || !confirmPassword) {
         alert("아이디와 비밀번호를 입력해주세요.");
@@ -56,6 +64,8 @@ const SignupIdCompare = () => {
         alert("비밀번호가 일치하지 않습니다.");
         setCompareInState(false);
         return;
+      } else {
+        setConfirmPassword: Boolean(true);
       }
       try {
         compareSuccessIn(true);
@@ -68,23 +78,20 @@ const SignupIdCompare = () => {
     });
   };
 
-  useEffect(() => {
-    const defaultUserCompareState = {
-      id: "",
-      password: "",
-      name: "",
-      dpt: "",
-      number: "",
-    };
-    userCompare(defaultUserCompareState);
-  }, []);
+  // useEffect(() => {
+  //   const defaultUserCompareState = {
+  //     id: "",
+  //     password: "",
+  //     name: "",
+  //     dpt: "",
+  //     number: "",
+  //   };
+  //   userCompare(defaultUserCompareState);
+  // }, []);
 
   const newValue = {
     id: id,
     password: password,
-    name: "",
-    dpt: "",
-    number: "",
   };
 
   return (
@@ -109,9 +116,8 @@ const SignupIdCompare = () => {
                 name="id"
                 setValue={setId}
               >
-                <Button onClick={sendUserInfo} text={"중복확인"} />
+                <button>saef</button>
               </SignupInput>
-
               <SignupInput
                 placeholder={"비밀번호를 입력 해주세요"}
                 name="password"

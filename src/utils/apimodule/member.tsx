@@ -1,8 +1,4 @@
 import api from "../api/axiosInstance";
-import { userCompareState } from "../recoil/atom";
-import { useSetRecoilState } from "recoil";
-
-// const userCompareInfoState = useSetRecoilState(userCompareState);
 
 /**
  * signupemail에서 이메일 최초인증 axios => 성공시 verify 버튼 활성화
@@ -12,7 +8,7 @@ import { useSetRecoilState } from "recoil";
  */
 const sendEmailUserInfo = async (email: number | string) => {
   try {
-    const response = await api.post("users/signupemailform", {
+    const response = await api.post("/users/signupemailform", {
       signupEmail: email,
     });
     if (response.data.success) {

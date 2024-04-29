@@ -6,6 +6,8 @@ import SignupIdCompare from "../pages/Join/SignupIdCompare";
 import SignupInfo from "../pages/Join/SignupInfo";
 import Search from "../pages/Search";
 import ErrorPage from "../pages/RoutePage/ErrorPage";
+import MyCareer from "../pages/MyCareer";
+import MyInfo from "../pages/MyInfo";
 
 const ViewPortPage = lazy(() => import("../layouts/ViewPort"));
 const LayoutPage = lazy(() => import("../layouts/Layout"));
@@ -32,6 +34,14 @@ const router = createBrowserRouter([
             element: <HomePage />,
           },
           { path: "search", element: <Search /> },
+          {
+            path: "mycareer",
+            element: <MyCareer />,
+          },
+          {
+            path: "myinfo",
+            element: <MyInfo />,
+          },
         ],
       },
       {
@@ -50,15 +60,15 @@ const router = createBrowserRouter([
         element: <Loading />,
       },
       {
-        path: "users/signupemail",
+        path: "/users/signupemail",
         element: <SignupEmail />,
       },
       {
-        path: "users/signupcompare",
+        path: "/users/signupcompare",
         element: <SignupIdCompare />,
       },
       {
-        path: "users/signupinfo",
+        path: "/users/signupinfo",
         element: <SignupInfo />,
       },
     ],

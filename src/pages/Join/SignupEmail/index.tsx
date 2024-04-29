@@ -74,11 +74,6 @@ const SignupEmail = () => {
 
   const newValue = {
     email: email,
-    id: "",
-    password: "",
-    name: "",
-    dpt: "",
-    number: "",
   };
   const stateUserInfo = (): Promise<void | undefined> => {
     emailSuccessIn(true);
@@ -86,6 +81,7 @@ const SignupEmail = () => {
       try {
         setUserCompare(newValue);
         navigate("/users/signupcompare");
+        console.log(newValue);
         resolve();
       } catch (error) {
         reject(error);
@@ -135,9 +131,9 @@ const SignupEmail = () => {
                   />
                   <Button text={"인증 하기"} onClick={sendEmailedVerify} />
                   {emailInState ? (
-                    <EmailText>✅ 이메일 인증 완료!</EmailText>
+                    <EmailText color={"green"}>✅ 이메일 인증 완료!</EmailText>
                   ) : (
-                    <></>
+                    <EmailText color={"gray"}>00:00</EmailText>
                   )}
                 </>
               )}

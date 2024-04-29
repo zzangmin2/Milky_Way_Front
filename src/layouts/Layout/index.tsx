@@ -29,7 +29,10 @@ const Layout: FC<Props> = ({ type }) => {
             <FontAwesomeIcon icon={faArrowLeft} />
           )}
 
-          <FontAwesomeIcon icon={faUser} />
+          <FontAwesomeIcon
+            icon={faUser}
+            onClick={() => navigate("/home/myinfo")}
+          />
         </Header>
         <Outlet />
         <BottomNav>
@@ -42,7 +45,7 @@ const Layout: FC<Props> = ({ type }) => {
               <FontAwesomeIcon icon={faPen} />
               <div>스터디 / 프로젝트</div>
             </li>
-            <li>
+            <li onClick={() => navigate("/home/mycareer")}>
               <FontAwesomeIcon icon={faFile} />
               <div>이력서</div>
             </li>

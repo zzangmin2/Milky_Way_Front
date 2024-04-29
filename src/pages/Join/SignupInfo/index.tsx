@@ -11,17 +11,20 @@ import {
 import { sendUserInfo } from "../../../utils/apimodule/member";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import ErrorPage from "../../RoutePage/ErrorPage";
-import { emailSuccesses, compareSuccesses } from "../../../utils/recoil/atom";
+import {
+  emailSuccesses,
+  compareSuccesses,
+  userCompareState,
+} from "../../../utils/recoil/atom";
 
 const SignupInfo = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [dpt, setDpt] = useState("");
   const [number, setNumber] = useState("");
-
-  // 이 부분을 본문(body) 내부로 이동합니다.
+  const userCompare = useSetRecoilState(userCompareState);
   const emailSuccessIn = useRecoilValue(emailSuccesses);
   const compareSuccessIn = useRecoilValue(compareSuccesses);
 
@@ -30,6 +33,7 @@ const SignupInfo = () => {
       const result = await sendUserInfo(name, dpt, number);
       if (result.success) {
         alert(`${name}님! 회원가입이 완료되었습니다.`);
+        userCompare(newValue);
         navigate("/users/login");
       } else {
         throw result;
@@ -40,9 +44,15 @@ const SignupInfo = () => {
     }
   };
 
+  const newValue = {
+    name: name,
+    dpt: dpt,
+    number: number,
+  };
+
   return (
     <>
-      {emailSuccessIn && compareSuccessIn ? (
+      {!(emailSuccessIn && compareSuccessIn) ? (
         <Box>
           <TopSection>
             <ProgressContainer>
