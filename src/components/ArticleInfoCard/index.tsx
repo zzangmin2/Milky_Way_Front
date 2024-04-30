@@ -3,7 +3,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { StudyInfoCardWrap, StudyInfoWrap, StudyStateWrap } from "./styles";
 import MentoTag from "../MentoTag";
 import ArticleTag from "../ArticleTag";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -17,6 +17,7 @@ interface Props {
   articleApply: number;
   articleLikes: number;
   articleEndDay: string;
+  articleRecruitmentState: boolean;
 }
 
 const ArticleInfoCard: FC<Props> = ({
@@ -30,14 +31,24 @@ const ArticleInfoCard: FC<Props> = ({
   articleCurrentApply,
   articleLikes,
   articleEndDay,
+  articleRecruitmentState,
 }) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(articleRecruitmentState);
+    console.log(articleEndDay);
+  }, []);
 
   return (
     <>
       <StudyInfoCardWrap onClick={() => navigate(navigateRoute)}>
         <div style={{ display: "flex" }}>
-          <div className="articlePeriodState"></div>
+          {articleRecruitmentState ? (
+            <div className="articleRecruitmentState articleRecruitmentActive"></div>
+          ) : (
+            <div className="articleRecruitmentState"></div>
+          )}
           {articleType === "study" ? (
             <ArticleTag tagType={"스터디"} />
           ) : (

@@ -6,13 +6,17 @@ export const StudyInfoCardWrap = styled.section`
   padding: 20px 20px 10px 20px;
   cursor: pointer;
 
-  > div > div.articlePeriodState {
+  > div > div.articleRecruitmentState {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: #22ee68;
+    background-color: #a8a8a8;
     margin-right: 10px;
-    margin-top: 5px;
+    margin-top: 6px;
+  }
+
+  > div > div.articleRecruitmentActive {
+    background-color: #22ee68;
   }
 `;
 export const TagWrap = styled.section`

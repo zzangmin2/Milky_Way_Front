@@ -29,7 +29,6 @@ const ArticleDetail = () => {
 
   useEffect(() => {
     loadCurrentArticle();
-    console.log(articleId);
   }, []);
 
   useEffect(() => {
@@ -40,10 +39,8 @@ const ArticleDetail = () => {
     try {
       if (articleId) {
         const result = await viewCurrentArticle(parseInt(articleId));
-        console.log(result);
         if (result) {
           console.log("불러오기 성공!");
-          console.log(result);
           setArticleCurrentState({
             articleId: result.articleId,
             articleMemberId: result.articleMemberId,
@@ -55,6 +52,11 @@ const ArticleDetail = () => {
             articleApplyNow: result.articleApplyNow,
             articleStartDay: result.articleStartDay,
             articleEndDay: result.articleEndDay,
+            articleRecruitmentState:
+              new Date(result.articleEndDay).getTime() - new Date().getTime() >
+              0
+                ? true
+                : false,
             articleMentorNeeded: result.articleMentorNeeded,
             articleMentorTag: result.articleMentorTag,
             articleApplyState: result.articleApplyState,
@@ -78,8 +80,12 @@ const ArticleDetail = () => {
         <ArticleDetailWrap>
           <TopSection>
             <ArticleInfoStateWrap>
-              <div className="articlePeriod">
-                <div className="articlePeriodState"></div>
+              <div className="articleRecruitment">
+                {articleCurrentState.articleRecruitmentState ? (
+                  <div className="articleRecruitmentState articleRecruitmentActive"></div>
+                ) : (
+                  <div className="articleRecruitmentState"></div>
+                )}
 
                 <div>{articleCurrentState.articleEndDay} 까지</div>
               </div>
