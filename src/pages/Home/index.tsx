@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
 import ArticleInfoCard from "../../components/ArticleInfoCard";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { viewArticleList } from "../../utils/apimodule/article";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -35,7 +37,18 @@ const Home = () => {
           </div>
           <div>
             <h3>실시간 인기 스터디 /프로젝트</h3>
-            <ArticleInfoCard cardType="main" navigateRoute="/articledetail/1" />
+            <ArticleInfoCard
+              cardType="main"
+              navigateRoute="/articledetail/1"
+              articleType={""}
+              articleMentorNeeded={false}
+              articleTitle={""}
+              articleCurrentApply={0}
+              articleApply={0}
+              articleLikes={0}
+              articleEndDay={""}
+              articleRecruitmentState={false}
+            />
           </div>
         </BottomSection>
       </Section>

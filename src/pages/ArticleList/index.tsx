@@ -68,6 +68,7 @@ const ArticleList = () => {
       const result = await viewArticleList();
       if (result) {
         setArticleListState(result);
+        console.log(result);
       }
     } catch (error: any) {
       console.log(`다시 시도해주세요: ${error.message}`);
