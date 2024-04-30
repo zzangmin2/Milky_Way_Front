@@ -1,4 +1,5 @@
 import { atom, selector } from "recoil";
+import { Article, CurrentArticle } from "../../typings/db";
 
 interface UserCompareState {
   email: string;
@@ -114,6 +115,7 @@ export const ArticleCurrentState = atom({
     articleMemberId: "",
     //articleMemberName 필요
     articleType: "",
+    articleRecruitmentState: true,
     articleTitle: "",
     articleContent: "",
     articleLikes: "",
@@ -131,5 +133,123 @@ export const ArticleCurrentState = atom({
         status: "",
       },
     ],
+  },
+});
+
+/**
+ * <atom> article 리스트 조회
+ */
+
+export const ArticleListTypeState = atom({
+  key: "articleListTypeState",
+  default: [],
+});
+
+/**
+ * <atom> 현재 리스트 타입 필터링 기준
+ */
+export const ArticleListTypeFilterState = atom({
+  key: "articleListTypeFilterState",
+  default: "all", // "all", "study", "project"
+});
+
+/**
+ * <selector> 리스트 타입에 따라 필터링 된 article 리스트
+ */
+export const filteredArticleListTypeState = selector({
+  key: "filteredArticleListState",
+  get: ({ get }) => {
+    const filter = get(ArticleListTypeFilterState);
+    const list = get(ArticleListTypeState);
+
+    switch (filter) {
+      case "study":
+        return list.filter(
+          (article: Article) => article.articleType === "study"
+        );
+      case "project":
+        return list.filter(
+          (article: Article) => article.articleType === "project"
+        );
+
+      default:
+        return list;
+    }
+  },
+});
+
+/**
+ * <atom> 현재 모집 상태 필터링 기준
+ */
+
+export const ArticleRecruitmentOptionState = atom({
+  key: "articleRecruitmentOptionState",
+  default: "recruting",
+});
+
+/**
+ * <selector> 모집 상태에 따라 필터링된 article리스트
+ */
+
+export const filteredArticleRecruitmentOptionListState = selector({
+  key: "filteredArticleRecruitmentOptionState",
+  get: ({ get }) => {
+    const filter = get(ArticleRecruitmentOptionState);
+    const list = get(filteredArticleListTypeState);
+
+    const currentDate = new Date();
+    switch (filter) {
+      case "all":
+        return list;
+      case "recruting":
+        return list.filter(
+          (article: Article) => new Date(article.articleEndDay) > currentDate
+        );
+      case "recruitmentCompleted":
+        return list.filter(
+          (article: Article) => new Date(article.articleEndDay) < currentDate
+        );
+
+      default:
+        return list;
+    }
+  },
+});
+
+/**
+ * <atom> 최신순/인기순 정렬 방식 기준
+ */
+
+export const ArticleLatestOrPopularOptionState = atom({
+  key: "articleLatestOrPopularOptionState",
+  default: "latest",
+});
+
+/**
+ * <selector> 최신순/인기순 정렬 방식 기준에 따라 재 정렬한 article 리스트
+ */
+export const filteredArticleLatestOrPopularOptionListState = selector({
+  key: "filteredArticleLatestOrPopularOptionListState",
+  get: ({ get }) => {
+    const option = get(ArticleLatestOrPopularOptionState);
+    const list = get(filteredArticleRecruitmentOptionListState);
+    console.log(option);
+
+    switch (option) {
+      case "latest":
+        return list.slice().sort((a: CurrentArticle, b: CurrentArticle) => {
+          const articleEndDayA = new Date(a.articleEndDay);
+          const articleEndDayB = new Date(b.articleEndDay);
+          return articleEndDayB.getTime() - articleEndDayA.getTime();
+        });
+
+      case "popular":
+        return list.slice().sort((a: CurrentArticle, b: CurrentArticle) => {
+          return b.articleLikes - a.articleLikes;
+        });
+
+      default:
+        return list;
+    }
   },
 });
