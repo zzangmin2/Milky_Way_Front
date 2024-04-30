@@ -12,19 +12,40 @@ import ArticleInfoCard from "../../components/ArticleInfoCard";
 import { viewArticleList } from "../../utils/apimodule/article";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  ArticleListFilterState,
-  ArticleListState,
-  filteredArticleListState,
+  ArticleLatestOrPopularOptionState,
+  ArticleListTypeFilterState,
+  ArticleListTypeState,
+  ArticleRecruitmentOptionState,
+  filteredArticleLatestOrPopularOptionListState,
+  filteredArticleRecruitmentOptionListState,
 } from "../../utils/recoil/atom";
 import { useNavigate } from "react-router-dom";
+import { Article, CurrentArticle } from "../../typings/db";
 
 const ArticleList = () => {
-  const setArticleListState = useSetRecoilState(ArticleListState);
+  // article 전체 리스트
+  const setArticleListState = useSetRecoilState(ArticleListTypeState);
+  // article 타입 필터링 기준
   const [articleListFilterState, setArticleListFilterState] = useRecoilState(
-    ArticleListFilterState
+    ArticleListTypeFilterState
   );
 
-  const filteredArticleList = useRecoilValue(filteredArticleListState);
+  //article 모집 상태 필터링 기준 (모집 중/모집 완료)
+  const [recruitmentOptionState, setRecruitmentOptionState] = useRecoilState(
+    ArticleRecruitmentOptionState
+  );
+
+  //article 정렬 방식 기준 (최신순/인기순)
+  const [
+    articleLatestOrPopularOptionState,
+    setArticleLatestOrPopularOptionState,
+  ] = useRecoilState(ArticleLatestOrPopularOptionState);
+
+  //article 타입 + 모집 상태 + 정렬 상태에 따라 필터링 된 리스트
+  const filteredArticleLatestOrPopularOptionList = useRecoilValue(
+    filteredArticleLatestOrPopularOptionListState
+  );
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -86,9 +107,15 @@ const ArticleList = () => {
         </ArticleProjectTypeNavWrap>
 
         <ArticleFilterWrap>
-          <select name="" id="">
-            <option value="">모집 중</option>
-            <option value="">모집 완료</option>
+          <select
+            name=""
+            id=""
+            value={recruitmentOptionState}
+            onChange={(e) => setRecruitmentOptionState(e.target.value)}
+          >
+            <option value="all">전체</option>
+            <option value="recruting">모집 중</option>
+            <option value="recruitmentCompleted">모집 완료</option>
           </select>
 
           <select name="" id="">
@@ -98,30 +125,40 @@ const ArticleList = () => {
         </ArticleFilterWrap>
         <ArticleListWrap>
           <div>
-            <select name="" id="">
-              <option value="">최신순</option>
-              <option value="">인기순</option>
+            <select
+              name=""
+              id=""
+              value={articleLatestOrPopularOptionState}
+              onChange={(e) =>
+                setArticleLatestOrPopularOptionState(e.target.value)
+              }
+            >
+              <option value="latest">최신순</option>
+              <option value="popular">인기순</option>
             </select>
           </div>
           <ArticleAddButton>+</ArticleAddButton>
 
           <ArticleInfoCardWrap>
-            {filteredArticleList &&
-              filteredArticleList?.map((article, idx) => {
-                return (
-                  <ArticleInfoCard
-                    key={idx}
-                    navigateRoute={`/articledetail/${article.articleId}`}
-                    articleType={article.articleType}
-                    articleMentorNeeded={article.articleMentorNeeded}
-                    articleTitle={article.articleTitle}
-                    articleApply={article.articleApply}
-                    articleCurrentApply={article.articleApplyNow}
-                    articleLikes={article.articleLikes}
-                    articleEndDay={article.articlEndDay}
-                  />
-                );
-              })}
+            {filteredArticleLatestOrPopularOptionList &&
+              filteredArticleLatestOrPopularOptionList?.map(
+                (article: CurrentArticle, idx: any) => {
+                  return (
+                    <ArticleInfoCard
+                      key={idx}
+                      navigateRoute={`/articledetail/${article.articleId}`}
+                      articleType={article.articleType}
+                      articleRecruitmentState={article.articleRecruitmentState}
+                      articleMentorNeeded={article.articleMentorNeeded}
+                      articleTitle={article.articleTitle}
+                      articleApply={article.articleApply}
+                      articleCurrentApply={article.articleApplyNow}
+                      articleLikes={article.articleLikes}
+                      articleEndDay={article.articleEndDay}
+                    />
+                  );
+                }
+              )}
           </ArticleInfoCardWrap>
         </ArticleListWrap>
       </ArticleSearchWrap>
