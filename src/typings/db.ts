@@ -5,6 +5,7 @@ export interface Article {
   articleMentorNeeded: boolean;
   articlementorTag: string;
   articleEndDay: string;
+  articleRecruitmentState: boolean;
   articleTitle: string;
   articleContent: string;
 }
