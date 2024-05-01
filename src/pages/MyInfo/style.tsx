@@ -36,33 +36,27 @@ export const InfoTitle = styled.div`
     border-bottom: 0.1px solid gray;
   }
 `;
-
 export const InfoContent = styled.div`
   display: flex;
+  height: 80%;
   flex-direction: row;
   margin: 0 10px;
   border-bottom: 1px solid #f1f1f1;
-  margin-bottom: 20px;
   outline: none;
   width: 100%;
   align-items: center;
   & > div:nth-child(1) {
-    display: flex;
-    flex: 1;
     color: #73819c;
-    font-weight: bold;
+    display: flex;
     align-items: center;
+    font-weight: bold;
+    flex: 1;
   }
   & > div:nth-child(2) {
-    align-items: center;
-    flex: 1;
+    flex-grow: 0.2;
     display: flex;
-    text-align: center;
     & > input {
-      min-height: 14vw;
       border: none;
-    }
-    & > input:focus {
       outline: none;
     }
   }
@@ -71,12 +65,12 @@ export const BottomSection = styled.section`
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: space-beween;
+  align-items: stretch;
+  margin-top: 50px;
 `;
 
 export const InfoNav = styled.nav`
   width: 100%;
-  margin: 0px;
   margin-bottom: 20px;
   & > ul {
     width: 100%;

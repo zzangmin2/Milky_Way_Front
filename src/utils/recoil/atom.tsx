@@ -124,6 +124,17 @@ export const userCareerState = atom<UserCareerState>({
   },
 });
 
+export const userCareerStateValues = selector<UserCareerState>({
+  key: "userCareerValues",
+  get: ({ get }) => {
+    const userCareer = get(userCareerState);
+    return userCareer;
+  },
+  set: ({ set }, newValue: any) => {
+    set(userCompareState, newValue);
+  },
+});
+
 /**
  * 마이페이지 정보조회
  */

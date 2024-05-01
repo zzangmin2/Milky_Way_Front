@@ -83,6 +83,8 @@ const SignupIdCompare = () => {
     password: password,
   };
 
+  console.log(newValue);
+
   return (
     <>
       {!emailSuccessIn ? (

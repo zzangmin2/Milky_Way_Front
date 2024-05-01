@@ -16,12 +16,14 @@ export const TopSection = styled.section`
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin-top: 10px;
 `;
 
 export const MyInfoTitle = styled.section`
-  flex-grow: 0.5;
+  flex-grow: 1;
   display: flex;
   font-weight: bold;
+  margin-bottom: 20px;
   font-size: 20px;
   text-align: left;
   align-items: center;
@@ -68,11 +70,10 @@ export const InfoContentText = styled.div`
 export const BottomSection = styled.section`
   display: flex;
   flex: 0.2;
+  width: 100%;
   align-items: flex-end;
   justify-content: flex-end;
-  marg
-  position: fixed;
-  d & > div:nth-child(1) > div > svg {
+  & > div:nth-child(1) > div > svg {
     font-size: 2rem;
     color: #717171;
     margin-bottom: 5px;

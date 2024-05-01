@@ -32,13 +32,13 @@ const MyInfo = () => {
     try {
       const data: any = await viewMyInfo();
       const result = data.data;
-      const infoValue = {
+      infoValue({
         userName: result.userName,
         userEmail: result.userEmail,
         userNickname: result.userNickname,
         userCareerCard: result.userCareerCard,
         userNumber: result.userNumber,
-      };
+      });
     } catch (error) {
       console.error("error", error);
     }

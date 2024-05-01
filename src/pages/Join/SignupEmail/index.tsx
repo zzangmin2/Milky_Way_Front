@@ -72,6 +72,8 @@ const SignupEmail = () => {
     setUserCompare(defaultUserCompareState);
   }, []);
 
+  console.log(setUserCompare);
+
   const newValue = {
     email: email,
   };
@@ -141,7 +143,7 @@ const SignupEmail = () => {
           </div>
         </TopSection>
         <BottomSection>
-          {emailInState ? (
+          {!emailInState ? (
             <Button text={"다음"} color={"#133488"} onClick={stateUserInfo} />
           ) : (
             <Button text={"다음"} color={"#a8a8a8"} />

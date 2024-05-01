@@ -19,8 +19,10 @@ import { userCareerState } from "../../utils/recoil/atom";
 
 const MyCareer = () => {
   const careerValue = useSetRecoilState(userCareerState);
+
   const { userName, userCareer, userCertificate, userLineText } =
     useRecoilValue(userCareerState);
+
   const [edit, setEdit] = useState(true);
 
   useEffect(() => {
@@ -42,9 +44,11 @@ const MyCareer = () => {
     }
   };
 
-  const toggleEdit = () => {
-    setEdit((prevEdit) => !prevEdit);
+  const clickEdit = () => {
+    setEdit(false);
   };
+
+  console.log(edit);
 
   return (
     <Section>
@@ -60,6 +64,7 @@ const MyCareer = () => {
         </MyInfoContent>
         <MyInfoCareer>
           <InfoContentTitle>경력</InfoContentTitle>
+
           {userCareer.length > 0 ? (
             userCareer.map((career: any) => (
               <InfoContentText key={career.id}>
@@ -71,16 +76,6 @@ const MyCareer = () => {
             <InfoContentText>
               <div>등록된 경력이 없습니다.</div>
             </InfoContentText>
-          )}
-          {edit ? (
-            <></>
-          ) : (
-            <>
-              <label>
-                sef
-                <CareerInput />
-              </label>
-            </>
           )}
         </MyInfoCareer>
         <MyInfocertificate>
@@ -95,13 +90,7 @@ const MyCareer = () => {
           ) : (
             <InfoContentText>등록된 자격증이 없습니다.</InfoContentText>
           )}
-          {edit ? (
-            <></>
-          ) : (
-            <>
-              <CareerInput>asef</CareerInput>
-            </>
-          )}
+          {edit ? <></> : <>{/* <CareerInput>asef</CareerInput> */}</>}
         </MyInfocertificate>
         <MyInfoText>
           <InfoContentTitle>한줄소개</InfoContentTitle>
@@ -109,7 +98,7 @@ const MyCareer = () => {
         </MyInfoText>
       </TopSection>
       <BottomSection>
-        <Button text={"이력서 수정하기"} onClick={() => toggleEdit} />
+        <Button text={"이력서 수정하기"} onClick={clickEdit} />
       </BottomSection>
     </Section>
   );
