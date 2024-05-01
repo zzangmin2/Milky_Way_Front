@@ -35,15 +35,19 @@ export const ArticleInfoStateWrap = styled.div`
     align-items: center;
   }
 
-  > div.articlePeriod > div.articlePeriodState {
+  > div.articleRecruitment > div.articleRecruitmentState {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: #22ee68;
+    background-color: #a8a8a8;
     margin-right: 10px;
   }
 
-  > div.articlePeriod > div:nth-child(2) {
+  > div.articleRecruitment > div.articleRecruitmentActive {
+    background-color: #22ee68;
+  }
+
+  > div.articleRecruitment > div:nth-child(2) {
     font-size: 0.75rem;
     line-height: 0.75rem;
   }

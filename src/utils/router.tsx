@@ -8,13 +8,13 @@ import ErrorPage from "../pages/RoutePage/ErrorPage";
 import MyCareer from "../pages/MyCareer";
 import MyInfo from "../pages/MyInfo";
 
-const Search = lazy(() => import("../pages/ArticleSearch"));
+// const Search = lazy(() => import("../pages/ArticleSearch"));
 const ViewPortPage = lazy(() => import("../layouts/ViewPort"));
 const LayoutPage = lazy(() => import("../layouts/Layout"));
 const LoginPage = lazy(() => import("../pages/LogIn"));
 const HomePage = lazy(() => import("../pages/Home"));
 const ArticleDetailPage = lazy(() => import("../pages/ArticleDetail"));
-const ArticleSearchPage = lazy(() => import("../pages/ArticleSearch"));
+const ArticleListPage = lazy(() => import("../pages/ArticleList"));
 const ArticleRegisterPage = lazy(() => import("../pages/ArticleRegister"));
 
 const router = createBrowserRouter([
@@ -35,9 +35,38 @@ const router = createBrowserRouter([
             path: "",
             element: <HomePage />,
           },
-          { path: "search", element: <Search /> },
+          // { path: "search", element: <Search /> },
           { path: "myinfo", element: <MyInfo /> },
           { path: "mycareer", element: <MyCareer /> },
+          {
+            path: "articlelist",
+            element: <ArticleListPage />,
+            children: [
+              {
+                path: "all",
+                element: <ArticleListPage />,
+              },
+
+              {
+                path: "study",
+                element: <ArticleListPage />,
+              },
+              {
+                path: "project",
+                element: <ArticleListPage />,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "/articledetail/:articleId",
+        element: <LayoutPage type={"prev"} />,
+        children: [
+          {
+            path: "",
+            element: <ArticleDetailPage />,
+          },
         ],
       },
       {
