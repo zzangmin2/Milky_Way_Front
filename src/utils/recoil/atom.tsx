@@ -2,13 +2,40 @@ import { atom, selector } from "recoil";
 import { Article, CurrentArticle } from "../../typings/db";
 
 interface UserCompareState {
-  email: string;
-  id: string;
-  password: string;
-  name: string;
-  dpt: string;
-  number: string;
+  email?: string;
+  id?: string;
+  password?: string;
+  name?: string;
+  dpt?: string;
+  number?: string;
 }
+
+interface UserCareerState {
+  userName?: any;
+  userCareer?: any;
+  userCertificate?: any;
+  userLineText?: any;
+}
+
+/**
+ * signupemail -> signupcompare state상태
+ * @type {boolean}
+ */
+
+export const emailSuccesses = atom<boolean>({
+  key: "emailSuccessIn",
+  default: false,
+});
+
+/**
+ * signupcompare -> signupinfo state상태
+ * @type {boolean}
+ */
+
+export const compareSuccesses = atom<boolean>({
+  key: "compareSuccessIn",
+  default: false,
+});
 
 /**
  * sendLogin 성공시 로그인 유저네임 저장
@@ -82,6 +109,44 @@ export const userCompareValues = selector<UserCompareState>({
   },
   set: ({ set }, newValue) => {
     set(userCompareState, newValue);
+  },
+});
+
+/**
+ * 이력서페이지 정보조회
+ */
+export const userCareerState = atom<UserCareerState>({
+  key: "userCareerState",
+  default: {
+    userName: "",
+    userCareer: [],
+    userCertificate: [],
+    userLineText: "",
+  },
+});
+
+export const userCareerStateValues = selector<UserCareerState>({
+  key: "userCareerValues",
+  get: ({ get }) => {
+    const userCareer = get(userCareerState);
+    return userCareer;
+  },
+  set: ({ set }, newValue: any) => {
+    set(userCompareState, newValue);
+  },
+});
+
+/**
+ * 마이페이지 정보조회
+ */
+export const userInfoState = atom<any>({
+  key: "userInfoState",
+  default: {
+    userName: "",
+    userEmail: "",
+    userNickName: "",
+    userCareerCard: "",
+    userNumber: "",
   },
 });
 
