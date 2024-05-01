@@ -21,6 +21,7 @@ const api = axios.create({
 // api.interceptors.request.use((config) => {
 //   if (!localStorage.getItem("access_token")) {
 //     config.url = "http://localhost:5173/users/login";
+
 //   }
 //   return config;
 // });
@@ -29,6 +30,7 @@ const api = axios.create({
  * 응답 인터셉터
  * refresh token을 사용하여 새로운 access token을 요청 재시도 (클라이언트에는 refresh_token 저장 x)
  */
+
 // api.interceptors.response.use(
 //   (response) => {
 //     return response;

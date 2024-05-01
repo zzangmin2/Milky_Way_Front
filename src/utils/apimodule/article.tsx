@@ -1,24 +1,7 @@
 import { useSetRecoilState } from "recoil";
 import api from "../api/axiosInstance";
 import { ArticleCurrentState, isLoggedInUserName } from "../recoil/atom";
-
-interface Article {
-  articleMemberId: string;
-  articleType: string;
-  articleApply: number;
-  articleMentorNeeded: boolean;
-  articlementorTag: string;
-  articleEndDay: string;
-  articleTitle: string;
-  articleContent: string;
-}
-
-interface CurrentArticle extends Article {
-  articleLikes: number;
-  articleApplyNow: number;
-  articleStartDay: string;
-  articleId: number;
-}
+import { Article } from "../../typings/db";
 
 /**
  * articleRegister 에서 작성자, article유형, 모집인원, 멘토필요 여부, 멘토 태그?, 모집 시작 날, 모집 끝나는 날, article 제목, article 내용 넘기기
@@ -72,7 +55,21 @@ const viewCurrentArticle = async (articleId: number) => {
       `http://localhost:3000/currentArticle?articleId=${articleId}`
     );
     if (response.data) {
-      return response.data[0]; // response.data가 배열 형태 -> 객체로 바꾸기
+      return response.data[0];
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+const viewArticleList = async () => {
+  try {
+    const response = await api.get(`http://localhost:3000/currentArticle`);
+    if (response.data) {
+      return response.data;
     } else {
       return { success: false };
     }
