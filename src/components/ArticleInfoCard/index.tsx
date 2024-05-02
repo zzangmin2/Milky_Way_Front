@@ -10,7 +10,7 @@ interface Props {
   cardType?: string;
   navigateRoute: string;
   articleType: string;
-  articleMentorNeeded: boolean;
+  articleMentorNeeded: boolean | string;
   articleTitle: string;
   articleContent?: string;
   articleCurrentApply: number;
