@@ -13,11 +13,7 @@
       "articleStartDay": "2024-03-02",
       "articleEndDay": "2024-04-29",
       "articleMentorNeeded": true,
-      "articleMentorTag": [
-        "열정적인",
-        "잘 도와주는",
-        "멋진"
-      ],
+      "articleMentorTag": "열정적인#잘 도와주는#멋진",
       "articleApplyState": [
         {
           "id": 1,
@@ -53,11 +49,7 @@
       "articleStartDay": "2024-03-06",
       "articleEndDay": "2024-05-02",
       "articleMentorNeeded": true,
-      "articleMentorTag": [
-        "열정적인",
-        "잘 도와주는",
-        "멋진"
-      ],
+      "articleMentorTag": "열정적인#잘 도와주는#멋진",
       "id": "228c"
     },
     {
@@ -65,15 +57,11 @@
       "articleType": "study",
       "articleApply": "2",
       "articleMentorNeeded": "yes",
-      "articleMentorTag": [
-        "#sfesef",
-        "#sefsefd",
-        "#sfesefd"
-      ],
+      "articleMentorTag": "열정적인#잘 도와주는#멋진",
       "articleEndDay": "2024-05-03",
       "articleTitle": "sefsfe",
       "articleContent": "sedfsefsfed",
-      "articleId": 11,
+      "articleId": 18,
       "articleRecruitmentState": true
     },
     {
@@ -95,12 +83,40 @@
       "articleType": "study",
       "articleApply": "4",
       "articleMentorNeeded": true,
-      "articleMentorTag": [],
+      "articleMentorTag": "열정적인#잘 도와주는#멋진",
       "articleEndDay": "2024-05-03",
       "articleTitle": "wfewefs",
       "articleContent": "efwsefwsewfefwefw",
       "articleApplyNow": 0,
-      "articleId": 11,
+      "articleId": 19,
+      "articleRecruitmentState": true,
+      "articleLikes": 0
+    },
+    {
+      "id": "78f1",
+      "articleType": "study",
+      "articleApply": "4",
+      "articleMentorNeeded": true,
+      "articleMentorTag": "#few#efwef#efwfews#dsefe#ewfgreg#refsef#efw#essfde#efews#efw#ewffeef#fee#fwf#fsewf#sedfes#sfew#awefaweffwefa#rgvaerga#aerger#sareg#ege#rdfgvar#greag",
+      "articleEndDay": "2024-05-04",
+      "articleTitle": "이거다이거",
+      "articleContent": "ergreagaergearggerergarsd",
+      "articleApplyNow": 0,
+      "articleId": 16,
+      "articleRecruitmentState": true,
+      "articleLikes": 0
+    },
+    {
+      "id": "51b5",
+      "articleType": "project",
+      "articleApply": "5",
+      "articleMentorNeeded": false,
+      "articleMentorTag": "",
+      "articleEndDay": "2024-05-09",
+      "articleTitle": "이거이거이거",
+      "articleContent": "이거이거이거이거",
+      "articleApplyNow": 0,
+      "articleId": 20,
       "articleRecruitmentState": true,
       "articleLikes": 0
     }

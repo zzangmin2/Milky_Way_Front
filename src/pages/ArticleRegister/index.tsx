@@ -27,7 +27,7 @@ const ArticleRegister = () => {
   // const userName: any = useSetRecoilState(isLoggedInUserName);
 
   const [articleMentorTag, setArticleMentorTag] = useState<string>();
-  const [articleMentorTagArr, setArticleMentorTagArr] = useState<string[]>([]);
+  const [articleMentorTagArr, setArticleMentorTagArr] = useState<string>("");
   const navigate = useNavigate();
 
   // 멘토 취향 버튼 눌렀을 때 실행 함수
@@ -36,10 +36,10 @@ const ArticleRegister = () => {
 
     if (articleMentorTag) {
       // 기존 멘토타입arr에서 멘토 타입 추가하기
-      const updatedTagArr = [...articleMentorTagArr, `#${articleMentorTag}`];
-      setArticleMentorTagArr(updatedTagArr);
+      setArticleMentorTagArr(articleMentorTagArr + `#${articleMentorTag}`);
+      console.log(articleMentorTagArr);
 
-      setValue("articleMentorTag", updatedTagArr);
+      setValue("articleMentorTag", articleMentorTagArr);
       setArticleMentorTag("");
     }
   };
@@ -53,8 +53,9 @@ const ArticleRegister = () => {
         articleLikes: 0,
         articleId: 11,
         articleRecruitmentState: true,
+        articleStartDay: new Date().toISOString(),
         articleApplyNow: 0,
-        articleMentorNeeded: "yes" ? true : false,
+        articleMentorNeeded: articleMentorNeeded === "yes" ? true : false,
       });
 
       if (result.success) {
@@ -181,9 +182,10 @@ const ArticleRegister = () => {
                   </button>
                 </div>
                 <div className="mentorTagWrap">
-                  {articleMentorTagArr.map((tag, index) => {
-                    return <div key={index}>{tag}</div>;
-                  })}
+                  {articleMentorTagArr.length >= 1 &&
+                    articleMentorTagArr.split("#").map((tag, index) => {
+                      return <div key={index}>{tag}</div>;
+                    })}
                 </div>
               </ArticleTypeSelectWrap>
             </ArticleTypeSelectWrap>
