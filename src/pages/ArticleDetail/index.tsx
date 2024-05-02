@@ -139,7 +139,7 @@ const ArticleDetail = () => {
           </ArticleDetailPageNavWrap>
           <ArticleIntrowrap>
             <p>우리에게 필요한 멘토는?</p>
-            <div>
+            <div className="mentorTagWrapper">
               {articleCurrentState.articleMentorTag
                 ? articleCurrentState.articleMentorTag.map((tag, idx) => {
                     return <p key={idx}>#{tag}</p>;
