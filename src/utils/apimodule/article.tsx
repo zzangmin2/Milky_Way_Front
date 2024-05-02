@@ -109,4 +109,4 @@ const viewMyCareer = async () => {
   }
 };
 
-export { sendNewArticle, viewCurrentArticle, viewMyInfo, viewMyCareer };
+export { sendNewArticle, viewCurrentArticle, viewArticleList, viewMyInfo, viewMyCareer };
