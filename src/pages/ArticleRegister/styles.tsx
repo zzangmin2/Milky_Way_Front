@@ -77,14 +77,15 @@ export const ArticleTypeSelectWrap = styled.div`
     width: 100%;
     display: flex;
     margin-top: 10px;
-    overflow-x: auto;
+    /* overflow-x: auto; */
+    flex-wrap: wrap;
 
     > div {
       padding: 5px 7px;
       background-color: #f8f8f8;
       color: #676767;
       font-size: 0.75rem;
-      margin-right: 5px;
+      margin: 0 5px 5px 0;
       border-radius: 10px;
     }
   }
