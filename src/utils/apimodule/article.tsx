@@ -21,28 +21,26 @@ const sendNewArticle = async (newArticleData: Article) => {
     articleType,
     articleApply,
     articleMentorNeeded,
-    articlementorTag,
+    articleMentorTag,
+    articleStartDay,
     articleEndDay,
     articleTitle,
     articleContent,
   } = newArticleData;
   try {
-    const response = await api.post("http://localhost:3000/currentArticle", {
+    await api.post("http://localhost:3000/currentArticle", {
       articleMemberId: articleMemberId,
       articleType: articleType,
       articleApply: articleApply,
       findMentor: articleMentorNeeded,
-      mentorTag: articlementorTag,
+      articleMentorTag: articleMentorTag,
+      articleStartDay: articleStartDay,
       articleEndDay: articleEndDay,
       articleTitle: articleTitle,
       articleContent: articleContent,
     });
 
-    if (response.data.success) {
-      return { success: true };
-    } else {
-      return { success: false };
-    }
+    return { success: true };
   } catch (error) {
     console.error("error:", error);
     return { success: false, error: "error" };
@@ -79,4 +77,34 @@ const viewArticleList = async () => {
   }
 };
 
-export { sendNewArticle, viewCurrentArticle, viewArticleList };
+const viewMyInfo = async () => {
+  try {
+    const response = await api.get(`http://localhost:3000/memberInfo`);
+    const data = response.data[0];
+    if (response.data) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+const viewMyCareer = async () => {
+  try {
+    const response = await api.get(`http://localhost:3000/memberCareer`);
+    const data = response.data[0];
+    if (response.data) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+export { sendNewArticle, viewCurrentArticle, viewArticleList, viewMyInfo, viewMyCareer };

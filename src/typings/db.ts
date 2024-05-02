@@ -3,9 +3,9 @@ export interface Article {
   articleType: string;
   articleApply: number;
   articleMentorNeeded: boolean;
-  articlementorTag: string;
+  articleMentorTag: Array<string>;
+  articleStartDay: string;
   articleEndDay: string;
-  articleRecruitmentState: boolean;
   articleTitle: string;
   articleContent: string;
 }
@@ -13,13 +13,13 @@ export interface Article {
 export interface CurrentArticle extends Article {
   articleLikes: number;
   articleApplyNow: number;
-  articleStartDay: string;
   articleId: number;
+  articleRecruitmentState: boolean;
   articleApplyState: [
     {
       id: number;
       applicantName: string;
-      applicationDate: string;
+      applicationDate: Date;
       status: string;
     }
   ];
