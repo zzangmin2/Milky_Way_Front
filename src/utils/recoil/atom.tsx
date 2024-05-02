@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import { Article, CurrentArticle } from "../../typings/db";
+import { Article } from "../../typings/db";
 
 interface UserCompareState {
   email?: string;
@@ -153,24 +153,6 @@ export const userInfoState = atom<any>({
 //스터디 게시물
 
 /**
- * <atom> article 등록
- */
-
-export const ArticleRegisterState = atom({
-  key: "articleRegisterState",
-  default: {
-    articleType: "",
-    articleApply: 0,
-    findMentor: false,
-    mentorTag: "",
-    articleStartDay: "",
-    articleEndDay: "",
-    articleTitle: "",
-    articleContent: "",
-  },
-});
-
-/**
  * <atom> article 상세 조회
  */
 export const ArticleCurrentState = atom({
@@ -302,14 +284,14 @@ export const filteredArticleLatestOrPopularOptionListState = selector({
 
     switch (option) {
       case "latest":
-        return list.slice().sort((a: CurrentArticle, b: CurrentArticle) => {
+        return list.slice().sort((a: Article, b: Article) => {
           const articleEndDayA = new Date(a.articleEndDay);
           const articleEndDayB = new Date(b.articleEndDay);
-          return articleEndDayB.getTime() - articleEndDayA.getTime();
+          return articleEndDayA.getTime() - articleEndDayB.getTime();
         });
 
       case "popular":
-        return list.slice().sort((a: CurrentArticle, b: CurrentArticle) => {
+        return list.slice().sort((a: Article, b: Article) => {
           return b.articleLikes - a.articleLikes;
         });
 
