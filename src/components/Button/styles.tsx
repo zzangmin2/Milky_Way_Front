@@ -8,6 +8,7 @@ export const StyledButton = styled.button`
   font-weight: bold;
   border: none;
   border-radius: 10px;
-  background-color: ${(props) => props.color || "#133488"};
+  /* background-color: ${(props) => props.color || "#133488"}; */
+  background-color: ${(props) => props.color};
   color: #fff;
 `;
