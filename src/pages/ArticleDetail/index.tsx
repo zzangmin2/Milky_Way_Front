@@ -140,11 +140,12 @@ const ArticleDetail = () => {
           <ArticleIntrowrap>
             <p>우리에게 필요한 멘토는?</p>
             <div>
-              {articleCurrentState.articleMentorTag
-                ? articleCurrentState.articleMentorTag.map((tag, idx) => {
+              {articleCurrentState.articleMentorTag.length >= 1 &&
+                articleCurrentState.articleMentorTag
+                  .split("#")
+                  .map((tag, idx) => {
                     return <p key={idx}>#{tag}</p>;
-                  })
-                : ""}
+                  })}
             </div>
             <p>{articleCurrentState.articleContent}</p>
           </ArticleIntrowrap>

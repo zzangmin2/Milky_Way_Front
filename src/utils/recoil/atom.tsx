@@ -171,7 +171,7 @@ export const ArticleCurrentState = atom({
     articleStartDay: "",
     articleEndDay: "",
     articleMentorNeeded: false,
-    articleMentorTag: [],
+    articleMentorTag: "",
     articleApplyState: [
       {
         id: 0,
