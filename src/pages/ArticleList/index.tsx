@@ -45,7 +45,6 @@ const ArticleList = () => {
   const filteredArticleLatestOrPopularOptionList = useRecoilValue(
     filteredArticleLatestOrPopularOptionListState
   );
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -138,7 +137,9 @@ const ArticleList = () => {
               <option value="popular">인기순</option>
             </select>
           </div>
-          <ArticleAddButton>+</ArticleAddButton>
+          <ArticleAddButton onClick={() => navigate("/articleregister")}>
+            +
+          </ArticleAddButton>
 
           <ArticleInfoCardWrap>
             {filteredArticleLatestOrPopularOptionList &&
