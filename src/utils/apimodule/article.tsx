@@ -26,18 +26,26 @@ const sendNewArticle = async (newArticleData: Article) => {
     articleEndDay,
     articleTitle,
     articleContent,
+    articleApplyNow,
+    articleId,
+    articleRecruitmentState,
+    articleLikes,
   } = newArticleData;
   try {
     await api.post("http://localhost:3000/currentArticle", {
       articleMemberId: articleMemberId,
       articleType: articleType,
       articleApply: articleApply,
-      findMentor: articleMentorNeeded,
+      articleMentorNeeded: articleMentorNeeded,
       articleMentorTag: articleMentorTag,
       articleStartDay: articleStartDay,
       articleEndDay: articleEndDay,
       articleTitle: articleTitle,
       articleContent: articleContent,
+      articleApplyNow: articleApplyNow,
+      articleId: articleId,
+      articleRecruitmentState: articleRecruitmentState,
+      articleLikes: articleLikes,
     });
 
     return { success: true };
@@ -107,4 +115,10 @@ const viewMyCareer = async () => {
   }
 };
 
-export { sendNewArticle, viewCurrentArticle, viewArticleList, viewMyInfo, viewMyCareer };
+export {
+  sendNewArticle,
+  viewCurrentArticle,
+  viewArticleList,
+  viewMyInfo,
+  viewMyCareer,
+};

@@ -8,7 +8,7 @@ import ErrorPage from "../pages/RoutePage/ErrorPage";
 import MyCareer from "../pages/MyCareer";
 import MyInfo from "../pages/MyInfo";
 
-const Search = lazy(() => import("../pages/ArticleSearch"));
+// const Search = lazy(() => import("../pages/ArticleSearch"));
 const ViewPortPage = lazy(() => import("../layouts/ViewPort"));
 const LayoutPage = lazy(() => import("../layouts/Layout"));
 const LoginPage = lazy(() => import("../pages/LogIn"));
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
             path: "",
             element: <HomePage />,
           },
-          { path: "search", element: <Search /> },
+          // { path: "search", element: <Search /> },
           { path: "myinfo", element: <MyInfo /> },
           { path: "mycareer", element: <MyCareer /> },
           {
