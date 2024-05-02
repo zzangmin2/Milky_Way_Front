@@ -9,7 +9,8 @@ import {
   MyInfoText,
   InfoContentTitle,
   InfoContentText,
-  CareerInput,
+  Input,
+  FirstInfoContentTitle,
 } from "./style";
 import Button from "../../components/Button";
 import { useState, useEffect } from "react";
@@ -48,7 +49,34 @@ const MyCareer = () => {
     setEdit(false);
   };
 
-  console.log(edit);
+  const addCareerInput = () => {
+    careerValue((prev) => ({
+      ...prev,
+      userCareer: [
+        ...prev.userCareer,
+        {
+          id: prev.userCareer.length + 1,
+          careerCompany: "",
+          careerDate: "",
+        },
+      ],
+    }));
+  };
+
+  const addCertificateInput = () => {
+    // Recoil 상태를 업데이트하여 새로운 자격증 입력란을 추가합니다.
+    careerValue((prev) => ({
+      ...prev,
+      userCertificate: [
+        ...prev.userCertificate,
+        {
+          id: prev.userCertificate.length + 1,
+          certificateName: "",
+          certificateDate: "",
+        },
+      ],
+    }));
+  };
 
   return (
     <Section>
@@ -57,43 +85,90 @@ const MyCareer = () => {
           <div>이력서</div>
         </MyInfoTitle>
         <MyInfoContent>
-          <InfoContentTitle>{userName}@ktg5679</InfoContentTitle>
+          <FirstInfoContentTitle>{userName}@ktg5679</FirstInfoContentTitle>
           <div>대림대학교</div>
           <div>컴퓨터정보학부</div>
           <div>010-2992-5679</div>
         </MyInfoContent>
         <MyInfoCareer>
-          <InfoContentTitle>경력</InfoContentTitle>
-
-          {userCareer.length > 0 ? (
-            userCareer.map((career: any) => (
-              <InfoContentText key={career.id}>
-                <div>{career.careerCompany}</div>
-                <div>{career.careerDate}</div>
-              </InfoContentText>
-            ))
+          {edit ? (
+            <>
+              <InfoContentTitle>
+                <p>경력</p>
+              </InfoContentTitle>
+              {userCareer.length > 0 ? (
+                userCareer.map((career: any) => (
+                  <InfoContentText key={career.id}>
+                    <div>{career.careerCompany}</div>
+                    <div>{career.careerDate}</div>
+                  </InfoContentText>
+                ))
+              ) : (
+                <InfoContentText>
+                  <div>등록된 경력이 없습니다.</div>
+                </InfoContentText>
+              )}
+            </>
           ) : (
-            <InfoContentText>
-              <div>등록된 경력이 없습니다.</div>
-            </InfoContentText>
+            <>
+              <InfoContentTitle>
+                <p>경력</p>
+                <p onClick={addCareerInput}>+</p>
+              </InfoContentTitle>
+              {userCareer.map((career: any) => (
+                <Input key={career.id}>
+                  <input type="text" placeholder={career.careerCompany}></input>
+                  <input type="text" placeholder={career.careerDate}></input>
+                </Input>
+              ))}
+            </>
           )}
         </MyInfoCareer>
+
         <MyInfocertificate>
-          <InfoContentTitle>자격증</InfoContentTitle>
-          {userCertificate.length > 0 ? (
-            userCertificate.map((certificate: any) => (
-              <InfoContentText key={certificate.id}>
-                <div>{certificate.certificateName}</div>
-                <div>{certificate.certificateDate}</div>
-              </InfoContentText>
-            ))
+          {edit ? (
+            <>
+              <InfoContentTitle>
+                <p>자격증</p>
+              </InfoContentTitle>
+
+              {userCertificate.length > 0 ? (
+                userCertificate.map((certificate: any) => (
+                  <InfoContentText key={certificate.id}>
+                    <div>{certificate.certificateName}</div>
+                    <div>{certificate.certificateDate}</div>
+                  </InfoContentText>
+                ))
+              ) : (
+                <InfoContentText>등록된 자격증이 없습니다.</InfoContentText>
+              )}
+            </>
           ) : (
-            <InfoContentText>등록된 자격증이 없습니다.</InfoContentText>
+            <>
+              <InfoContentTitle>
+                <p>자격증</p>
+                <p onClick={addCertificateInput}>+</p>
+              </InfoContentTitle>
+              {userCertificate.map((certificate: any) => (
+                <Input key={certificate.id}>
+                  <input
+                    type="text"
+                    placeholder={certificate.certificateName}
+                  ></input>
+                  <input
+                    type="date"
+                    placeholder={certificate.certificateDate}
+                  ></input>
+                </Input>
+              ))}
+            </>
           )}
-          {edit ? <></> : <>{/* <CareerInput>asef</CareerInput> */}</>}
         </MyInfocertificate>
+
         <MyInfoText>
-          <InfoContentTitle>한줄소개</InfoContentTitle>
+          <InfoContentTitle>
+            <p>한줄소개</p>
+          </InfoContentTitle>
           <InfoContentText>{userLineText}</InfoContentText>
         </MyInfoText>
       </TopSection>
