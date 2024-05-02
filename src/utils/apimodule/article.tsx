@@ -77,4 +77,34 @@ const viewArticleList = async () => {
   }
 };
 
-export { sendNewArticle, viewCurrentArticle, viewArticleList };
+const viewMyInfo = async () => {
+  try {
+    const response = await api.get(`http://localhost:3000/memberInfo`);
+    const data = response.data[0];
+    if (response.data) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+const viewMyCareer = async () => {
+  try {
+    const response = await api.get(`http://localhost:3000/memberCareer`);
+    const data = response.data[0];
+    if (response.data) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+export { sendNewArticle, viewCurrentArticle, viewArticleList, viewMyInfo, viewMyCareer };

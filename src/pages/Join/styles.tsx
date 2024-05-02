@@ -19,10 +19,6 @@ export const Input = styled.input`
   font-weight: lighter;
   margin-top: 30px;
   outline: none;
-  & > div > input:focus {
-    border: 1px solid #717171;
-    background-color: #fff;
-  }
 `;
 
 export const TopSection = styled.section`
@@ -45,19 +41,22 @@ export const TopSection = styled.section`
     font-size: 18px;
     margin-bottom: 20%;
   }
+  & > div > p {
+    font-weight: bold;
+    line-height: 20px;
+    font-size: 18px;
+    margin-bottom: 20%;
+  }
   & > div:nth-child(2) {
     font-weight: bold;
     width: 100%;
     justify-content: flex-start;
     display: flex;
-    /* margin-left: 40px; */
   }
   & > div:nth-child(3) {
     justify-content: center;
     flex-direction: column;
     display: flex;
-  }
-  & > div:nth-child(4) {
   }
 `;
 
@@ -71,6 +70,14 @@ export const ProgressContainer = styled.div`
     width: 100%;
     height: 3px;
   }
+`;
+
+export const EmailText = styled.div`
+  // position: relative;
+  font-size: 15px;
+  padding: 2px;
+  color: ${(props) => props.color || "green"};
+  margin-top: -10px;
 `;
 
 export const ProgressBar = styled.div<{ value: number; max: number }>`

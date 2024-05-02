@@ -35,7 +35,10 @@ const Layout: FC<Props> = ({ type }) => {
             <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)} />
           )}
 
-          <FontAwesomeIcon icon={faUser} />
+          <FontAwesomeIcon
+            icon={faUser}
+            onClick={() => navigate("/home/myinfo")}
+          />
         </Header>
         <Outlet />
         <BottomNav>
@@ -60,7 +63,13 @@ const Layout: FC<Props> = ({ type }) => {
               <FontAwesomeIcon icon={faPen} />
               <div>스터디 / 프로젝트 찾기</div>
             </li>
-            <li>
+            <li
+              className={activePage === "career" ? "activePage" : ""}
+              onClick={() => {
+                navigate("/home/mycareer");
+                handlePageClick("career");
+              }}
+            >
               <FontAwesomeIcon icon={faFile} />
               <div>이력서</div>
             </li>

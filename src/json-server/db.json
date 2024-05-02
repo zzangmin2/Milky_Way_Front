@@ -48,23 +48,83 @@
       "articleApplyNow": 1,
       "articleStartDay": "2024-03-06",
       "articleEndDay": "2024-05-02",
-      "articleMentorNeeded": true,
-      "articleMentorTag": ["열정적인", "잘 도와주는", "멋진"]
+      "articleMentorNeeded": false,
+      "articleMentorTag": ["열정적인", "잘 도와주는", "멋진"],
+      "id": "228c"
     },
     {
-      "articleId": 3,
-      "articleMemberId": "user",
+      "id": "ace5",
+      "articleMemberId": "userName",
       "articleType": "project",
-      "articleRecruitmentState": false,
-      "articleTitle": "[fwe] 스터디원 모집합니다.",
-      "articleContent": "안녕하십니까 !\n 컴퓨터정보학부 200030001 홍길동입니다. 취업 준비를 위한 토익스터디를 진행하려고 합니다. \n목표 점수는 800점이며, 매주 화요일, 목요일 오후 6시부터 8시까지 전산관에서 스터디를 진행하고자 합니다. \n 관심 있으신 분들은 신청바라며, 추가적으로 궁금하신 사항이 있으시다면 Q&A 게시판에 남겨주시기 바랍니다. \n",
-      "articleLikes": 45,
-      "articleApply": 6,
-      "articleApplyNow": 1,
-      "articleStartDay": "2024-03-06",
-      "articleEndDay": "2024-04-06",
-      "articleMentorNeeded": true,
-      "articleMentorTag": ["열정적인", "잘 도와주는", "멋진"]
+      "articleApply": 8,
+      "findMentor": false,
+      "mentorTag": "",
+      "articleEndDay": "2024-04-03",
+      "articleTitle": "ㄴㄷㄹ",
+      "articleContent": "ㄴㄷㄹ"
+    },
+    {
+      "id": "1819",
+      "articleMemberId": "userName",
+      "articleType": "project",
+      "articleApply": 8,
+      "findMentor": false,
+      "mentorTag": "",
+      "articleEndDay": "2024-04-03",
+      "articleTitle": "ㄴㄷㄹ",
+      "articleContent": "ㄴㄷㄹ"
+    },
+    {
+      "id": "d210",
+      "articleMemberId": "userName",
+      "articleType": "project",
+      "articleApply": 8,
+      "findMentor": false,
+      "mentorTag": "",
+      "articleEndDay": "2024-04-03",
+      "articleTitle": "ㄴㄷㄹ",
+      "articleContent": "ㄴㄷㄹ"
+    }
+  ],
+  "memberInfo": [
+    {
+      "userName": "홍길동",
+      "userEmail": "ktg5679@gmail.com",
+      "userNickName": "ktg5670",
+      "userCareerCard": "ktg567923",
+      "userNumber": "01029925679",
+      "id": "d1b3"
+    }
+  ],
+  "memberCareer": [
+    {
+      "userName": "김태겸",
+      "userCareer": [
+        {
+          "id": 1,
+          "careerCompany": "이차돌",
+          "careerDate": "2020-03-23~"
+        },
+        {
+          "id": 2,
+          "careerCompany": "흑돈",
+          "careerDate": "2020-03-23~"
+        }
+      ],
+      "userCertificate": [
+        {
+          "id": 1,
+          "certificateName": "정보처리기사",
+          "certificateDate": "2020-03-26"
+        },
+        {
+          "id": 2,
+          "certificateName": "sqld",
+          "certificateDate": "2020-03-29"
+        }
+      ],
+      "userLineText": "hesajkfhsagjnberanfjcnwajea rnjkwe"
+
     }
   ]
 }

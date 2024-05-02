@@ -11,4 +11,7 @@ export const StyledButton = styled.button`
   /* background-color: ${(props) => props.color || "#133488"}; */
   background-color: ${(props) => props.color};
   color: #fff;
+  &:focus {
+    outline: none;
+  }
 `;

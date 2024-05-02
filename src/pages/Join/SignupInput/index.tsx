@@ -1,5 +1,4 @@
-import { FC, useEffect } from "react";
-import useInput from "../../../hooks/useInput";
+import { FC, ChangeEvent } from "react";
 import { StyledInput } from "./styles";
 
 interface Props {
@@ -7,20 +6,24 @@ interface Props {
   type?: string;
   name?: string;
   onChange?: any;
+  value?: string;
+  setValue?: ((value: string) => void | undefined) | undefined;
   children?: React.ReactNode;
+  disable?: boolean;
 }
 
-const SignupInput: FC<Props> = ({ type, placeholder, name }) => {
-  const [value, onChange, setValue] = useInput("");
-
-  useEffect(() => {
-    if (!type) {
-      type = "text";
+const SignupInput: FC<Props> = ({
+  type = "text",
+  placeholder,
+  name,
+  disable,
+  value,
+  setValue,
+}) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (setValue) {
+      setValue(e.target.value);
     }
-  }, []);
-
-  const handleChange = (e: any) => {
-    setValue(e.target.value);
   };
 
   return (
@@ -31,7 +34,8 @@ const SignupInput: FC<Props> = ({ type, placeholder, name }) => {
         onChange={handleChange}
         value={value}
         name={name}
-      />
+        disabled={disable}
+      ></StyledInput>
     </>
   );
 };
