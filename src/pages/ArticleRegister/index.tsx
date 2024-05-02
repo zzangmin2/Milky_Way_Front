@@ -50,6 +50,11 @@ const ArticleRegister = () => {
       const result = await sendNewArticle({
         ...data,
         articleMentorTag: articleMentorTagArr,
+        articleLikes: 0,
+        articleId: 11,
+        articleRecruitmentState: true,
+        articleApplyNow: 0,
+        articleMentorNeeded: "yes" ? true : false,
       });
 
       if (result.success) {

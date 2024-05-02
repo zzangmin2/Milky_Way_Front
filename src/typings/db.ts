@@ -2,15 +2,12 @@ export interface Article {
   articleMemberId: string;
   articleType: string;
   articleApply: number;
-  articleMentorNeeded: boolean;
+  articleMentorNeeded: boolean | string;
   articleMentorTag: Array<string>;
   articleStartDay: string;
   articleEndDay: string;
   articleTitle: string;
   articleContent: string;
-}
-
-export interface CurrentArticle extends Article {
   articleLikes: number;
   articleApplyNow: number;
   articleId: number;

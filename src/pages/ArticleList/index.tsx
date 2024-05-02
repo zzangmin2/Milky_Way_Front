@@ -17,10 +17,9 @@ import {
   ArticleListTypeState,
   ArticleRecruitmentOptionState,
   filteredArticleLatestOrPopularOptionListState,
-  filteredArticleRecruitmentOptionListState,
 } from "../../utils/recoil/atom";
 import { useNavigate } from "react-router-dom";
-import { Article, CurrentArticle } from "../../typings/db";
+import { Article } from "../../typings/db";
 
 const ArticleList = () => {
   // article 전체 리스트
@@ -144,7 +143,7 @@ const ArticleList = () => {
           <ArticleInfoCardWrap>
             {filteredArticleLatestOrPopularOptionList &&
               filteredArticleLatestOrPopularOptionList?.map(
-                (article: CurrentArticle, idx: any) => {
+                (article: Article, idx: any) => {
                   return (
                     <ArticleInfoCard
                       key={idx}
