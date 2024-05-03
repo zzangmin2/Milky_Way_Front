@@ -34,8 +34,6 @@ const router = createBrowserRouter([
             path: "",
             element: <HomePage />,
           },
-          { path: "myinfo", element: <MyInfo /> },
-          { path: "mycareer", element: <MyCareer /> },
           {
             path: "articlelist",
             element: <ArticleListPage />,
@@ -44,7 +42,6 @@ const router = createBrowserRouter([
                 path: "all",
                 element: <ArticleListPage />,
               },
-
               {
                 path: "study",
                 element: <ArticleListPage />,
@@ -55,11 +52,13 @@ const router = createBrowserRouter([
               },
             ],
           },
+          { path: "myinfo", element: <MyInfo /> },
+          { path: "mycareer", element: <MyCareer /> },
         ],
       },
       {
         path: "/articledetail/:articleId",
-        element: <LayoutPage type={"prev"} />,
+        element: <LayoutPage type={"articleDetail"} />,
         children: [
           {
             path: "",
@@ -69,7 +68,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/articleregister",
-        element: <LayoutPage type={"prev"} />,
+        element: <LayoutPage />,
         children: [
           {
             path: "",

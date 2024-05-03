@@ -3,6 +3,7 @@ import MentoTag from "../../components/MentoTag";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import {
   ArticleApplyStateTableWrap,
+  ArticleDetailModal,
   ArticleDetailPageNavWrap,
   ArticleDetailWrap,
   ArticleInfoStateWrap,
@@ -14,31 +15,46 @@ import Button from "../../components/Button";
 import { useEffect, useState } from "react";
 import ArticleTag from "../../components/ArticleTag";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { ArticleCurrentState } from "../../utils/recoil/atom";
-import { useParams } from "react-router-dom";
-import { viewCurrentArticle } from "../../utils/apimodule/article";
-import { CurrentArticle } from "../../typings/db";
+import {
+  ArticleCurrentState,
+  articleDetailModalClickState,
+} from "../../utils/recoil/atom";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  deleteCurrentArticle,
+  editCurrentArticle,
+  viewCurrentArticle,
+} from "../../utils/apimodule/article";
+import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 
 const ArticleDetail = () => {
+  //현재 페이지에서 보여주고 있는 article 데이터
   const [articleCurrentState, setArticleCurrentState] =
     useRecoilState(ArticleCurrentState);
-  //const articleCurrentState = useRecoilValue(ArticleCurrentState);
-  //const setArticleCurrentState = useSetRecoilState(ArticleCurrentState);
+
+  //모달 클릭 상태
+  const [articleDetailModalState, setArticleDetailModalState] = useRecoilState(
+    articleDetailModalClickState
+  );
+
+  //소개 / QnA탭 상태
   const [activeTab, setActiveTab] = useState("intro");
   const { articleId } = useParams();
 
+  const navigate = useNavigate();
+
+  // 마운트 시 해당 article 불러옴
   useEffect(() => {
+    console.log(articleId);
     loadCurrentArticle();
   }, []);
 
-  useEffect(() => {
-    console.log("Article data updated:", articleCurrentState);
-  }, [articleCurrentState]);
-
+  // 해당 article 불러오는 함수
   const loadCurrentArticle = async () => {
     try {
       if (articleId) {
         const result = await viewCurrentArticle(parseInt(articleId));
+
         if (result) {
           console.log("불러오기 성공!");
           setArticleCurrentState({
@@ -70,12 +86,14 @@ const ArticleDetail = () => {
     }
   };
 
+  //
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
 
   return (
     <>
+      <ArticleDetailMenuModal />
       {articleCurrentState && (
         <ArticleDetailWrap>
           <TopSection>

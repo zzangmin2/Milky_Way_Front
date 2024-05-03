@@ -7,14 +7,20 @@ import {
   faFile,
   faHome,
   faArrowLeft,
+  faEllipsisVertical,
 } from "@fortawesome/free-solid-svg-icons";
 import { FC, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { articleDetailModalClickState } from "../../utils/recoil/atom";
 
 interface Props {
-  type: string;
+  type?: string;
 }
 const Layout: FC<Props> = ({ type }) => {
   const [activePage, setActivePage] = useState("home");
+  const [articleDetailModalState, setArticleDetailModalState] = useRecoilState(
+    articleDetailModalClickState
+  );
 
   const handlePageClick = (tab: string) => {
     setActivePage(tab);
@@ -26,19 +32,27 @@ const Layout: FC<Props> = ({ type }) => {
     <>
       <NavigationLayout>
         <Header>
+          {/* home 페이지인 경우 -> 로고 / 나머지 -> 이전 버튼 */}
           {type === "home" ? (
-            <div
-              className="milkyWayLogo"
-              onClick={() => navigate("/home")}
-            ></div>
+            <div className="milkyWayLogo" onClick={() => navigate("/home")} />
           ) : (
             <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)} />
           )}
 
-          <FontAwesomeIcon
-            icon={faUser}
-            onClick={() => navigate("/home/myinfo")}
-          />
+          {/* 게시물 상세 페이지인 경우 -> 메뉴 버튼 / 나머지 -> 마이페이지 버튼*/}
+          {type === "articleDetail" ? (
+            <FontAwesomeIcon
+              icon={faEllipsisVertical}
+              onClick={() =>
+                setArticleDetailModalState(!articleDetailModalState)
+              }
+            />
+          ) : (
+            <FontAwesomeIcon
+              icon={faUser}
+              onClick={() => navigate("/home/myinfo")}
+            />
+          )}
         </Header>
         <Outlet />
         <BottomNav>
