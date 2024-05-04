@@ -7,9 +7,9 @@ import axios from "axios";
  */
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: false, // 백에서도 동일하게 true설정(default값 확인)
+  withCredentials: true,
   headers: {
-    access_token: localStorage.getItem("access_token"),
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     "Content-Type": "application/json",
   },
 });

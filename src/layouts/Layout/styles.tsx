@@ -30,6 +30,10 @@ export const Header = styled.section`
     margin-right: 10px;
     cursor: pointer;
   }
+
+  > .activeIcon {
+    color: #ff9078;
+  }
 `;
 
 export const BottomNav = styled.nav`

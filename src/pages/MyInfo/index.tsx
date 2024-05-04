@@ -22,6 +22,7 @@ import { ArticleCurrentState } from "../../utils/recoil/atom";
 
 const MyInfo = () => {
   const navigate = useNavigate();
+
   interface UserInfo {
     userName?: any;
     userEmail?: any;
@@ -43,7 +44,7 @@ const MyInfo = () => {
   const infoValue = useSetRecoilState(userInfoState);
   const { userName, userEmail, userNickName, userCareerCard, userNumber } =
     useRecoilValue(userInfoState);
-  const [activeTab, setActiveTab] = useState("like");
+  const [activeTab, setActiveTab] = useState("all");
   const [edit, setEdit] = useState(false);
   useEffect(() => {
     userInfoData();
@@ -72,14 +73,18 @@ const MyInfo = () => {
 
   const sendClickEdit = async () => {
     try {
-      const response = await sendUserEditInfo(
+      const response: any = await sendUserEditInfo(
         editUser.userName,
         editUser.userNickName,
         editUser.userEmail,
         editUser.userCareerCard,
         editUser.userNumber
       );
+      if (response.data.success) {
+        alert("수정완료");
+      }
     } catch (error) {
+      alert("수정실패");
       console.error("error", error);
     }
   };
@@ -227,7 +232,6 @@ const MyInfo = () => {
                 </>
               ) : (
                 <>
-                  {" "}
                   <p>{userNumber}</p>
                 </>
               )}
@@ -238,7 +242,6 @@ const MyInfo = () => {
           <InfoTitle>
             <div>스터디/프로젝트 관리</div>
           </InfoTitle>
-
           <InfoNav>
             <ul>
               <li
@@ -261,7 +264,7 @@ const MyInfo = () => {
               </li>
             </ul>
           </InfoNav>
-          {activeTab == "all" ? (
+          {activeTab === "all" && (
             <>
               <InfoProjectList>
                 <div>현재 내가 신청한 스터디 / 프로젝트 </div>
@@ -293,7 +296,9 @@ const MyInfo = () => {
                             <div className="tableCell">
                               {applicant.applicationDate}
                             </div>
-                            <div className="tableCell">{applicant.status}</div>
+                            <div className="tableCell">
+                              {applicant.status}click
+                            </div>
                           </div>
                         );
                       }
@@ -304,7 +309,8 @@ const MyInfo = () => {
                 </ArticleApplyStateTableWrap>
               </section>
             </>
-          ) : (
+          )}{" "}
+          {activeTab === "like" /** 전체 수정 필요 */ && (
             <>
               <ArticleInfoCardWrap>
                 <ArticleInfoCard
@@ -331,7 +337,8 @@ const MyInfo = () => {
                 />
               </ArticleInfoCardWrap>
             </>
-          )}
+          )}{" "}
+          {activeTab === "create" && <></>}
         </BottomSection>
       </Section>
     </>

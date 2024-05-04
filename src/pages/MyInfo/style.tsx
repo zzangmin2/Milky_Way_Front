@@ -43,10 +43,11 @@ export const InfoContent = styled.div`
   margin: 0 10px;
   border-bottom: 1px solid #f1f1f1;
   outline: none;
-  width: 100%;
+
   align-items: center;
   & > div:nth-child(1) {
     color: #73819c;
+
     display: flex;
     align-items: center;
     font-weight: bold;
@@ -54,10 +55,14 @@ export const InfoContent = styled.div`
   }
   & > div:nth-child(2) {
     flex-grow: 0.2;
+    width: 50%;
     display: flex;
     & > input {
       border: none;
       outline: none;
+    }
+    & > p {
+      text-align: left;
     }
   }
 `;
@@ -131,7 +136,6 @@ export const LogoutText = styled.p`
 
 export const ArticleApplyStateTableWrap = styled.div`
   display: grid;
-  width: 100%;
   grid-template-rows: repeat(4, 1fr);
   font-size: 0.9rem;
 

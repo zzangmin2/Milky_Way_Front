@@ -103,12 +103,14 @@
         {
           "id": 1,
           "careerCompany": "이차돌",
-          "careerDate": "2020-03-23~"
+          "careerFirstDate": "2020-03-23",
+          "careerLastDate": "2020-03-23"
         },
         {
           "id": 2,
           "careerCompany": "흑돈",
-          "careerDate": "2020-03-23~"
+          "careerFirstDate": "2020-03-23",
+          "careerLastDate": "2020-03-23"
         }
       ],
       "userCertificate": [
@@ -123,7 +125,7 @@
           "certificateDate": "2020-03-29"
         }
       ],
-      "userLineText": "hesajkfhsagjnberanfjcnwajea rnsaefsafesafgaesjkfhaeskfhjefhanvjkdhnaejkrdhfgnvuijakerzdhfncsdjkfhnvkjscvdbtujkrgaefhscndivfugjrhaefCdsoinfgkhraenfIOWKLSDCgiruea;fowDLJKSNvgtirue;afjknszd,jkwe"
+      "userLineText": "heafesajgabdrhasfejsafhhgaerjfucean ruierajkhnujkjwaehfnkcjdf mjkwe"
     }
   ]
 }

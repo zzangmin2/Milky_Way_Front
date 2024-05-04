@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Section = styled.div`
   padding: 0 30px;
   display: flex;
-  height: 100%;
+  height: auto;
   overflow-y: scroll;
   flex-direction: column;
   &::-webkit-scrollbar {
@@ -14,8 +14,9 @@ export const Section = styled.div`
 export const TopSection = styled.section`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  height: 100%;
+
+  flex: 1;
+  height: auto;
 `;
 
 export const MyInfoTitle = styled.section`
@@ -50,10 +51,9 @@ export const MyInfocertificate = styled.section`
   margin-top: 25px;
 `;
 export const MyInfoText = styled.section`
-  flex: 1;
+  flex-grow: 1;
   overflow: hidden;
   width: 100%;
-
   display: flex;
   flex-direction: column;
   margin-top: 25px;
@@ -102,21 +102,28 @@ export const InfoContentText = styled.div`
   justify-content: space-between;
   height: 100%;
 `;
-export const BottomSection = styled.section`
+
+export const InfoContentLineText = styled.div`
   display: flex;
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  align-items: flex-end;
-  justify-content: flex-end;
-  & > div:nth-child(1) > div > svg {
-    font-size: 2rem;
-    color: #717171;
-    margin-bottom: 5px;
+  width: auto;
+  height: auto;
+  margin-bottom: 20px;
+  & > input {
+    width: 100%;
+    height: 100%;
+    border: none;
   }
 `;
+export const BottomSection = styled.section`
+  display: flex;
+  flex: 0.2;
+  height: auto;
 
-export const Input = styled.div`
+  box-sizing: border-box;
+  padding: 10px;
+`;
+
+export const InputCareer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -130,5 +137,8 @@ export const Input = styled.div`
     padding: 0 10px 10px 10px;
     outline: none;
     margin-top: 10px;
+  }
+  & > input:nth-child(1) {
+    font-weight: bold;
   }
 `;
