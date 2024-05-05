@@ -2,24 +2,21 @@ export interface Article {
   articleMemberId: string;
   articleType: string;
   articleApply: number;
-  articleMentorNeeded: boolean;
-  articlementorTag: string;
+  articleMentorNeeded: boolean | string;
+  articleMentorTag: string;
+  articleStartDay: string;
   articleEndDay: string;
-  articleRecruitmentState: boolean;
   articleTitle: string;
   articleContent: string;
-}
-
-export interface CurrentArticle extends Article {
   articleLikes: number;
   articleApplyNow: number;
-  articleStartDay: string;
   articleId: number;
+  articleRecruitmentState: boolean;
   articleApplyState: [
     {
       id: number;
       applicantName: string;
-      applicationDate: string;
+      applicationDate: Date;
       status: string;
     }
   ];

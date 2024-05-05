@@ -26,6 +26,10 @@ const sendNewArticle = async (newArticleData: Article) => {
     articleEndDay,
     articleTitle,
     articleContent,
+    articleApplyNow,
+    articleId,
+    articleRecruitmentState,
+    articleLikes,
   } = newArticleData;
   try {
     await api.post("http://localhost:3000/currentArticle", {
@@ -38,6 +42,10 @@ const sendNewArticle = async (newArticleData: Article) => {
       articleEndDay: articleEndDay,
       articleTitle: articleTitle,
       articleContent: articleContent,
+      articleApplyNow: articleApplyNow,
+      articleId: articleId,
+      articleRecruitmentState: articleRecruitmentState,
+      articleLikes: articleLikes,
     });
 
     return { success: true };

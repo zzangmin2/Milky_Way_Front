@@ -1,235 +1,224 @@
-import { useSetRecoilState } from "recoil";
-import Input from "../../components/Input";
 import {
-  ArticleContentTextArea,
+  ArticleContentInputWrap,
   ArticleRegisterWrap,
   ArticleTypeSelectWrap,
-  ArticleTypeWrap,
+  CustomRadioLabel,
 } from "./styles";
-import {
-  ArticleRegisterState,
-  isLoggedInUserName,
-} from "../../utils/recoil/atom";
-import { useEffect, useState, ChangeEvent } from "react";
+
+import { useState } from "react";
 import Button from "../../components/Button";
 import { sendNewArticle } from "../../utils/apimodule/article";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Article } from "../../typings/db";
 
 const ArticleRegister = () => {
-  // const articleRegister = useSetRecoilState(ArticleRegisterState);
-  const userName: any = useSetRecoilState(isLoggedInUserName);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<Article>();
 
-  const [articleType, setArticleType] = useState("study");
-  const [articleApply, setArticleApply] = useState("");
-  const [articleMentorNeeded, setArticleMentorNeeded] = useState("yes");
-  const [articleMentorTag, setArticleMentorTag] = useState("");
-  const [articleMentorTagArr, setArticleMentorTagArr] = useState<string[]>([]);
-  const [articleEndDay, setArticleEndDay] = useState("");
-  const [articleTitle, setArticleTitle] = useState("");
-  const [articleContent, setArticleContent] = useState("");
-  const [buttonState, setButtonState] = useState("inactive");
+  const articleMentorNeeded = watch("articleMentorNeeded");
+  const articleType = watch("articleType");
 
-  useEffect(() => {
-    console.log(articleTitle);
-  }, [articleTitle]);
+  // const userName: any = useSetRecoilState(isLoggedInUserName);
 
-  const handleMentorNeededChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setArticleMentorNeeded(e.target.value);
-  };
+  const [articleMentorTag, setArticleMentorTag] = useState<string>();
+  const [articleMentorTagArr, setArticleMentorTagArr] = useState<string>("");
+  const navigate = useNavigate();
 
-  const handleArticleTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setArticleType(e.target.value);
-  };
-
-  const handleArticleApplyChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setArticleApply(e.target.value);
-  };
-
-  const handleArticleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setArticleContent(e.target.value);
-  };
-
-  const handleArticleMentorTagChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setArticleMentorTag(e.target.value);
-  };
-
+  // 멘토 취향 버튼 눌렀을 때 실행 함수
   const handleArticleMentorSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
     if (articleMentorTag) {
-      setArticleMentorTagArr((prev) => [...prev, "#" + articleMentorTag]);
+      // 기존 멘토타입arr에서 멘토 타입 추가하기
+      setArticleMentorTagArr(articleMentorTagArr + `#${articleMentorTag}`);
+      console.log(articleMentorTagArr);
+
+      setValue("articleMentorTag", articleMentorTagArr);
       setArticleMentorTag("");
     }
   };
 
-  const handleSubmitButtonClick = async (
-    e: React.MouseEvent<HTMLElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-
-    // if (buttonState === "inactive") {
-    //   alert(" 칸을 모두 입력하슈"); // 추후 각 input에 alert 표시
-    //   return;
-    // }
-
-    //등록 버튼 클릭 -> http 통신
-    const newArticleData = {
-      articleMemberId: "userName", // 추후 id로 변경
-      articleType: articleType,
-      articleApply: parseInt(articleApply),
-      articleMentorNeeded: articleMentorNeeded === "yes" ? true : false,
-      articlementorTag: articleMentorTagArr.join(", "),
-      articleEndDay: articleEndDay,
-      articleTitle: articleTitle,
-      articleContent: articleContent,
-    };
-
-    console.log(newArticleData);
+  // handleSubmit에서 받은 데이터를 기반으로 게시물 등록 처리하는 함수
+  const onSubmit = async (data: Article) => {
     try {
-      const result = await sendNewArticle(newArticleData);
+      const result = await sendNewArticle({
+        ...data,
+        articleMentorTag: articleMentorTagArr,
+        articleLikes: 0,
+        articleId: 11,
+        articleRecruitmentState: true,
+        articleStartDay: new Date().toISOString(),
+        articleApplyNow: 0,
+        articleMentorNeeded: articleMentorNeeded === "yes" ? true : false,
+      });
+
       if (result.success) {
         alert("등록 완료!");
+        navigate(`/home/articlelist/all`);
       } else {
-        throw result;
+        throw new Error("등록 실패");
       }
     } catch (error: any) {
       console.log(`실패: ${error.message}`);
     }
   };
-
   return (
     <>
-      <ArticleRegisterWrap>
+      <ArticleRegisterWrap onSubmit={handleSubmit(onSubmit)}>
         <h3>스터디 / 프로젝트 등록</h3>
 
-        <ArticleTypeWrap>
-          <ArticleTypeSelectWrap>
-            <label>모집하는 팀의 유형을 선택해 주세요</label>
-            <div>
+        <ArticleTypeSelectWrap>
+          <p className="inputTitle">팀 유형</p>
+          <label>모집하는 팀의 유형을 선택해 주세요</label>
+          <div className="inputWrap">
+            <CustomRadioLabel>
               <input
                 type="radio"
-                name="articleType"
                 value="study"
-                checked={articleType === "study"}
-                onChange={handleArticleTypeChange}
+                {...register("articleType", { required: true })}
               />
-              스터디
-            </div>
-            <div>
+              <span>스터디</span>
+            </CustomRadioLabel>
+            <CustomRadioLabel>
               <input
                 type="radio"
-                name="articleType"
                 value="project"
-                checked={articleType === "project"}
-                onChange={handleArticleTypeChange}
+                {...register("articleType", { required: true })}
               />
-              프로젝트
-            </div>
-          </ArticleTypeSelectWrap>
-          <ArticleTypeSelectWrap>
-            <label htmlFor="studyApply">모집 인원을 선택해 주세요</label>
-            <select
-              name=""
-              id="studyApply"
-              value={articleApply}
-              onChange={handleArticleApplyChange}
-            >
-              {(() => {
-                const options = [];
-                for (let i = 1; i <= 10; i++) {
-                  options.push(
-                    <option key={i} value={i}>
-                      {i}
-                    </option>
-                  );
-                }
-                return options;
-              })()}
-            </select>
-          </ArticleTypeSelectWrap>
 
-          <ArticleTypeSelectWrap>
-            <label>팀원을 모집하는 마지막 날짜를 입력해 주세요</label>
-            <Input
-              inputType="date"
-              value={articleEndDay}
-              setValue={setArticleEndDay}
-            ></Input>
-          </ArticleTypeSelectWrap>
-
-          <ArticleTypeSelectWrap>
-            <label> 멘토 필요 여부를 선택해 주세요</label>
-            <div>
-              <input
-                type="radio"
-                name="mentor"
-                value="yes"
-                checked={articleMentorNeeded === "yes"}
-                onChange={handleMentorNeededChange}
-              />
-              예
-            </div>
-            <div>
-              <input
-                type="radio"
-                name="mentor"
-                value="no"
-                checked={articleMentorNeeded === "no"}
-                onChange={handleMentorNeededChange}
-              />
-              아니오
-            </div>
-          </ArticleTypeSelectWrap>
-
-          {articleMentorNeeded === "yes" ? (
-            <ArticleTypeSelectWrap>
-              <label>
-                원하는 멘토의 타입을 적어주세요
-                <br /> ex 열정적인, 끝까지 완주 가능한, 자주 만남 가능한
-              </label>
-              <div className="mentorTagInput">
-                <p>#</p>
-                <input
-                  type="text"
-                  value={articleMentorTag}
-                  onChange={handleArticleMentorTagChange}
-                />
-                <button type="submit" onClick={handleArticleMentorSubmit}>
-                  +
-                </button>
-              </div>
-              <div className="mentorTagWrap">
-                {articleMentorTagArr.map((tag, index) => {
-                  return <div key={index}>{tag}</div>;
-                })}
-              </div>
-            </ArticleTypeSelectWrap>
-          ) : (
-            ""
+              <span>프로젝트</span>
+            </CustomRadioLabel>
+          </div>
+          {errors.articleType && (
+            <p style={{ color: "red", fontSize: "0.75rem", margin: "0" }}>
+              팀 유형을 선택해 주세요
+            </p>
           )}
-        </ArticleTypeWrap>
+        </ArticleTypeSelectWrap>
+        <ArticleTypeSelectWrap>
+          <p className="inputTitle">모집 인원 </p>
+          <label htmlFor="articleApply">모집 인원을 선택해 주세요</label>
+          <select {...register("articleApply", { required: true })}>
+            {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
+              <option key={num} value={num}>
+                {num}
+              </option>
+            ))}
+          </select>
+          {errors.articleApply && (
+            <p style={{ color: "red", fontSize: "0.75rem", margin: "0" }}>
+              모집 인원 선택해 주세요
+            </p>
+          )}
+        </ArticleTypeSelectWrap>
+
+        <ArticleTypeSelectWrap>
+          <p className="inputTitle">모집 날짜</p>
+          <label>팀원을 모집하는 마지막 날짜를 입력해 주세요</label>
+          <div className="inputWrap">
+            <input
+              type="date"
+              {...register("articleEndDay", { required: true })}
+            />
+          </div>
+          {errors.articleEndDay && (
+            <p style={{ color: "red", fontSize: "0.75rem", margin: "0" }}>
+              날짜를 선택해 주세요
+            </p>
+          )}
+        </ArticleTypeSelectWrap>
+
+        <ArticleTypeSelectWrap>
+          <p className="inputTitle">멘토 필요 여부</p>
+          <label> 멘토 필요 여부를 선택해 주세요</label>
+          <div className="inputWrap">
+            <CustomRadioLabel>
+              <input
+                type="radio"
+                value="yes"
+                {...register("articleMentorNeeded", { required: true })}
+              />
+              <span>네</span>
+            </CustomRadioLabel>
+            <CustomRadioLabel>
+              <input
+                type="radio"
+                value="no"
+                {...register("articleMentorNeeded", { required: true })}
+              />
+
+              <span>아니요</span>
+            </CustomRadioLabel>
+          </div>
+          {errors.articleMentorNeeded && (
+            <p style={{ color: "red", fontSize: "0.75rem", margin: "0" }}>
+              멘토 필요 여부를 선택해 주세요
+            </p>
+          )}
+        </ArticleTypeSelectWrap>
+        {articleMentorNeeded === "yes" && (
+          <div>
+            <ArticleTypeSelectWrap>
+              <ArticleTypeSelectWrap>
+                <label>
+                  원하는 멘토의 타입을 적어주세요
+                  <br /> ex 열정적인, 끝까지 완주 가능한, 자주 만남 가능한
+                </label>
+                <div className="mentorTagInput">
+                  <p>#</p>
+                  <input
+                    type="text"
+                    value={articleMentorTag}
+                    onChange={(e) => setArticleMentorTag(e.target.value)}
+                  />
+                  <button type="submit" onClick={handleArticleMentorSubmit}>
+                    +
+                  </button>
+                </div>
+                <div className="mentorTagWrap">
+                  {articleMentorTagArr.length >= 1 &&
+                    articleMentorTagArr.split("#").map((tag, index) => {
+                      return <div key={index}>{tag}</div>;
+                    })}
+                </div>
+              </ArticleTypeSelectWrap>
+            </ArticleTypeSelectWrap>
+          </div>
+        )}
 
         {/* 게시물 모집 마지막날 적는 input 추가 필요*/}
-        <section>
-          <Input
+        <ArticleContentInputWrap>
+          <input
             placeholder="제목을 입력해 주세요"
-            value={articleTitle}
-            setValue={setArticleTitle}
+            {...register("articleTitle")}
           />
-          <ArticleContentTextArea
-            name=""
-            id=""
-            value={articleContent}
-            placeholder="내용을 입력해 주세요"
-            onChange={handleArticleContentChange}
-          ></ArticleContentTextArea>
-        </section>
+          {errors.articleTitle && (
+            <p style={{ color: "red", fontSize: "0.75rem", margin: "0" }}>
+              제목을 5자 이상으로 작성해 주세요
+            </p>
+          )}
+
+          <textarea {...register("articleContent", { required: true })} />
+          {errors.articleContent && (
+            <p style={{ color: "red", fontSize: "0.75rem", margin: "0" }}>
+              내용을 10자 이상으로 작성해 주세요
+            </p>
+          )}
+        </ArticleContentInputWrap>
 
         <div className="buttonWrap">
           <Button
             text={
               (articleType === "study" ? "스터디" : "프로젝트") + " 등록하기"
             }
-            buttonState={buttonState}
-            onClick={handleSubmitButtonClick}
+            // buttonState={buttonState}
+            type={"submit"}
           />
         </div>
       </ArticleRegisterWrap>
