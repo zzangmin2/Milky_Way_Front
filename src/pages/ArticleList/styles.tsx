@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ArticleSearchWrap = styled.section`
+export const ArticleListContainer = styled.section`
   padding: 20px 20px 0px 20px;
   overflow: hidden;
 `;
@@ -17,9 +17,13 @@ export const ArticleAddButton = styled.button`
   font-size: 2rem;
   padding: 0;
   margin: 0;
-  /* left: 300px; */
+  right: 40%;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
     rgba(0, 0, 0, 0.22) 0px 15px 12px;
+
+  @media (max-width: 575px) {
+    right: 20px;
+  }
 `;
 
 export const ArticleProjectTypeNavWrap = styled.nav`
@@ -86,8 +90,17 @@ export const SimpleArticleInfoCard = styled.div`
 
 export const ArticleInfoCardWrap = styled.section`
   width: 100%;
-  height: 60vh;
-  overflow-y: scroll;
+  height: 58vh;
+
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #ccc;
+  }
   z-index: 999;
 
   > section {
