@@ -13,6 +13,7 @@ import { FC, useState } from "react";
 interface Props {
   type: string;
 }
+
 const Layout: FC<Props> = ({ type }) => {
   const [activePage, setActivePage] = useState("home");
 
@@ -29,7 +30,10 @@ const Layout: FC<Props> = ({ type }) => {
           {type === "home" ? (
             <div
               className="milkyWayLogo"
-              onClick={() => navigate("/home")}
+              onClick={() => {
+                navigate("/home");
+                handlePageClick("home");
+              }}
             ></div>
           ) : (
             <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)} />
@@ -37,7 +41,11 @@ const Layout: FC<Props> = ({ type }) => {
 
           <FontAwesomeIcon
             icon={faUser}
-            onClick={() => navigate("/home/myinfo")}
+            onClick={() => {
+              navigate("/home/myinfo");
+              handlePageClick("mypage");
+            }}
+            className={activePage === "mypage" ? "activeIcon" : ""}
           />
         </Header>
         <Outlet />

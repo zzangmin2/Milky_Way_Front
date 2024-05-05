@@ -43,10 +43,11 @@ export const InfoContent = styled.div`
   margin: 0 10px;
   border-bottom: 1px solid #f1f1f1;
   outline: none;
-  width: 100%;
+
   align-items: center;
   & > div:nth-child(1) {
     color: #73819c;
+
     display: flex;
     align-items: center;
     font-weight: bold;
@@ -54,10 +55,14 @@ export const InfoContent = styled.div`
   }
   & > div:nth-child(2) {
     flex-grow: 0.2;
+    width: 50%;
     display: flex;
     & > input {
       border: none;
       outline: none;
+    }
+    & > p {
+      text-align: left;
     }
   }
 `;
@@ -73,7 +78,6 @@ export const InfoNav = styled.nav`
   width: 100%;
   margin-bottom: 20px;
   & > ul {
-    width: 100%;
     display: flex;
     justify-content: space-between;
     padding: 0;
@@ -116,7 +120,6 @@ export const InfoProjectList = styled.section`
 `;
 
 export const ArticleInfoCardWrap = styled.section`
-  width: 100%;
   height: 50vh;
   overflow-y: none;
   z-index: 999;
@@ -129,4 +132,27 @@ export const LogoutText = styled.p`
   text-align: right;
   width: 100%;
   color: gray;
+`;
+
+export const ArticleApplyStateTableWrap = styled.div`
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  font-size: 0.9rem;
+
+  .tableRow {
+    display: grid;
+    grid-template-columns: 3fr 2fr 2fr;
+    border-bottom: 1px solid #d1d1d1;
+    padding: 5px;
+  }
+
+  .tableRowTop {
+    border-bottom: 2px solid black;
+    padding: 0 5px;
+  }
+
+  .tableCell {
+    padding: 5px;
+    text-align: center;
+  }
 `;

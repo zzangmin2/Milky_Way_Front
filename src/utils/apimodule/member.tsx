@@ -102,9 +102,76 @@ const sendUserInfo = async (
   }
 };
 
+/**
+ * mypage에서 유저 이메일/닉네임/이름/커리어카드/전화번호 수정
+ * @param name
+ * @param nickName
+ * @param careerCard
+ * @param userEmail
+ * @param phoneNumber
+ * @type {string | number} 이름 / 학과 / 전화번호
+ * @returns {Promise<{ success: boolean, error?: string }>}
+ */
+const sendUserEditInfo = async (
+  name: string,
+  nickName: string,
+  userEmail: string,
+  careerCard: string,
+  phoneNumber: string
+) => {
+  try {
+    const response = await api.post("/users/usereditinfo", {
+      userName: name,
+      userEmail: userEmail,
+      userCareerCard: careerCard,
+      userPhoneNumber: phoneNumber,
+      userNickName: nickName,
+      phoneNumber: phoneNumber,
+    });
+    if (response.data.success) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
+ * mypage에서 유저 이메일/닉네임/이름/커리어카드/전화번호 수정
+ * @param userName
+ * @param userCareer
+ * @param userCertificate
+ * @param userLineText
+ * @type {string | number} 이름 / 학과 / 전화번호
+ * @returns {Promise<{ success: boolean, error?: string }>}
+ */
+const sendUserEditCareer = async (
+  userName: any,
+  userCareer: any,
+  userCertificate: any,
+  userLineText: any
+) => {
+  try {
+    const response = await api.post("/users/userediticareer", {});
+    if (response.data.success) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
 export {
   sendUserCompareInfo,
   sendEmailUserInfo,
   sendUserInfo,
   sendEmailVerify,
+  sendUserEditInfo,
+  sendUserEditCareer,
 };
