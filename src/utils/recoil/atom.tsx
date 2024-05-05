@@ -18,6 +18,14 @@ interface UserCareerState {
 }
 
 /**
+ * 네비게이션 바 상태
+ */
+
+export const navState = atom({
+  key: "navState",
+  default: "home", //home, list, career
+});
+/**
  * signupemail -> signupcompare state상태
  * @type {boolean}
  */
