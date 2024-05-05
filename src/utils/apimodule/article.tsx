@@ -29,6 +29,8 @@ const sendNewArticle = async (newArticleData: Article) => {
     articleApplyNow,
     articleId,
     articleRecruitmentState,
+    articleContactMethod,
+    articleContactInfo,
     articleLikes,
   } = newArticleData;
   try {
@@ -45,6 +47,8 @@ const sendNewArticle = async (newArticleData: Article) => {
       articleApplyNow: articleApplyNow,
       articleId: articleId,
       articleRecruitmentState: articleRecruitmentState,
+      articleContactMethod: articleContactMethod,
+      articleContactInfo: articleContactInfo,
       articleLikes: articleLikes,
     });
 

@@ -119,6 +119,23 @@
       "articleId": 20,
       "articleRecruitmentState": true,
       "articleLikes": 0
+    },
+    {
+      "id": "0337",
+      "articleType": "study",
+      "articleApply": "4",
+      "articleMentorNeeded": true,
+      "articleMentorTag": "#wefaewf#wfeaweaf#wfe#ㅁㄷㅊㄹㄴ#ㄴㄷㅈㄹ#ㄴㅈㄹㄷㄴㅇㄹ#ㄷㄹㄴㅈㄹㄷㄴ#ㄷㄴㅇ#ㅎㅍㄱ#ㄴㄷㄱㅎ4ㄴㄹㅍ",
+      "articleStartDay": "2024-05-05T06:24:05.788Z",
+      "articleEndDay": "2024-05-17",
+      "articleTitle": "연락수단테스트₩",
+      "articleContent": "연락수단테스트",
+      "articleApplyNow": 0,
+      "articleId": 11,
+      "articleRecruitmentState": true,
+      "articleContactMethod": "전화번호",
+      "articleContactInfo": "010-2222-3333",
+      "articleLikes": 0
     }
   ],
   "memberInfo": [

@@ -12,6 +12,8 @@ export interface Article {
   articleApplyNow: number;
   articleId: number;
   articleRecruitmentState: boolean;
+  articleContactMethod: string;
+  articleContactInfo: string;
   articleApplyState: [
     {
       id: number;
