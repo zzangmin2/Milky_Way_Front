@@ -309,3 +309,11 @@ export const articleDetailModalClickState = atom({
   key: "articleDetailModalClickState",
   default: false,
 });
+
+/**
+ * <atom> 게시물 소개 /QnA 탭 클릭 상태
+ */
+export const articleDetailIntroOrQnaTabState = atom({
+  key: "articleDetailIntroOrQnaTabState",
+  default: "intro", // intro, qna
+});
