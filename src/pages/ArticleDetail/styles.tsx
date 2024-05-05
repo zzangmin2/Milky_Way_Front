@@ -160,7 +160,13 @@ export const ArticleIntrowrap = styled.div`
     width: 100%;
   }
 
-  > div.mentorTagWrapper > p {
+  > p.mentorTagTitle {
+    color: #133488;
+    font-weight: bold;
+    font-size: 0.8rem;
+  }
+
+  > div.mentorTagWrapper > p.mentorTag {
     padding: 2px 10px;
     background-color: #f8f8f8;
     color: #676767;
@@ -174,6 +180,7 @@ export const ArticleIntrowrap = styled.div`
 
 export const ArticleApplyStateWrap = styled.section`
   margin-bottom: 100px;
+  width: 100%;
 `;
 export const ArticleApplyStateTableWrap = styled.div`
   display: grid;
@@ -183,7 +190,7 @@ export const ArticleApplyStateTableWrap = styled.div`
 
   .tableRow {
     display: grid;
-    grid-template-columns: 40px 60px 140px 50px;
+    grid-template-columns: 14% 23% 47% 16%;
     border-bottom: 1px solid #d1d1d1;
     padding: 5px;
   }
