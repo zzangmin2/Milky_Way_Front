@@ -165,8 +165,8 @@ const ArticleDetail = () => {
                   ""
                 )}
                 <div className="mentorTagWrapper">
-                  {articleCurrentState.articleMentorTag
-                    ? articleCurrentState.articleMentorTag.map((tag, idx) => {
+                  {articleCurrentState.articleMentorTag.length >= 1 &&
+                    ? articleCurrentState.articleMentorTag.split("#").map((tag, idx) => {
                         return (
                           <p className="mentorTag" key={idx}>
                             #{tag}
@@ -217,6 +217,7 @@ const ArticleDetail = () => {
               Q&A 기능은 열심히 개발 중입니다!
               <br />
               조금만 기다려주세요!
+
             </div>
           )}
         </ArticleDetailWrap>

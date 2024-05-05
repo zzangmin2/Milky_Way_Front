@@ -3,7 +3,7 @@ export interface Article {
   articleType: string;
   articleApply: number;
   articleMentorNeeded: boolean | string;
-  articleMentorTag: Array<string>;
+  articleMentorTag: string;
   articleStartDay: string;
   articleEndDay: string;
   articleTitle: string;

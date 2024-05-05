@@ -36,7 +36,7 @@ const sendNewArticle = async (newArticleData: Article) => {
       articleMemberId: articleMemberId,
       articleType: articleType,
       articleApply: articleApply,
-      articleMentorNeeded: articleMentorNeeded,
+      findMentor: articleMentorNeeded,
       articleMentorTag: articleMentorTag,
       articleStartDay: articleStartDay,
       articleEndDay: articleEndDay,

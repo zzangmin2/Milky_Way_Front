@@ -7,9 +7,9 @@ import axios from "axios";
  */
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: false, // 백에서도 동일하게 true설정(default값 확인)
+  withCredentials: true,
   headers: {
-    access_token: localStorage.getItem("access_token"),
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     "Content-Type": "application/json",
   },
 });
@@ -21,7 +21,6 @@ const api = axios.create({
 // api.interceptors.request.use((config) => {
 //   if (!localStorage.getItem("access_token")) {
 //     config.url = "http://localhost:5173/users/login";
-
 //   }
 //   return config;
 // });
@@ -30,7 +29,6 @@ const api = axios.create({
  * 응답 인터셉터
  * refresh token을 사용하여 새로운 access token을 요청 재시도 (클라이언트에는 refresh_token 저장 x)
  */
-
 // api.interceptors.response.use(
 //   (response) => {
 //     return response;
