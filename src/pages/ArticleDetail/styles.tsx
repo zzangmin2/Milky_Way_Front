@@ -52,6 +52,9 @@ export const ArticleInfoStateWrap = styled.div`
     line-height: 0.75rem;
   }
 
+  > div.articleLike {
+    cursor: pointer;
+  }
   > div.articleLike > svg {
     font-size: 0.75rem;
     color: #d1d1d1;
@@ -150,10 +153,34 @@ export const ArticleDetailPageNavWrap = styled.div`
 export const ArticleIntrowrap = styled.div`
   line-height: 160%;
   margin-bottom: 60px;
+
+  > div.mentorTagWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  > p.mentorTagTitle {
+    color: #133488;
+    font-weight: bold;
+    font-size: 0.8rem;
+  }
+
+  > div.mentorTagWrapper > p.mentorTag {
+    padding: 2px 10px;
+    background-color: #f8f8f8;
+    color: #676767;
+    font-size: 0.75rem;
+    margin-right: 5px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    margin: 0 5px 5px 0;
+  }
 `;
 
 export const ArticleApplyStateWrap = styled.section`
   margin-bottom: 100px;
+  width: 100%;
 `;
 export const ArticleApplyStateTableWrap = styled.div`
   display: grid;
@@ -163,7 +190,7 @@ export const ArticleApplyStateTableWrap = styled.div`
 
   .tableRow {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 14% 23% 47% 16%;
     border-bottom: 1px solid #d1d1d1;
     padding: 5px;
   }

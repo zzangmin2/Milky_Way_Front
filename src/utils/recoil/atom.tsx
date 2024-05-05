@@ -300,3 +300,20 @@ export const filteredArticleLatestOrPopularOptionListState = selector({
     }
   },
 });
+
+/**
+ * <atom> 게시물 상세 상단 메뉴 버튼 클릭 상태 (원 3개 모양의 버튼 클릭 상태)
+ */
+
+export const articleDetailModalClickState = atom({
+  key: "articleDetailModalClickState",
+  default: false,
+});
+
+/**
+ * <atom> 게시물 소개 /QnA 탭 클릭 상태
+ */
+export const articleDetailIntroOrQnaTabState = atom({
+  key: "articleDetailIntroOrQnaTabState",
+  default: "intro", // intro, qna
+});

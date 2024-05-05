@@ -8,7 +8,6 @@ import ErrorPage from "../pages/RoutePage/ErrorPage";
 import MyCareer from "../pages/MyCareer";
 import MyInfo from "../pages/MyInfo";
 
-// const Search = lazy(() => import("../pages/ArticleSearch"));
 const ViewPortPage = lazy(() => import("../layouts/ViewPort"));
 const LayoutPage = lazy(() => import("../layouts/Layout"));
 const LoginPage = lazy(() => import("../pages/LogIn"));
@@ -35,9 +34,6 @@ const router = createBrowserRouter([
             path: "",
             element: <HomePage />,
           },
-          // { path: "search", element: <Search /> },
-          { path: "myinfo", element: <MyInfo /> },
-          { path: "mycareer", element: <MyCareer /> },
           {
             path: "articlelist",
             element: <ArticleListPage />,
@@ -46,7 +42,6 @@ const router = createBrowserRouter([
                 path: "all",
                 element: <ArticleListPage />,
               },
-
               {
                 path: "study",
                 element: <ArticleListPage />,
@@ -57,21 +52,27 @@ const router = createBrowserRouter([
               },
             ],
           },
+          { path: "myinfo", element: <MyInfo /> },
+          { path: "mycareer", element: <MyCareer /> },
         ],
       },
       {
         path: "/articledetail/:articleId",
-        element: <LayoutPage type={"prev"} />,
+        element: <LayoutPage type={"articleDetail"} />,
         children: [
           {
-            path: "",
+            path: "intro",
+            element: <ArticleDetailPage />,
+          },
+          {
+            path: "qna",
             element: <ArticleDetailPage />,
           },
         ],
       },
       {
         path: "/articleregister",
-        element: <LayoutPage type={"prev"} />,
+        element: <LayoutPage />,
         children: [
           {
             path: "",

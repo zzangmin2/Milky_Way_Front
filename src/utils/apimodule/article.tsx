@@ -71,6 +71,37 @@ const viewCurrentArticle = async (articleId: number) => {
   }
 };
 
+const editCurrentArticle = async (articleId: number) => {
+  try {
+    const response = await api.put(
+      `http://localhost:3000/currentArticle?articleId=${articleId}`,
+      {
+        articleRecruitmentState: false,
+      }
+    );
+    console.log("Success:", response.data);
+
+    return { success: true };
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+const deleteCurrentArticle = async (articleId: number) => {
+  try {
+    const response = await api.delete(
+      `http://localhost:3000/currentArticle?articleId=${articleId}`
+    );
+    console.log("Success:", response.data);
+
+    return { success: true };
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
 const viewArticleList = async () => {
   try {
     const response = await api.get(`http://localhost:3000/currentArticle`);
@@ -118,6 +149,8 @@ const viewMyCareer = async () => {
 export {
   sendNewArticle,
   viewCurrentArticle,
+  editCurrentArticle,
+  deleteCurrentArticle,
   viewArticleList,
   viewMyInfo,
   viewMyCareer,

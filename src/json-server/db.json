@@ -13,7 +13,7 @@
       "articleStartDay": "2024-03-02",
       "articleEndDay": "2024-04-29",
       "articleMentorNeeded": true,
-      "articleMentorTag": "열정적인#잘 도와주는#멋진",
+      "articleMentorTag": "#열정적인#잘 도와주는#멋진",
       "articleApplyState": [
         {
           "id": 1,
@@ -49,7 +49,7 @@
       "articleStartDay": "2024-03-06",
       "articleEndDay": "2024-05-02",
       "articleMentorNeeded": true,
-      "articleMentorTag": "열정적인#잘 도와주는#멋진",
+      "articleMentorTag": "#열정적인#잘 도와주는#멋진",
       "id": "228c"
     },
     {
@@ -57,7 +57,7 @@
       "articleType": "study",
       "articleApply": "2",
       "articleMentorNeeded": "yes",
-      "articleMentorTag": "열정적인#잘 도와주는#멋진",
+      "articleMentorTag": "#열정적인#잘 도와주는#멋진",
       "articleEndDay": "2024-05-03",
       "articleTitle": "sefsfe",
       "articleContent": "sedfsefsfed",
