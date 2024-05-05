@@ -39,6 +39,7 @@ const ArticleDetail = () => {
   useEffect(() => {
     console.log(articleId);
     loadCurrentArticle();
+    console.log(articleCurrentState);
   }, []);
 
   //모두/스터디/프로젝트 네비게이션 변경 시
@@ -111,7 +112,13 @@ const ArticleDetail = () => {
             </ArticleInfoStateWrap>
             <ArticleInfoSummaryWrap>
               <div>
-                <ArticleTag tagType="스터디" />
+                <ArticleTag
+                  tagType={
+                    articleCurrentState.articleType === "study"
+                      ? "스터디"
+                      : "프로젝트"
+                  }
+                />
                 <MentoTag />
               </div>
               <div className="articleInfoSummary">
@@ -144,7 +151,9 @@ const ArticleDetail = () => {
                 }
                 onClick={() => handleTabClick("intro")}
               >
-                스터디 소개
+                {articleCurrentState.articleType === "study"
+                  ? "스터디 소개"
+                  : "프로젝트 소개"}
               </li>
               <li
                 className={
@@ -179,7 +188,22 @@ const ArticleDetail = () => {
                 <p>{articleCurrentState.articleContent}</p>
               </ArticleIntrowrap>
               <div className="buttonWrap">
-                <Button text="참여 신청하기" />
+                <Button
+                  text={
+                    articleCurrentState.articleRecruitmentState
+                      ? `${
+                          articleCurrentState.articleType === "study"
+                            ? "스터디"
+                            : "프로젝트"
+                        } 신청하기`
+                      : "모집이 완료된 게시물입니다. "
+                  }
+                  buttonState={
+                    articleCurrentState.articleRecruitmentState
+                      ? ""
+                      : "inactive"
+                  }
+                />
               </div>
               <section style={{ marginBottom: "100px" }}>
                 <h3>스터디 신청현황</h3>
