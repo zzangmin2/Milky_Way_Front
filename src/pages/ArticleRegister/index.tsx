@@ -3,6 +3,7 @@ import {
   ArticleRegisterWrap,
   ArticleTypeSelectWrap,
   CustomRadioLabel,
+  MentorTagInputContainer,
 } from "./styles";
 
 import { useState } from "react";
@@ -133,6 +134,38 @@ const ArticleRegister = () => {
             </p>
           )}
         </ArticleTypeSelectWrap>
+        <ArticleTypeSelectWrap>
+          <p className="inputTitle">연락 수단</p>
+          <label>
+            매칭이 성공한 팀원과 연락할 수 있는 방법을 입력해 주세요. <br />
+            매칭되기 전까지는 이 정보가 공개되지 않으니 안심하세요.
+          </label>
+          <div className="inputWrap">
+            <input
+              type="input"
+              placeholder="연락 방법 (예: 전화번호, 카카오톡 링크)
+              "
+              {...register("articleContactMethod", { required: true })}
+            />
+          </div>
+          {errors.articleContactMethod && (
+            <p style={{ color: "red", fontSize: "0.75rem", margin: "0" }}>
+              소통 수단을 입력해 주세요
+            </p>
+          )}
+          <div className="inputWrap" style={{ marginTop: "10px" }}>
+            <input
+              type="input"
+              placeholder="연락처 또는 링크를 입력해 주세요"
+              {...register("articleContactInfo", { required: true })}
+            />
+          </div>
+          {errors.articleContactInfo && (
+            <p style={{ color: "red", fontSize: "0.75rem", margin: "0" }}>
+              소통할 연락처를 입력해 주세요
+            </p>
+          )}
+        </ArticleTypeSelectWrap>
 
         <ArticleTypeSelectWrap>
           <p className="inputTitle">멘토 필요 여부</p>
@@ -166,33 +199,35 @@ const ArticleRegister = () => {
           <div>
             <ArticleTypeSelectWrap>
               <ArticleTypeSelectWrap>
-                <label>
+                <label style={{ marginTop: "10px" }}>
                   원하는 멘토의 타입을 적어주세요
                   <br /> ex 열정적인, 끝까지 완주 가능한, 자주 만남 가능한
                 </label>
-                <div className="mentorTagInput">
-                  <p>#</p>
-                  <input
-                    type="text"
-                    value={articleMentorTag}
-                    onChange={(e) => setArticleMentorTag(e.target.value)}
-                  />
-                  <button type="submit" onClick={handleArticleMentorSubmit}>
-                    +
-                  </button>
-                </div>
-                <div className="mentorTagWrap">
-                  {articleMentorTagArr.length >= 1 &&
-                    articleMentorTagArr.split("#").map((tag, index) => {
-                      return <div key={index}>{tag}</div>;
-                    })}
-                </div>
+                <MentorTagInputContainer>
+                  <div className="mentorTagInput">
+                    <div>#</div>
+                    <input
+                      type="text"
+                      value={articleMentorTag}
+                      onChange={(e) => setArticleMentorTag(e.target.value)}
+                    />
+                    <button type="submit" onClick={handleArticleMentorSubmit}>
+                      +
+                    </button>
+                  </div>
+                  <div className="mentorTagWrap">
+                    {" "}
+                    {articleMentorTagArr.length >= 1 &&
+                      articleMentorTagArr.split("#").map((tag, index) => {
+                        return <div key={index}>{tag}</div>;
+                      })}
+                  </div>
+                </MentorTagInputContainer>
               </ArticleTypeSelectWrap>
             </ArticleTypeSelectWrap>
           </div>
         )}
 
-        {/* 게시물 모집 마지막날 적는 input 추가 필요*/}
         <ArticleContentInputWrap>
           <input
             placeholder="제목을 입력해 주세요"
