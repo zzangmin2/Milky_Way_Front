@@ -194,10 +194,17 @@ export const ArticleCurrentState = atom({
 /**
  * <atom> article 리스트 조회
  */
-
 export const ArticleListTypeState = atom({
   key: "articleListTypeState",
   default: [],
+});
+
+/**
+ * <atom> article 리스트 검색 기준 (사용자 입력)
+ */
+export const ArticleListSearchState = atom<string>({
+  key: "articleListSearchState",
+  default: "",
 });
 
 /**

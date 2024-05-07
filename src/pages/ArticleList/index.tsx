@@ -13,6 +13,7 @@ import { viewArticleList } from "../../utils/apimodule/article";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   ArticleLatestOrPopularOptionState,
+  ArticleListSearchState,
   ArticleListTypeFilterState,
   ArticleListTypeState,
   ArticleRecruitmentOptionState,
@@ -24,6 +25,11 @@ import { Article } from "../../typings/db";
 const ArticleList = () => {
   // article 전체 리스트
   const setArticleListState = useSetRecoilState(ArticleListTypeState);
+
+  //article 리스트 검색 기준
+  const [articleListSearchState, setArticleListSearchState] = useRecoilState(
+    ArticleListSearchState
+  );
   // article 타입 필터링 기준
   const [articleListFilterState, setArticleListFilterState] = useRecoilState(
     ArticleListTypeFilterState
@@ -46,6 +52,7 @@ const ArticleList = () => {
   );
   const navigate = useNavigate();
 
+  //마운트 시 article리스트 불러오기!
   useEffect(() => {
     loadArticleList();
   }, []);
@@ -77,7 +84,15 @@ const ArticleList = () => {
     <>
       <ArticleListContainer>
         <section>
-          <Input placeholder="스터디/프로젝트를 찾아 보세요!" />
+          <Input
+            placeholder="스터디/프로젝트를 찾아 보세요!"
+            value={articleListSearchState}
+            setValue={setArticleListSearchState}
+            onEnterPress={() => {
+              alert("검색 기능을 열심히 개발 중이니 조금만 기다려 주세요.");
+              setArticleListSearchState("");
+            }}
+          />
         </section>
 
         <ArticleProjectTypeNavWrap>
