@@ -6,7 +6,7 @@ import {
   ArticleInfoCardWrap,
   ArticleListWrap,
   ArticleProjectTypeNavWrap,
-  ArticleSearchWrap,
+  ArticleListContainer,
 } from "./styles";
 import ArticleInfoCard from "../../components/ArticleInfoCard";
 import { viewArticleList } from "../../utils/apimodule/article";
@@ -75,7 +75,7 @@ const ArticleList = () => {
 
   return (
     <>
-      <ArticleSearchWrap>
+      <ArticleListContainer>
         <section>
           <Input placeholder="스터디/프로젝트를 찾아 보세요!" />
         </section>
@@ -162,7 +162,7 @@ const ArticleList = () => {
               )}
           </ArticleInfoCardWrap>
         </ArticleListWrap>
-      </ArticleSearchWrap>
+      </ArticleListContainer>
     </>
   );
 };
