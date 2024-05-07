@@ -11,18 +11,14 @@ import {
 } from "./style";
 import { useState, useEffect } from "react";
 import ArticleInfoCard from "../../components/ArticleInfoCard";
+import Modal from "../../components/Modal";
 import { viewMyInfo } from "../../utils/apimodule/article";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { userInfoState } from "../../utils/recoil/atom";
 import { sendUserEditInfo } from "../../utils/apimodule/member";
 import { ArticleCurrentState } from "../../utils/recoil/atom";
 
 const MyInfo = () => {
-  const navigate = useNavigate();
-
   interface UserInfo {
     userName?: any;
     userEmail?: any;
@@ -46,6 +42,10 @@ const MyInfo = () => {
     useRecoilValue(userInfoState);
   const [activeTab, setActiveTab] = useState("all");
   const [edit, setEdit] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [additionalInfo, setAdditionalInfo] = useState<string>("");
+  const [modalType, setModalType] = useState<string>("");
+
   useEffect(() => {
     userInfoData();
     setEditUser({});
@@ -89,6 +89,15 @@ const MyInfo = () => {
     }
   };
 
+  const handleModalOpen = (additionalInfo: string) => {
+    setIsModalOpen(true);
+    setAdditionalInfo(additionalInfo);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <Section>
@@ -98,7 +107,7 @@ const MyInfo = () => {
             {edit ? (
               <p
                 onClick={() => {
-                  setEdit(true);
+                  setEdit(false);
                   sendClickEdit();
                 }}
               >
@@ -124,6 +133,7 @@ const MyInfo = () => {
                   <input
                     type="text"
                     placeholder={userEmail}
+                    value={editUser.userEmail}
                     onChange={(e) => {
                       setEditUser({
                         ...editUser,
@@ -131,8 +141,6 @@ const MyInfo = () => {
                       });
                     }}
                   />
-
-                  {/* <FontAwesomeIcon icon={faPenToSquare} /> */}
                 </>
               ) : (
                 <>
@@ -149,6 +157,7 @@ const MyInfo = () => {
                   <input
                     type="text"
                     placeholder={userNickName}
+                    value={editUser.userNickName}
                     onChange={(e) => {
                       setEditUser({
                         ...editUser,
@@ -156,7 +165,6 @@ const MyInfo = () => {
                       });
                     }}
                   ></input>
-                  {/* <FontAwesomeIcon icon={faPenToSquare} /> */}
                 </>
               ) : (
                 <>
@@ -173,6 +181,7 @@ const MyInfo = () => {
                   <input
                     type="text"
                     placeholder={userName}
+                    value={editUser.userName}
                     onChange={(e) => {
                       setEditUser({
                         ...editUser,
@@ -180,7 +189,6 @@ const MyInfo = () => {
                       });
                     }}
                   ></input>
-                  {/* <FontAwesomeIcon icon={faPenToSquare} /> */}
                 </>
               ) : (
                 <>
@@ -197,6 +205,7 @@ const MyInfo = () => {
                   <input
                     type="text"
                     placeholder={userCareerCard}
+                    value={editUser.userCareerCard}
                     onChange={(e) => {
                       setEditUser({
                         ...editUser,
@@ -204,7 +213,6 @@ const MyInfo = () => {
                       });
                     }}
                   ></input>
-                  {/* <FontAwesomeIcon icon={faPenToSquare} /> */}
                 </>
               ) : (
                 <>
@@ -221,6 +229,7 @@ const MyInfo = () => {
                   <input
                     type="text"
                     placeholder={userNumber}
+                    value={editUser.userNumber}
                     onChange={(e) => {
                       setEditUser({
                         ...editUser,
@@ -228,7 +237,6 @@ const MyInfo = () => {
                       });
                     }}
                   ></input>
-                  {/* <FontAwesomeIcon icon={faPenToSquare} /> */}
                 </>
               ) : (
                 <>
@@ -252,13 +260,19 @@ const MyInfo = () => {
               </li>
               <li
                 className={activeTab === "create" ? "activeTab" : ""}
-                onClick={() => handleTabClick("create")}
+                onClick={() => {
+                  handleTabClick("create");
+                  setIsModalOpen(false);
+                }}
               >
                 등록
               </li>
               <li
                 className={activeTab === "like" ? "activeTab" : ""}
-                onClick={() => handleTabClick("like")}
+                onClick={() => {
+                  handleTabClick("like");
+                  setIsModalOpen(false);
+                }}
               >
                 찜
               </li>
@@ -281,36 +295,41 @@ const MyInfo = () => {
                 <ArticleApplyStateTableWrap>
                   <div className="tableRow tableRowTop">
                     <div className="tableCell">스터디/프로젝트명</div>
-
                     <div className="tableCell">신청일</div>
                     <div className="tableCell">상태</div>
                   </div>
-                  {articleCurrentState.articleApplyState ? (
-                    articleCurrentState.articleApplyState.map(
-                      (applicant, idx) => {
-                        return (
-                          <div className="tableRow" key={idx}>
-                            <div className="tableCell">
-                              {applicant.applicantName}
-                            </div>
-                            <div className="tableCell">
-                              {applicant.applicationDate}
-                            </div>
-                            <div className="tableCell">
-                              {applicant.status}click
-                            </div>
+
+                  {articleCurrentState.articleApplyState.map(
+                    (applicant, idx) => {
+                      return (
+                        <div className="tableRow" key={idx}>
+                          <div className="tableCell">
+                            {applicant.applicantName}
                           </div>
-                        );
-                      }
-                    )
-                  ) : (
-                    <div>아직 없네요 ..</div>
+                          <div className="tableCell">
+                            {applicant.applicationDate}
+                          </div>
+                          <div className="tableCell">
+                            {applicant.status}
+                            <button
+                              onClick={() => {
+                                handleModalOpen("신청");
+                                setModalType("info");
+                                setAdditionalInfo("http://naver.com"); // 오픈채팅방 링크 들어갈 자리
+                              }}
+                            >
+                              click
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    }
                   )}
                 </ArticleApplyStateTableWrap>
               </section>
             </>
-          )}{" "}
-          {activeTab === "like" /** 전체 수정 필요 */ && (
+          )}
+          {activeTab === "like" && (
             <>
               <ArticleInfoCardWrap>
                 <ArticleInfoCard
@@ -337,8 +356,66 @@ const MyInfo = () => {
                 />
               </ArticleInfoCardWrap>
             </>
-          )}{" "}
-          {activeTab === "create" && <></>}
+          )}
+          {activeTab === "create" && (
+            <>
+              <InfoProjectList>
+                <div> 등록한 스터디 / 프로젝트 </div>
+                <div>
+                  <p>Tips!</p>
+                  <p>
+                    상태가 모집중일때, "모집중" 을 클릭하면 신청한 사람들의
+                    리스트를 보여줍니다.
+                  </p>
+                </div>
+              </InfoProjectList>
+              <section style={{ marginTop: "50px" }}>
+                <ArticleApplyStateTableWrap>
+                  <div className="tableRow tableRowTop">
+                    <div className="tableCell">스터디/프로젝트명</div>
+                    <div className="tableCell">등록일</div>
+                    <div className="tableCell">상태</div>
+                  </div>
+                  {articleCurrentState.articleApplyState ? (
+                    articleCurrentState.articleApplyState.map(
+                      (applicant, idx) => {
+                        return (
+                          <div className="tableRow" key={idx}>
+                            <div className="tableCell">
+                              {applicant.applicantName}
+                            </div>
+                            <div className="tableCell">
+                              {applicant.applicationDate}
+                            </div>
+                            <div className="tableCell">
+                              <p
+                                onClick={() => {
+                                  handleModalOpen;
+                                  setModalType("userList");
+                                }}
+                              >
+                                모집중
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      }
+                    )
+                  ) : (
+                    <div>아직 없네요 ..</div>
+                  )}
+                </ArticleApplyStateTableWrap>
+              </section>
+            </>
+          )}
+          {isModalOpen && (
+            <Modal
+              show={isModalOpen}
+              handleClose={handleModalClose}
+              modalType={modalType}
+              additionalInfo={additionalInfo}
+            />
+          )}
         </BottomSection>
       </Section>
     </>

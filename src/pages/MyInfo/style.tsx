@@ -6,6 +6,7 @@ export const Section = styled.div`
   overflow-y: scroll;
   flex-direction: column;
   letter-spacing: -1px;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -154,5 +155,8 @@ export const ArticleApplyStateTableWrap = styled.div`
   .tableCell {
     padding: 5px;
     text-align: center;
+  }
+  &:focus {
+    outline: none;
   }
 `;

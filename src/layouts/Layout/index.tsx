@@ -39,6 +39,7 @@ const Layout: FC<Props> = ({ type }) => {
           {/* home 페이지인 경우 -> 로고 / 나머지 -> 이전 버튼 */}
           {type === "home" ? (
             <div className="milkyWayLogo" onClick={() => navigate("/home")} />
+
           ) : (
             <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)} />
           )}
@@ -53,8 +54,12 @@ const Layout: FC<Props> = ({ type }) => {
             />
           ) : (
             <FontAwesomeIcon
+              className={activePage === "mypage" ? "activeIcon" : ""}
               icon={faUser}
-              onClick={() => navigate("/home/myinfo")}
+              onClick={() => {
+                navigate("/home/myinfo");
+                handlePageClick("mypage");
+              }}
             />
           )}
         </Header>
