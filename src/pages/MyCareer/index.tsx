@@ -20,7 +20,8 @@ import { viewMyCareer } from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { userCareerState } from "../../utils/recoil/atom";
 import { sendUserEditCareer } from "../../utils/apimodule/member";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 const MyCareer = () => {
   const careerValue: any = useSetRecoilState(userCareerState);
   const { userName, userCareer, userCertificate, userLineText } =
@@ -31,8 +32,39 @@ const MyCareer = () => {
     setEdit(false);
   };
 
+  console.log(userCertificate);
   const sendCareerEdit = async () => {
     try {
+      const emptyCareerNames = userCareer.filter(
+        (userCareer: any) => userCareer.careerCompany.trim() == ""
+      );
+      const emptyCareerDates = userCareer.filter(
+        (userCareer: any) =>
+          userCareer.careerFirstDate.trim() == "" ||
+          userCareer.careerLastDate.trim() == ""
+      );
+      const emptyCertificateNames = userCertificate.filter(
+        (userCertificate: any) => userCertificate.certificateName.trim() == ""
+      );
+      const emptyCertificateDates = userCertificate.filter(
+        (userCertificate: any) => userCertificate.certificateDate.trim() == ""
+      );
+
+      console.log("emptyCareerNames", emptyCareerNames);
+      console.log("emptyCareerDates", emptyCareerDates);
+      console.log("emptyCertificateNames", emptyCertificateNames);
+      console.log("emptyCertificateDates", emptyCertificateDates);
+
+      if (emptyCareerNames.length > 0 || emptyCertificateNames.length > 0) {
+        alert("경력과 자격증의 이름을 모두 작성해주세요.");
+        return;
+      }
+
+      if (emptyCareerDates.length > 0 || emptyCertificateDates.length > 0) {
+        alert("경력과 자격증의 날짜를 모두 작성해주세요.");
+        return;
+      }
+
       const response = await sendUserEditCareer(
         userName,
         userCareer,
@@ -43,7 +75,7 @@ const MyCareer = () => {
         alert("이력서 수정이 완료되었습니다!");
         setEdit(true);
       } else {
-        alert("실패!");
+        alert("서버연결 안됨!");
         console.log(userName, userCareer, userCertificate, userLineText);
       }
     } catch (error) {
@@ -70,48 +102,51 @@ const MyCareer = () => {
     userInfoData();
   }, []);
 
-  const formatDate = (date: string | number | Date) => {
-    const d = new Date(date);
-    const year = d.getFullYear();
-    let month = "" + (d.getMonth() + 1);
-    let day = "" + d.getDate();
-
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
-
-    return [year, month, day].join("-");
-  };
-
   const addCareerInput = () => {
-    const today = new Date();
-    const formattedDate = formatDate(today);
-
-    careerValue((prev: { userCareer: string | any[] }) => ({
+    careerValue((prev: { userCareer: any }) => ({
       ...prev,
       userCareer: [
         ...prev.userCareer,
         {
           id: prev.userCareer.length + 1,
           careerCompany: "",
-          careerDate: formattedDate,
+          careerFirstDate: "",
+          careerLastDate: "",
         },
       ],
     }));
   };
 
   const addCertificateInput = () => {
-    const today = new Date();
-    const formattedDate = formatDate(today);
-    careerValue((prev: { userCertificate: string | any[] }) => ({
+    careerValue((prev: { userCertificate: any[] }) => ({
       ...prev,
       userCertificate: [
         ...prev.userCertificate,
         {
           id: prev.userCertificate.length + 1,
           certificateName: "",
-          certificateDate: formattedDate,
+          certificateDate: "",
         },
       ],
+    }));
+  };
+
+  const deleteCertificate = (certificateId: any) => {
+    careerValue((prev: any) => ({
+      ...prev,
+      userCertificate: prev.userCertificate.filter(
+        (certificate: any) => certificate.id !== certificateId
+      ),
+    }));
+    console.log(certificateId);
+  };
+
+  const deleteCareer = (careerId: any) => {
+    careerValue((prev: any) => ({
+      ...prev,
+      userCareer: prev.userCareer.filter(
+        (career: any) => career.id !== careerId
+      ),
     }));
   };
 
@@ -156,9 +191,62 @@ const MyCareer = () => {
               </InfoContentTitle>
               {userCareer.map((career: any) => (
                 <InputCareer key={career.id}>
-                  <input type="text" placeholder={career.careerCompany}></input>
-                  <input type="date" value={career.careerFirstDate}></input>
-                  <input type="date" value={career.careerLastDate}></input>
+                  <input
+                    type="text"
+                    placeholder="회사명"
+                    value={career.careerCompany}
+                    onChange={(e) =>
+                      careerValue((prev: any) => ({
+                        ...prev,
+                        userCareer: prev.userCareer.map((item: any) =>
+                          item.id === career.id
+                            ? {
+                                ...item,
+                                careerCompany: e.target.value,
+                              }
+                            : item
+                        ),
+                      }))
+                    }
+                  />
+                  <input
+                    type="date"
+                    value={career.careerFirstDate}
+                    onChange={(e) =>
+                      careerValue((prev: any) => ({
+                        ...prev,
+                        userCareer: prev.userCareer.map((item: any) =>
+                          item.id === career.id
+                            ? { ...item, careerFirstDate: e.target.value }
+                            : item
+                        ),
+                      }))
+                    }
+                  />
+                  <input
+                    type="date"
+                    value={career.careerLastDate}
+                    onChange={(e) =>
+                      careerValue((prev: any) => ({
+                        ...prev,
+                        userCareer: prev.userCareer.map((item: any) =>
+                          item.id === career.id
+                            ? { ...item, careerLastDate: e.target.value }
+                            : item
+                        ),
+                      }))
+                    }
+                  />
+                  <p
+                    onClick={() => {
+                      deleteCareer(career.id);
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      style={{ color: "#ff3333" }}
+                    />
+                  </p>
                 </InputCareer>
               ))}
             </>
@@ -221,6 +309,13 @@ const MyCareer = () => {
                       }))
                     }
                   ></input>
+                  <p onClick={() => deleteCertificate(certificate.id)}>
+                    {" "}
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      style={{ color: "#ff3333" }}
+                    />
+                  </p>
                 </InputCareer>
               ))}
             </>
