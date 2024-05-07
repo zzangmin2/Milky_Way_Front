@@ -1,8 +1,17 @@
 import styled from "styled-components";
 
 export const ArticleRegisterWrap = styled.form`
-  padding: 20px;
-  overflow-y: scroll;
+  padding: 0 20px;
+  overflow-y: auto;
+
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #ccc;
+  }
 `;
 
 export const ArticleTypeSelectWrap = styled.div`
@@ -60,20 +69,36 @@ export const ArticleTypeSelectWrap = styled.div`
     border-radius: 5px;
     border: 1px solid #a9a9a9;
   }
+`;
 
-  & > .mentorTagInput {
+export const MentorTagInputContainer = styled.div`
+  & > div.mentorTagInput {
     display: flex;
+    justify-content: space-between;
     width: 100%;
+    height: 40px;
+
+    > div {
+      padding: 10px;
+    }
 
     > input {
-      width: 100%;
-      border: none;
-      border-bottom: 1px solid #a9a9a9;
-      margin-left: 10px;
+      flex: 1;
+      border: 1px solid #a9a9a9;
+      padding: 10px;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    > button {
+      padding: 10px;
+      border-radius: 5px;
+      margin-right: 10px;
+      font-size: 0.75rem;
     }
   }
 
-  & > .mentorTagWrap {
+  & > div.mentorTagWrap {
     width: 100%;
     display: flex;
     margin-top: 10px;

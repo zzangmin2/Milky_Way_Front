@@ -73,8 +73,11 @@ const Layout: FC<Props> = ({ type }) => {
             />
           ) : (
             <FontAwesomeIcon
+              className={activePage === "mypage" ? "activeIcon" : ""}
               icon={faUser}
-              onClick={() => navigate("/home/myinfo")}
+              onClick={() => {
+                navigate("/home/myinfo");
+              }}
             />
           )}
         </Header>
