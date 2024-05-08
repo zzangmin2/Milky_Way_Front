@@ -9,48 +9,43 @@ import {
   ProgressBar,
 } from "../styles";
 import { useNavigate } from "react-router-dom";
-import { sendUserCompareInfo } from "../../../utils/apimodule/member";
+// import { sendUserCompareInfo } from "../../../utils/apimodule/member";
 import {
   userCompareState,
   compareSuccesses,
   userCompareValues,
 } from "../../../utils/recoil/atom";
-import {
-  useSetRecoilState,
-  useRecoilValue,
-  useRecoilValueLoadable,
-} from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import SignupInput from "../SignupInput";
 import { emailSuccesses } from "../../../utils/recoil/atom";
 import ErrorPage from "../../RoutePage/ErrorPage";
 
 const SignupIdCompare = () => {
   const emailSuccessIn = useRecoilValue(emailSuccesses);
-  const userCompareValuesConsole = useRecoilValueLoadable(userCompareValues);
-  const userCompare = useSetRecoilState(userCompareState);
+  const userCompare = useSetRecoilState(userCompareValues);
+  const compareValue = useRecoilValue(userCompareValues);
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const compareSuccessIn = useSetRecoilState(compareSuccesses);
-  const [confirmSuccess, setConfirmSuccess] = useState(false);
 
   const [compareInState, setCompareInState] = useState(false);
 
   const navigate = useNavigate();
 
-  const sendUserInfo = async () => {
-    try {
-      const result = await sendUserCompareInfo(id, password);
-      if (result.success) {
-        setCompareInState(true);
-        alert("중복된 아이디가 없습니다"); //유저 인포 상태 스테이트?추가
-      } else {
-        throw result;
-      }
-    } catch (error: any) {
-      alert(`실패: ${error.message}`);
-    }
-  };
+  // const sendUserInfo = async () => {
+  //   try {
+  //     const result = await sendUserCompareInfo(id, password);
+  //     if (result.success) {
+  //       setCompareInState(true);
+  //       alert("중복된 아이디가 없습니다"); //유저 인포 상태 스테이트?추가
+  //     } else {
+  //       throw result;
+  //     }
+  //   } catch (error: any) {
+  //     alert(`실패: ${error.message}`);
+  //   }
+  // };
 
   const stateUserInfo = (): Promise<void | undefined> => {
     return new Promise((resolve, reject) => {
@@ -67,6 +62,7 @@ const SignupIdCompare = () => {
       } else {
         setConfirmPassword: Boolean(true);
       }
+
       try {
         compareSuccessIn(true);
         userCompare(newValue);
@@ -79,15 +75,16 @@ const SignupIdCompare = () => {
   };
 
   const newValue = {
+    ...compareValue,
     id: id,
     password: password,
   };
 
-  console.log(newValue);
+  console.log(compareValue);
 
   return (
     <>
-      {!emailSuccessIn ? (
+      {emailSuccessIn ? (
         <Box>
           <TopSection>
             <ProgressContainer>

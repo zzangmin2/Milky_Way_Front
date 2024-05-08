@@ -12,53 +12,58 @@ import {
 import { useEffect, useState } from "react";
 import { sendEmailUserInfo } from "../../../utils/apimodule/member";
 import { useNavigate } from "react-router-dom";
-import { userCompareState, emailSuccesses } from "../../../utils/recoil/atom";
-import { useSetRecoilState } from "recoil";
-import { sendEmailVerify } from "../../../utils/apimodule/member";
+import {
+  emailSuccesses,
+  userCompareState,
+  userCompareValues,
+} from "../../../utils/recoil/atom";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+// import { sendEmailVerify } from "../../../utils/apimodule/member";
 const SignupEmail = () => {
   const [email, setEmail] = useState("");
-  const [emailInState, setEmailInState] = useState(false);
-  const [emailSendon, setEmailSendon] = useState(false);
-  const [verifyEmail, setVerifyEmail] = useState("");
-  const setUserCompare = useSetRecoilState(userCompareState);
+  const [emailInState, setEmailInState] = useState<boolean | undefined>(false);
+  const [emailSendon, setEmailSendon] = useState<boolean | undefined>(false);
+  const [verifyEmail, setVerifyEmail] = useState<string>("");
+  const userCompare = useSetRecoilState(userCompareValues);
+  const compareValue = useRecoilValue(userCompareValues);
 
   const emailSuccessIn = useSetRecoilState(emailSuccesses);
   // 라우터 프로텍트 위한 아톰
   const navigate = useNavigate();
   /**
-   * 최초 인증하기 버튼
+   * 최초 인증하기 버튼     * 테스트용으로 잠시 지우
    */
-  const sendEmailedOn = async () => {
-    console.log(email);
+  // const sendEmailedOn = async () => {
+  //   console.log(email);
 
-    try {
-      const result = await sendEmailUserInfo(email);
-      if (result.success) {
-        setEmailSendon(true);
-      } else {
-        throw result;
-      }
-    } catch (error: any) {
-      alert(`실패: ${error.message}`);
-    }
-  };
+  //   try {
+  //     const result = await sendEmailUserInfo(email);
+  //     if (result.success) {
+  //       setEmailSendon(true);
+  //     } else {
+  //       throw result;
+  //     }
+  //   } catch (error: any) {
+  //     alert(`실패: ${error.message}`);
+  //   }
+  // };
 
   /**
    * sendEmailVeify로 인증번호 일치 확인
    */
 
-  const sendEmailedVerify = async () => {
-    try {
-      const result = await sendEmailVerify(verifyEmail);
-      if (result.success) {
-        setEmailInState(true);
-      } else {
-        throw result;
-      }
-    } catch (error: any) {
-      alert(`실패: ${error.message}`);
-    }
-  };
+  // const sendEmailedVerify = async () => {
+  //   try {
+  //     const result = await sendEmailVerify(verifyEmail);
+  //     if (result.success) {
+  //       setEmailInState(true);
+  //     } else {
+  //       throw result;
+  //     }
+  //   } catch (error: any) {
+  //     alert(`실패: ${error.message}`);
+  //   }
+  // };
 
   useEffect(() => {
     const defaultUserCompareState = {
@@ -69,27 +74,27 @@ const SignupEmail = () => {
       dpt: "",
       number: "",
     };
-    setUserCompare(defaultUserCompareState);
+    userCompare(defaultUserCompareState);
   }, []);
-
-  console.log(setUserCompare);
 
   const newValue = {
     email: email,
   };
+
   const stateUserInfo = (): Promise<void | undefined> => {
     emailSuccessIn(true);
     return new Promise((resolve, reject) => {
       try {
-        setUserCompare(newValue);
+        userCompare(newValue);
         navigate("/users/signupcompare");
-        console.log(newValue);
         resolve();
       } catch (error) {
         reject(error);
       }
     });
   };
+
+  console.log(newValue);
 
   return (
     <>
@@ -115,7 +120,7 @@ const SignupEmail = () => {
                     placeholder={"이메일을 입력해주세요"}
                     setValue={setEmail}
                   />
-                  <Button text={"이메일 인증하기"} onClick={sendEmailedOn} />
+                  {/* <Button text={"이메일 인증하기"} onClick={sendEmailedOn} /> */}
                 </>
               ) : (
                 <>
@@ -131,19 +136,19 @@ const SignupEmail = () => {
                     placeholder="인증번호를 입력해주세요"
                     setValue={setVerifyEmail}
                   />
-                  <Button text={"인증 하기"} onClick={sendEmailedVerify} />
-                  {emailInState ? (
+                  {/* <Button text={"인증 하기"} onClick={sendEmailedVerify} /> */}
+                  {/* {emailInState ? (
                     <EmailText color={"green"}>✅ 이메일 인증 완료!</EmailText>
                   ) : (
                     <EmailText color={"gray"}>00:00</EmailText>
-                  )}
+                  )} */}
                 </>
               )}
             </div>
           </div>
         </TopSection>
         <BottomSection>
-          {!emailInState ? (
+          {!emailInState ? ( // 이메일 인증이 원래 활성화 되었을때에 위치
             <Button text={"다음"} color={"#133488"} onClick={stateUserInfo} />
           ) : (
             <Button text={"다음"} color={"#a8a8a8"} />

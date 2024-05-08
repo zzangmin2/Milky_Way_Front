@@ -40,8 +40,8 @@ const MyInfo = () => {
   const infoValue = useSetRecoilState(userInfoState);
   const { userName, userEmail, userNickName, userCareerCard, userNumber } =
     useRecoilValue(userInfoState);
-  const [activeTab, setActiveTab] = useState("all");
-  const [edit, setEdit] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("all");
+  const [edit, setEdit] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [additionalInfo, setAdditionalInfo] = useState<string>("");
   const [modalType, setModalType] = useState<string>("");
