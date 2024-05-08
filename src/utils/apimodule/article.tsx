@@ -120,6 +120,10 @@ const viewArticleList = async () => {
   }
 };
 
+/**
+ * 마이페이지 정보 불러오기
+ * @returns success, data
+ */
 const viewMyInfo = async () => {
   try {
     const response = await api.get(`http://localhost:3000/memberInfo`);
@@ -135,6 +139,10 @@ const viewMyInfo = async () => {
   }
 };
 
+/**
+ * 이력서 정보 불러오기
+ * @returns success, data
+ */
 const viewMyCareer = async () => {
   try {
     const response = await api.get(`http://localhost:3000/memberCareer`);

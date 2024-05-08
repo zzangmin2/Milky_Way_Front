@@ -43,32 +43,27 @@ const sendEmailUserInfo = async (email: number | string) => {
 //   }
 // };
 /**
- * signupcompare에서 유저 아이디 및 패스워드 넘기기 => 성공시 버튼 활성화   atom으로 머지막에 한번에 넘김
+ * signupcompare에서 유저 아이디 중복확인 => 성공시 disabled atom으로 머지막에 한번에 넘김
  * @param id
- * @param password
  * @type {string | number}
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
-// const sendUserCompareInfo = async (
-//   id: number | string,
-//   password: string | number
-// ) => {
-//   try {
-//     const response = await api.post("", {
-//       signupId: id,
-//       signupPwd: password,
-//     });
+const sendUserCompareInfo = async (id: number | string) => {
+  try {
+    const response = await api.post("", {
+      signupId: id,
+    });
 
-//     if (response.data.success) {
-//       return { success: true };
-//     } else {
-//       return { success: false };
-//     }
-//   } catch (error) {
-//     console.error("error:", error);
-//     return { success: false, error: "error" };
-//   }
-// };
+    if (response.data.success) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
 
 /**
  * signupinfo에서 이름, 학과, 전화번호 넘기기 => 성공시 버튼 활성화
@@ -177,7 +172,7 @@ const sendUserEditCareer = async (
 };
 
 export {
-  // sendUserCompareInfo,
+  sendUserCompareInfo,
   sendEmailUserInfo,
   sendUserInfo,
   // sendEmailVerify,

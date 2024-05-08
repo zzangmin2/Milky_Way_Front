@@ -405,6 +405,30 @@ const MyInfo = () => {
                     <div>아직 없네요 ..</div>
                   )}
                 </ArticleApplyStateTableWrap>
+                <ArticleInfoCardWrap style={{ marginTop: "-70px" }}>
+                  <ArticleInfoCard
+                    navigateRoute="/articledetail/1"
+                    articleType={""}
+                    articleMentorNeeded={false}
+                    articleTitle={""}
+                    articleCurrentApply={0}
+                    articleApply={0}
+                    articleLikes={0}
+                    articleEndDay={""}
+                    articleRecruitmentState={false}
+                  />
+                  <ArticleInfoCard
+                    navigateRoute="/articledetail/1"
+                    articleType={""}
+                    articleMentorNeeded={false}
+                    articleTitle={""}
+                    articleCurrentApply={0}
+                    articleApply={0}
+                    articleLikes={0}
+                    articleEndDay={""}
+                    articleRecruitmentState={false}
+                  />
+                </ArticleInfoCardWrap>
               </section>
             </>
           )}

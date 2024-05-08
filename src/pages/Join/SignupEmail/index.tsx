@@ -94,8 +94,6 @@ const SignupEmail = () => {
     });
   };
 
-  console.log(newValue);
-
   return (
     <>
       <Box>
@@ -137,11 +135,11 @@ const SignupEmail = () => {
                     setValue={setVerifyEmail}
                   />
                   {/* <Button text={"인증 하기"} onClick={sendEmailedVerify} /> */}
-                  {/* {emailInState ? (
+                  {emailInState ? (
                     <EmailText color={"green"}>✅ 이메일 인증 완료!</EmailText>
                   ) : (
                     <EmailText color={"gray"}>00:00</EmailText>
-                  )} */}
+                  )}
                 </>
               )}
             </div>

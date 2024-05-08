@@ -19,6 +19,8 @@ import { useSetRecoilState, useRecoilValue } from "recoil";
 import SignupInput from "../SignupInput";
 import { emailSuccesses } from "../../../utils/recoil/atom";
 import ErrorPage from "../../RoutePage/ErrorPage";
+import { sendUserCompareInfo } from "../../../utils/apimodule/member";
+import { error } from "console";
 
 const SignupIdCompare = () => {
   const emailSuccessIn = useRecoilValue(emailSuccesses);
@@ -33,31 +35,31 @@ const SignupIdCompare = () => {
 
   const navigate = useNavigate();
 
-  // const sendUserInfo = async () => {
-  //   try {
-  //     const result = await sendUserCompareInfo(id, password);
-  //     if (result.success) {
-  //       setCompareInState(true);
-  //       alert("중복된 아이디가 없습니다"); //유저 인포 상태 스테이트?추가
-  //     } else {
-  //       throw result;
-  //     }
-  //   } catch (error: any) {
-  //     alert(`실패: ${error.message}`);
-  //   }
-  // };
+  const sendUseridVerify = async () => {
+    try {
+      const result = await sendUserCompareInfo(id);
+      if (result.success) {
+        setCompareInState(true);
+        alert("중복된 아이디가 없습니다");
+      } else {
+        // throw error;
+      }
+    } catch (error: any) {
+      alert(`실패: ${error.message}`);
+    }
+  };
 
   const stateUserInfo = (): Promise<void | undefined> => {
     return new Promise((resolve, reject) => {
       if (!id || !password || !confirmPassword) {
         alert("아이디와 비밀번호를 입력해주세요.");
-        setCompareInState(false);
+
         return;
       }
 
       if (password !== confirmPassword) {
         alert("비밀번호가 일치하지 않습니다.");
-        setCompareInState(false);
+
         return;
       } else {
         setConfirmPassword: Boolean(true);
@@ -98,14 +100,28 @@ const SignupIdCompare = () => {
               </p>
             </div>
             <div>
-              <SignupInput
-                placeholder={"아이디를 입력 해주세요"}
-                type="text"
-                name="id"
-                setValue={setId}
-              >
-                <button>saef</button>
-              </SignupInput>
+              {!compareInState ? (
+                <SignupInput
+                  placeholder={"아이디를 입력 해주세요"}
+                  type="verify"
+                  name="id"
+                  value={id}
+                  setValue={setId}
+                  onClick={sendUseridVerify}
+                />
+              ) : (
+                <>
+                  <SignupInput
+                    placeholder={"아이디를 입력 해주세요"}
+                    type="verify"
+                    disable
+                    name="id"
+                    value={id}
+                    onClick={sendUseridVerify}
+                  />
+                </>
+              )}
+
               <SignupInput
                 placeholder={"비밀번호를 입력 해주세요"}
                 name="password"
@@ -121,7 +137,7 @@ const SignupIdCompare = () => {
             </div>
           </TopSection>
           <BottomSection>
-            {!compareInState ? (
+            {compareInState ? (
               <Button text={"다음"} color={"#133488"} onClick={stateUserInfo} />
             ) : (
               <Button text={"다음"} color={"#a8a8a8"} />
