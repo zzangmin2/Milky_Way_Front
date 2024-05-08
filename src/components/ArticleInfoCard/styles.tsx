@@ -1,9 +1,12 @@
 import styled from "styled-components";
 
 export const StudyInfoCardWrap = styled.section`
+  width: 100%;
   border: 1px solid #d9d9d9;
+  background-color: #fff;
   border-radius: 20px;
   padding: 20px 20px 10px 20px;
+  box-sizing: border-box;
   cursor: pointer;
 
   > div > div.articleRecruitmentState {
