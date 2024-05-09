@@ -54,7 +54,7 @@ const ArticleDetailMenuModal = () => {
 
   return (
     <>
-      <ArticleDetailModal isOpen={articleDetailModalState}>
+      <ArticleDetailModal isopen={articleDetailModalState ? true : undefined}>
         <div onClick={handleArticleEditClick}>스터디/프로젝트 모집 완료</div>
         <div onClick={handleArticleDeleteClick}>
           스터디/프로젝트 모집 글 삭제
