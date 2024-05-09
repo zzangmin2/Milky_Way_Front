@@ -61,11 +61,7 @@ const router = createBrowserRouter([
         element: <LayoutPage type={"articleDetail"} />,
         children: [
           {
-            path: "intro",
-            element: <ArticleDetailPage />,
-          },
-          {
-            path: "qna",
+            path: "",
             element: <ArticleDetailPage />,
           },
         ],

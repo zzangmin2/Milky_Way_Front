@@ -22,6 +22,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { viewCurrentArticle } from "../../utils/apimodule/article";
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
+import moment from "moment";
 
 const ArticleDetail = () => {
   //현재 페이지에서 보여주고 있는 article 데이터
@@ -34,17 +35,10 @@ const ArticleDetail = () => {
 
   const { articleId } = useParams();
 
-  const navigate = useNavigate();
-
   // 마운트 시 해당 article 불러옴
   useEffect(() => {
     loadCurrentArticle();
   }, []);
-
-  //모두/스터디/프로젝트 네비게이션 변경 시
-  useEffect(() => {
-    navigate(`/articledetail/${articleId}/${articleDetailIntroOrQnaState}`);
-  }, [articleDetailIntroOrQnaState]);
 
   // 해당 article 불러오는 함수
   const loadCurrentArticle = async () => {
@@ -97,7 +91,27 @@ const ArticleDetail = () => {
     }
   };
 
-  //
+  // 게시물 시간과 현재 시간 사이의 간격 표현 함수
+  const getTimeAgo = (dateTime: string) => {
+    const now = moment();
+    const targetDateTime = moment(dateTime);
+
+    const diffInMinutes = now.diff(targetDateTime, "minutes");
+    const diffInHours = now.diff(targetDateTime, "hours");
+    const diffInDays = now.diff(targetDateTime, "days");
+
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes} 분 전`;
+    } else if (diffInHours < 24) {
+      return `${diffInHours} 시간 전`;
+    } else if (diffInDays < 14) {
+      return `${diffInDays} 일 전`;
+    } else {
+      return targetDateTime.format("YYYY-MM-DD");
+    }
+  };
+
+  // 소개 / qna 탭 클릭 함수
   const handleTabClick = (tab: string) => {
     setArticleDetailIntroOrQnaState(tab);
   };
@@ -149,8 +163,8 @@ const ArticleDetail = () => {
                     </p>
                   </div>
                   <div>
-                    <p>모집 시작 날짜</p>
-                    <p>{articleCurrentState.articleStartDay}</p>
+                    <p>모집 시작일</p>
+                    <p>{getTimeAgo(articleCurrentState.articleStartDay)}</p>
                   </div>
                 </div>
               </div>
