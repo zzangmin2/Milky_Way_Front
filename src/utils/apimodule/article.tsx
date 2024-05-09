@@ -62,10 +62,11 @@ const sendNewArticle = async (newArticleData: Article) => {
 const viewCurrentArticle = async (articleId: number) => {
   try {
     const response = await api.get(
-      `http://localhost:3000/currentArticle?articleId=${articleId}`
+      `http://localhost:8080/posts/${articleId}`
+      // `http://localhost:3000/currentArticle?articleId=${articleId}`
     );
     if (response.data) {
-      return response.data[0];
+      return response.data;
     } else {
       return { success: false };
     }

@@ -21,6 +21,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { viewCurrentArticle } from "../../utils/apimodule/article";
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
+import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
 
 const ArticleDetail = () => {
   //현재 페이지에서 보여주고 있는 article 데이터
@@ -37,9 +38,7 @@ const ArticleDetail = () => {
 
   // 마운트 시 해당 article 불러옴
   useEffect(() => {
-    console.log(articleId);
     loadCurrentArticle();
-    console.log(articleCurrentState);
   }, []);
 
   //모두/스터디/프로젝트 네비게이션 변경 시
@@ -54,26 +53,40 @@ const ArticleDetail = () => {
         const result = await viewCurrentArticle(parseInt(articleId));
 
         if (result) {
-          console.log("불러오기 성공!");
           setArticleCurrentState({
-            articleId: result.articleId,
-            articleMemberId: result.articleMemberId,
+            articleId: result.article_no,
+            articleMemberId: "testuser",
             articleType: result.articleType,
-            articleTitle: result.articleTitle,
-            articleContent: result.articleContent,
-            articleLikes: result.articleLikes,
-            articleApply: result.articleApply,
-            articleApplyNow: result.articleApplyNow,
-            articleStartDay: result.articleStartDay,
-            articleEndDay: result.articleEndDay,
-            articleRecruitmentState:
-              new Date(result.articleEndDay).getTime() - new Date().getTime() >
-              0
-                ? true
-                : false,
-            articleMentorNeeded: result.articleMentorNeeded,
-            articleMentorTag: result.articleMentorTag,
-            articleApplyState: result.articleApplyState,
+            articleTitle: result.title,
+            articleContent: result.content,
+            articleLikes: result.likes,
+            articleApply: result.apply,
+            articleApplyNow: result.applyNow,
+            articleStartDay: result.startDay,
+            articleEndDay: result.endDay,
+            articleRecruitmentState: result.recurit,
+            articleMentorNeeded: result.findMentor,
+            articleMentorTag: result.metorTag,
+            articleApplyState: [
+              {
+                id: 1,
+                applicantName: "김복이",
+                applicationDate: "2024-01-22",
+                status: "선정",
+              },
+              {
+                id: 2,
+                applicantName: "김마니",
+                applicationDate: "2024-01-29",
+                status: "신청",
+              },
+              {
+                id: 3,
+                applicantName: "김정민",
+                applicationDate: "2024-01-25",
+                status: "반려",
+              },
+            ],
           });
         } else {
           throw result;
@@ -92,7 +105,7 @@ const ArticleDetail = () => {
   return (
     <>
       <ArticleDetailMenuModal />
-      {articleCurrentState && (
+      {articleCurrentState.articleId > 0 && (
         <ArticleDetailWrap>
           <TopSection>
             <ArticleInfoStateWrap>
@@ -168,15 +181,14 @@ const ArticleDetail = () => {
           {articleDetailIntroOrQnaState === "intro" ? (
             <>
               <ArticleIntrowrap>
-                {articleCurrentState.articleMentorTag.length >= 1 ? (
+                {articleCurrentState.articleMentorTag.length >= 1 && (
                   <p className="mentorTagTitle">우리에게 필요한 멘토는?</p>
-                ) : (
-                  ""
                 )}
                 <div className="mentorTagWrapper">
                   {articleCurrentState.articleMentorTag.length >= 1 &&
                     articleCurrentState.articleMentorTag
                       .split("#")
+                      .filter((tag) => tag !== "")
                       .map((tag, idx) => {
                         return (
                           <p className="mentorTag" key={idx}>
@@ -214,7 +226,7 @@ const ArticleDetail = () => {
                     <div className="tableCell">신청일</div>
                     <div className="tableCell">상태</div>
                   </div>
-                  {articleCurrentState.articleApplyState ? (
+                  {articleCurrentState.articleApplyState.length >= 1 ? (
                     articleCurrentState.articleApplyState.map(
                       (applicant, idx) => {
                         return (
@@ -232,10 +244,12 @@ const ArticleDetail = () => {
                       }
                     )
                   ) : (
-                    <div>아직 없네요 ..</div>
+                    <>
+                      <div className="noApplicantMessage">아직 없네요 ..</div>
+                    </>
                   )}
                 </ArticleApplyStateTableWrap>
-              </section>{" "}
+              </section>
             </>
           ) : (
             <div>
