@@ -194,20 +194,25 @@ export const ArticleApplyStateTableWrap = styled.div`
   grid-template-rows: repeat(4, 1fr);
   font-size: 0.9rem;
 
-  .tableRow {
+  div.tableRow {
     display: grid;
     grid-template-columns: 14% 23% 47% 16%;
     border-bottom: 1px solid #d1d1d1;
     padding: 5px;
   }
 
-  .tableRowTop {
+  div.tableRowTop {
+    height: 30px;
     border-bottom: 2px solid #d1d1d1;
-    padding: 0 5px;
   }
 
-  .tableCell {
+  div.tableCell {
     padding: 5px;
     text-align: center;
+  }
+
+  div.noApplicantMessage {
+    text-align: center;
+    padding: 20px;
   }
 `;
