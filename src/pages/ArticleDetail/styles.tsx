@@ -4,8 +4,14 @@ export const ArticleDetailWrap = styled.section`
   width: 100%;
   padding: 0 20px;
   box-sizing: border-box;
-  overflow-y: scroll;
-
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #ccc;
+  }
   > .buttonWrap {
     position: fixed;
     width: 340px;
