@@ -12,6 +12,7 @@ import {
   InputCareer,
   FirstInfoContentTitle,
   InfoContentLineText,
+  MyInfoContentEdit,
 } from "./style";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -24,8 +25,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 const MyCareer = () => {
   const careerValue: any = useSetRecoilState(userCareerState);
-  const { userName, userCareer, userCertificate, userLineText } =
-    useRecoilValue(userCareerState);
+  const {
+    userName,
+    userCareer = [],
+    userCertificate = [],
+    userLineText,
+  } = useRecoilValue(userCareerState);
 
   const [edit, setEdit] = useState(true);
   const clickEdit = () => {
@@ -87,12 +92,15 @@ const MyCareer = () => {
     try {
       const data = await viewMyCareer();
       const result = data.data;
+      console.log(result);
       careerValue({
         userName: result.userName,
         userCareer: result.userCareer,
         userCertificate: result.userCertificate,
         userLineText: result.userLineText,
       });
+
+      console.log(careerValue.userCareer);
     } catch (error) {
       console.error("error", error);
     }
@@ -103,32 +111,42 @@ const MyCareer = () => {
   }, []);
 
   const addCareerInput = () => {
-    careerValue((prev: { userCareer: any }) => ({
-      ...prev,
-      userCareer: [
-        ...prev.userCareer,
-        {
-          id: prev.userCareer.length + 1,
-          careerCompany: "",
-          careerFirstDate: "",
-          careerLastDate: "",
-        },
-      ],
-    }));
+    try {
+      careerValue((prev: { userCareer: any }) => ({
+        ...prev,
+        userCareer: [
+          ...prev.userCareer,
+          {
+            id: prev.userCareer.length + 1,
+            careerCompany: "",
+            careerFirstDate: "",
+            careerLastDate: "",
+          },
+        ],
+      }));
+    } catch (error: any) {
+      alert("경력 추가 실패");
+      throw error;
+    }
   };
 
   const addCertificateInput = () => {
-    careerValue((prev: { userCertificate: any[] }) => ({
-      ...prev,
-      userCertificate: [
-        ...prev.userCertificate,
-        {
-          id: prev.userCertificate.length + 1,
-          certificateName: "",
-          certificateDate: "",
-        },
-      ],
-    }));
+    try {
+      careerValue((prev: { userCertificate: any[] }) => ({
+        ...prev,
+        userCertificate: [
+          ...prev.userCertificate,
+          {
+            id: prev.userCertificate.length + 1,
+            certificateName: "",
+            certificateDate: "",
+          },
+        ],
+      }));
+    } catch (errror) {
+      alert("자격증 추가 실패!");
+      throw errror;
+    }
   };
 
   const deleteCertificate = (certificateId: any) => {
@@ -156,12 +174,25 @@ const MyCareer = () => {
         <MyInfoTitle>
           <div>이력서</div>
         </MyInfoTitle>
-        <MyInfoContent>
-          <FirstInfoContentTitle>{userName} @ktg5679</FirstInfoContentTitle>
-          <div>대림대학교</div>
-          <div>컴퓨터정보학부</div>
-          <div>010-2992-5679</div>
-        </MyInfoContent>
+        {edit ? (
+          <MyInfoContent>
+            <FirstInfoContentTitle>{userName} @ktg5679</FirstInfoContentTitle>
+            <div>대림대학교</div>
+            <div>010-2992-5679</div>
+            <div>컴퓨터정보학부</div>
+            <div>안양시 만안구 안양1동</div>
+          </MyInfoContent>
+        ) : (
+          <>
+            <MyInfoContentEdit>
+              <FirstInfoContentTitle>{userName} @ktg5679</FirstInfoContentTitle>
+              <div>대림대학교</div>
+              <div>010-2992-5679</div>
+              <input placeholder="학과를 입력해주세요" />
+              <input placeholder="지역을 입력하세요" />
+            </MyInfoContentEdit>
+          </>
+        )}
         <MyInfoCareer>
           {edit ? (
             <>

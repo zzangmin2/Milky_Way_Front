@@ -18,11 +18,17 @@ import {
   ArticleCurrentState,
   articleDetailIntroOrQnaTabState,
 } from "../../utils/recoil/atom";
+import Modal from "../../components/Modal";
 import { useNavigate, useParams } from "react-router-dom";
 import { viewCurrentArticle } from "../../utils/apimodule/article";
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 
 const ArticleDetail = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModalMemberCareer = () => {
+    setModalOpen(true);
+  };
   //현재 페이지에서 보여주고 있는 article 데이터
   const [articleCurrentState, setArticleCurrentState] =
     useRecoilState(ArticleCurrentState);
@@ -202,7 +208,12 @@ const ArticleDetail = () => {
                             <div className="tableCell">
                               {applicant.applicationDate}
                             </div>
-                            <div className="tableCell">{applicant.status}</div>
+                            <div
+                              className="tableCell"
+                              onClick={openModalMemberCareer}
+                            >
+                              {applicant.status}
+                            </div>
                           </div>
                         );
                       }
@@ -219,6 +230,19 @@ const ArticleDetail = () => {
               <br />
               조금만 기다려주세요!
             </div>
+          )}
+          {modalOpen ? (
+            <>
+              <Modal
+                show={false}
+                handleClose={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                modalType={undefined}
+              ></Modal>
+            </>
+          ) : (
+            <></>
           )}
         </ArticleDetailWrap>
       )}

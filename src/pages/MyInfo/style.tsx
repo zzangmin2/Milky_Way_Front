@@ -39,16 +39,14 @@ export const InfoTitle = styled.div`
 `;
 export const InfoContent = styled.div`
   display: flex;
-  height: 80%;
+  height: 80px;
   flex-direction: row;
-  margin: 0 10px;
+  margin: 0 10px 10px 0;
   border-bottom: 1px solid #f1f1f1;
   outline: none;
-
   align-items: center;
   & > div:nth-child(1) {
     color: #73819c;
-
     display: flex;
     align-items: center;
     font-weight: bold;
@@ -72,7 +70,7 @@ export const BottomSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin-top: 50px;
+  margin-top: -40px;
 `;
 
 export const InfoNav = styled.nav`

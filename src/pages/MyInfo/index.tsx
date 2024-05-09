@@ -55,6 +55,7 @@ const MyInfo = () => {
     try {
       const data: any = await viewMyInfo();
       const result = data.data;
+      console.log(result);
       infoValue({
         userName: result.userName,
         userEmail: result.userEmail,
@@ -62,6 +63,8 @@ const MyInfo = () => {
         userCareerCard: result.userCareerCard,
         userNumber: result.userNumber,
       });
+
+      console.log(infoValue);
     } catch (error) {
       console.error("error", error);
     }
@@ -75,9 +78,7 @@ const MyInfo = () => {
     try {
       const response: any = await sendUserEditInfo(
         editUser.userName,
-        editUser.userNickName,
         editUser.userEmail,
-        editUser.userCareerCard,
         editUser.userNumber
       );
       if (response.data.success) {
@@ -126,13 +127,13 @@ const MyInfo = () => {
             )}
           </InfoTitle>
           <InfoContent>
-            <div>수신용 이메일</div>
+            <div>이메일</div>
             <div>
               {edit ? (
                 <>
                   <input
                     type="text"
-                    placeholder={userEmail}
+                    placeholder={"이메일을 입력하세요"}
                     value={editUser.userEmail}
                     onChange={(e) => {
                       setEditUser({
@@ -150,37 +151,13 @@ const MyInfo = () => {
             </div>
           </InfoContent>
           <InfoContent>
-            <div>닉네임</div>
-            <div>
-              {edit ? (
-                <>
-                  <input
-                    type="text"
-                    placeholder={userNickName}
-                    value={editUser.userNickName}
-                    onChange={(e) => {
-                      setEditUser({
-                        ...editUser,
-                        userNickName: e.target.value,
-                      });
-                    }}
-                  ></input>
-                </>
-              ) : (
-                <>
-                  <p>{userNickName}</p>
-                </>
-              )}
-            </div>
-          </InfoContent>
-          <InfoContent>
             <div>이름</div>
             <div>
               {edit ? (
                 <>
                   <input
                     type="text"
-                    placeholder={userName}
+                    placeholder={"이름을 입력해주세요"}
                     value={editUser.userName}
                     onChange={(e) => {
                       setEditUser({
@@ -198,37 +175,13 @@ const MyInfo = () => {
             </div>
           </InfoContent>
           <InfoContent>
-            <div>커리어카드</div>
-            <div>
-              {edit ? (
-                <>
-                  <input
-                    type="text"
-                    placeholder={userCareerCard}
-                    value={editUser.userCareerCard}
-                    onChange={(e) => {
-                      setEditUser({
-                        ...editUser,
-                        userCareerCard: e.target.value,
-                      });
-                    }}
-                  ></input>
-                </>
-              ) : (
-                <>
-                  <p>{userCareerCard}</p>
-                </>
-              )}
-            </div>
-          </InfoContent>
-          <InfoContent>
             <div>전화번호</div>
             <div>
               {edit ? (
                 <>
                   <input
                     type="text"
-                    placeholder={userNumber}
+                    placeholder={"전화번호를 입력해주세요"}
                     value={editUser.userNumber}
                     onChange={(e) => {
                       setEditUser({

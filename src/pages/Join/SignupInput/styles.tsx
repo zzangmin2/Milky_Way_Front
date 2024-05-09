@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 export const StyledInputContainer = styled.div`
   position: relative;
+  &:focus {
+    outline: none;
+  }
   & > button:nth-child(2) {
     position: absolute;
     background-color: #133482;

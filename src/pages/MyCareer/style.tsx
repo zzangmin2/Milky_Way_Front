@@ -36,6 +36,26 @@ export const MyInfoContent = styled.section`
   flex-basis: 55px;
   height: 100%;
 `;
+
+export const MyInfoContentEdit = styled.section`
+  flex-directon: column;
+  flex: 1;
+  margin-top: 15px;
+  flex-basis: 55px;
+  height: 100%;
+  & > input {
+    border: none;
+    background-color: none;
+    padding: 0 10px 10px 0px;
+    margin-top: 19px;
+    font-size: 15px;
+    width: 50%;
+    &:focus {
+      outline: none;
+    }
+  }
+`;
+
 export const MyInfoCareer = styled.section`
   flex: 1;
   display: flex;

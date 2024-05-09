@@ -118,19 +118,14 @@ const sendUserInfo = async (
  */
 const sendUserEditInfo = async (
   name: string,
-  nickName: string,
   userEmail: string,
-  careerCard: string,
   phoneNumber: string
 ) => {
   try {
     const response = await api.post("/users/usereditinfo", {
       userName: name,
       userEmail: userEmail,
-      userCareerCard: careerCard,
       userPhoneNumber: phoneNumber,
-      userNickName: nickName,
-      phoneNumber: phoneNumber,
     });
     if (response.data.success) {
       return { success: true };
