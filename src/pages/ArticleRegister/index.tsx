@@ -51,13 +51,15 @@ const ArticleRegister = () => {
       const result = await sendNewArticle({
         ...data,
         articleMentorTag: articleMentorTagArr,
-        articleLikes: 0,
-        articleId: 11,
-        articleRecruitmentState: true,
+        // articleLikes: 0,
+        // articleId: 11,
+        // articleRecruitmentState: true,
         articleStartDay: new Date().toISOString(),
-        articleApplyNow: 0,
+        // articleApplyNow: 0,
         articleMentorNeeded: articleMentorNeeded === "yes" ? true : false,
       });
+
+      console.log(result);
 
       if (result.success) {
         alert("등록 완료!");
