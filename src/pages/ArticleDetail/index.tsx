@@ -34,17 +34,10 @@ const ArticleDetail = () => {
 
   const { articleId } = useParams();
 
-  const navigate = useNavigate();
-
   // 마운트 시 해당 article 불러옴
   useEffect(() => {
     loadCurrentArticle();
   }, []);
-
-  //모두/스터디/프로젝트 네비게이션 변경 시
-  useEffect(() => {
-    navigate(`/articledetail/${articleId}/${articleDetailIntroOrQnaState}`);
-  }, [articleDetailIntroOrQnaState]);
 
   // 해당 article 불러오는 함수
   const loadCurrentArticle = async () => {
@@ -97,7 +90,7 @@ const ArticleDetail = () => {
     }
   };
 
-  //
+  // 소개 / qna 탭 클릭 함수
   const handleTabClick = (tab: string) => {
     setArticleDetailIntroOrQnaState(tab);
   };
