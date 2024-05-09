@@ -1,7 +1,7 @@
 export interface Article {
   articleMemberId: string;
   articleType: string;
-  articleApply: number;
+  articleApply: string;
   articleMentorNeeded: boolean | string;
   articleMentorTag: string;
   articleStartDay: string;
