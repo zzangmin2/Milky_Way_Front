@@ -21,10 +21,13 @@ import { viewMyCareer } from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { userCareerState } from "../../utils/recoil/atom";
 import { sendUserEditCareer } from "../../utils/apimodule/member";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faTrash } from "@fortawesome/free-solid-svg-icons";
 const MyCareer = () => {
+  // 커리어 상태값 리코일사용
   const careerValue: any = useSetRecoilState(userCareerState);
+
+  //구조분해 할당
   const {
     userName,
     userCareer = [],
@@ -32,12 +35,16 @@ const MyCareer = () => {
     userLineText,
   } = useRecoilValue(userCareerState);
 
+  // 수정상태인지 아닌지 확인하는 state
   const [edit, setEdit] = useState(true);
   const clickEdit = () => {
     setEdit(false);
   };
 
-  console.log(userCertificate);
+  /**
+   * 유효성 검사 후에 수정된 이력서 데이터 article api module을 거쳐서 백엔드로 전송
+   * @returns
+   */
   const sendCareerEdit = async () => {
     try {
       const emptyCareerNames = userCareer.filter(
@@ -70,6 +77,8 @@ const MyCareer = () => {
         return;
       }
 
+      console.log(userCertificate);
+
       const response = await sendUserEditCareer(
         userName,
         userCareer,
@@ -88,28 +97,34 @@ const MyCareer = () => {
     }
   };
 
+  /**
+   * 초기 유저데이터 담아와 usesetrecoil인 careervalue에 값 넣기
+   */
   const userInfoData = async () => {
     try {
       const data = await viewMyCareer();
       const result = data.data;
-      console.log(result);
       careerValue({
         userName: result.userName,
         userCareer: result.userCareer,
         userCertificate: result.userCertificate,
         userLineText: result.userLineText,
       });
-
-      console.log(careerValue.userCareer);
     } catch (error) {
       console.error("error", error);
     }
   };
 
+  /**
+   * 페이지가 마운트될때 유저데이터 불러옴
+   */
   useEffect(() => {
     userInfoData();
   }, []);
 
+  /**
+   * 경력 추가버튼시 추가 input창 활성화
+   */
   const addCareerInput = () => {
     try {
       careerValue((prev: { userCareer: any }) => ({
@@ -130,6 +145,9 @@ const MyCareer = () => {
     }
   };
 
+  /**
+   * 자격증 추가버튼시 추가 certificate창 활성화
+   */
   const addCertificateInput = () => {
     try {
       careerValue((prev: { userCertificate: any[] }) => ({
@@ -149,6 +167,10 @@ const MyCareer = () => {
     }
   };
 
+  /**
+   * id에 맞는 certificate지움
+   * @param certificateId
+   */
   const deleteCertificate = (certificateId: any) => {
     careerValue((prev: any) => ({
       ...prev,
@@ -159,6 +181,10 @@ const MyCareer = () => {
     console.log(certificateId);
   };
 
+  /**
+   * id에 맞는 career지움
+   * @param careerId
+   */
   const deleteCareer = (careerId: any) => {
     careerValue((prev: any) => ({
       ...prev,
@@ -188,8 +214,8 @@ const MyCareer = () => {
               <FirstInfoContentTitle>{userName} @ktg5679</FirstInfoContentTitle>
               <div>대림대학교</div>
               <div>010-2992-5679</div>
-              <input placeholder="학과를 입력해주세요" />
-              <input placeholder="지역을 입력하세요" />
+              <input placeholder="- 학과를 입력해주세요" />
+              <input placeholder="- 지역을 입력하세요" />
             </MyInfoContentEdit>
           </>
         )}
@@ -272,11 +298,9 @@ const MyCareer = () => {
                     onClick={() => {
                       deleteCareer(career.id);
                     }}
+                    style={{ fontSize: "20px", fontWeight: "bold" }}
                   >
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      style={{ color: "#ff3333" }}
-                    />
+                    -
                   </p>
                 </InputCareer>
               ))}
@@ -340,12 +364,13 @@ const MyCareer = () => {
                       }))
                     }
                   ></input>
-                  <p onClick={() => deleteCertificate(certificate.id)}>
-                    {" "}
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      style={{ color: "#ff3333" }}
-                    />
+                  <p
+                    onClick={() => {
+                      deleteCertificate(certificate.id);
+                    }}
+                    style={{ fontSize: "20px", fontWeight: "bold" }}
+                  >
+                    -
                   </p>
                 </InputCareer>
               ))}

@@ -23,6 +23,7 @@ export const MyInfoTitle = styled.section`
   flex-grow: 1;
   display: flex;
   font-weight: bold;
+  margin-top: 10px;
   margin-bottom: 20px;
   font-size: 20px;
   flex-basis: 20px;
@@ -35,18 +36,27 @@ export const MyInfoContent = styled.section`
   margin-top: 15px;
   flex-basis: 55px;
   height: 100%;
+  & > div {
+    padding-bottom: 15px;
+  }
+  & > input {
+  }
 `;
 
-export const MyInfoContentEdit = styled.section`
+export const MyInfoContentEdit = styled(MyInfoContent)`
   flex-directon: column;
   flex: 1;
   margin-top: 15px;
   flex-basis: 55px;
   height: 100%;
+
   & > input {
     border: none;
+    
+    color: gray;
     background-color: none;
     padding: 0 10px 10px 0px;
+\
     margin-top: 19px;
     font-size: 15px;
     width: 50%;
@@ -106,13 +116,9 @@ export const FirstInfoContentTitle = styled(InfoContentTitle)`
   align-items: flex-end;
   justify-content: space-between;
   border-bottom: 1px solid #f1f1f1;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   margin-bottom: 20px;
   border: none;
-  & > p {
-    display: flex;
-    align-items: flex-end;
-  }
 `;
 
 export const InfoContentText = styled.div`

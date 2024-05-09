@@ -6,21 +6,21 @@ import api from "../api/axiosInstance";
  * @type {number | string} 이메일
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
-const sendEmailUserInfo = async (email: number | string) => {
-  try {
-    const response = await api.post("/users/signupemailform", {
-      signupEmail: email,
-    });
-    if (response.data.success) {
-      return { success: true };
-    } else {
-      return { success: false };
-    }
-  } catch (error) {
-    console.error("error:", error);
-    return { success: false, error: "error" };
-  }
-};
+// const sendEmailUserInfo = async (email: number | string) => {
+//   try {
+//     const response = await api.post("/users/signupemailform", {
+//       signupEmail: email,
+//     });
+//     if (response.data.success) {
+//       return { success: true };
+//     } else {
+//       return { success: false };
+//     }
+//   } catch (error) {
+//     console.error("error:", error);
+//     return { success: false, error: "error" };
+//   }
+// };
 /**
  * signupemail에서 이메일 인증번호 확인 => 다음으로 버튼 활성화
  * @param verifyEmail
@@ -86,13 +86,13 @@ const sendUserInfo = async (
   email: string | undefined
 ) => {
   try {
-    const response = await api.post("/users/signupinfo", {
-      signupName: name,
-      signupDpt: dpt,
-      signupNumber: number,
-      signupEmail: email,
-      signupId: id,
-      signupPwd: password,
+    const response = await api.post("/signup", {
+      name: name,
+      Role: dpt,
+      tel: number,
+      email: email,
+      id: id,
+      password: password,
     });
 
     if (response.data.success) {
@@ -154,7 +154,12 @@ const sendUserEditCareer = async (
   userLineText: any
 ) => {
   try {
-    const response = await api.post("/users/userediticareer", {});
+    const response = await api.post("/users/userediticareer", {
+      userName,
+      userCareer,
+      userCertificate,
+      userLineText,
+    });
     if (response.data.success) {
       return { success: true };
     } else {
@@ -168,7 +173,7 @@ const sendUserEditCareer = async (
 
 export {
   sendUserCompareInfo,
-  sendEmailUserInfo,
+  // sendEmailUserInfo,
   sendUserInfo,
   // sendEmailVerify,
   sendUserEditInfo,

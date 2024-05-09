@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 interface ArticleDetailModalProps {
-  isOpen: boolean;
+  isopen: boolean | undefined;
 }
 
 export const ArticleDetailModal = styled.div<ArticleDetailModalProps>`
@@ -17,11 +17,11 @@ export const ArticleDetailModal = styled.div<ArticleDetailModalProps>`
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   background-color: #fff;
-  opacity: ${(props) => (props.isOpen ? 1 : 0)};
+  opacity: ${(props) => (props.isopen ? 1 : 0)};
   transform: ${(props) =>
-    props.isOpen ? "translate(-50%, -50%)" : "translate(-50%, -60%)"};
+    props.isopen ? "translate(-50%, -50%)" : "translate(-50%, -60%)"};
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-  pointer-events: ${(props) => (props.isOpen ? "auto" : "none")};
+  pointer-events: ${(props) => (props.isopen ? "auto" : "none")};
 
   & > div {
     padding: 16px 0;

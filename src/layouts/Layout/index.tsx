@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { BottomNav, Header, NavigationLayout } from "./styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,25 +9,48 @@ import {
   faArrowLeft,
   faEllipsisVertical,
 } from "@fortawesome/free-solid-svg-icons";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { articleDetailModalClickState } from "../../utils/recoil/atom";
+import {
+  articleDetailModalClickState,
+  navState,
+} from "../../utils/recoil/atom";
 
 interface Props {
   type?: string;
 }
 
 const Layout: FC<Props> = ({ type }) => {
-  const [activePage, setActivePage] = useState("home");
+  //현재 네비게이션 바에서 활성화된 페이지 버튼
+  const [activePage, setActivePage] = useRecoilState(navState);
+
+  //article 상세페이지의 메뉴 버튼 클릭 상태
   const [articleDetailModalState, setArticleDetailModalState] = useRecoilState(
     articleDetailModalClickState
   );
-
-  const handlePageClick = (tab: string) => {
-    setActivePage(tab);
-  };
-
+  //현재 있는 페이지의 주소
+  const location = useLocation();
   const navigate = useNavigate();
+
+  //페이지 변경 시 네비게이션 바에서 활성화 된 페이지 버튼 변경
+  useEffect(() => {
+    let page = "";
+    if (location.pathname === "/home/mycareer") {
+      page = "career";
+    } else if (
+      location.pathname === "/home/articlelist/all" ||
+      location.pathname === "/home/articlelist/study" ||
+      location.pathname === "/home/articlelist/project"
+    ) {
+      page = "list";
+    } else if (location.pathname === "/home") {
+      page = "home";
+    }
+    console.log("페이지" + page);
+    if (page) {
+      setActivePage(page);
+    }
+  }, [location.pathname]);
 
   return (
     <>
@@ -35,13 +58,7 @@ const Layout: FC<Props> = ({ type }) => {
         <Header>
           {/* home 페이지인 경우 -> 로고 / 나머지 -> 이전 버튼 */}
           {type === "home" ? (
-            <div
-              className="milkyWayLogo"
-              onClick={() => {
-                navigate("/home");
-                handlePageClick("home");
-              }}
-            />
+            <div className="milkyWayLogo" onClick={() => navigate("/home")} />
           ) : (
             <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)} />
           )}
@@ -60,7 +77,6 @@ const Layout: FC<Props> = ({ type }) => {
               icon={faUser}
               onClick={() => {
                 navigate("/home/myinfo");
-                handlePageClick("mypage");
               }}
             />
           )}
@@ -69,10 +85,10 @@ const Layout: FC<Props> = ({ type }) => {
         <BottomNav>
           <ul>
             <li
+              // css를 위한 클래스 네임 변경
               className={activePage === "home" ? "activePage" : ""}
               onClick={() => {
                 navigate("/home");
-                handlePageClick("home");
               }}
             >
               <FontAwesomeIcon icon={faHome} />
@@ -82,7 +98,6 @@ const Layout: FC<Props> = ({ type }) => {
               className={activePage === "list" ? "activePage" : ""}
               onClick={() => {
                 navigate("/home/articlelist");
-                handlePageClick("list");
               }}
             >
               <FontAwesomeIcon icon={faPen} />
@@ -92,7 +107,6 @@ const Layout: FC<Props> = ({ type }) => {
               className={activePage === "career" ? "activePage" : ""}
               onClick={() => {
                 navigate("/home/mycareer");
-                handlePageClick("career");
               }}
             >
               <FontAwesomeIcon icon={faFile} />
