@@ -72,8 +72,19 @@ const ArticleList = () => {
     try {
       const result = await viewArticleList();
       if (result) {
-        setArticleListState(result);
-        console.log(result);
+        const transformedData = result.map((item: any) => ({
+          articleId: item.article_no,
+          articleTitle: item.title,
+          articleMentorNeeded: item.findMentor,
+          articleEndDay: item.endDay,
+          articleLikes: item.likes,
+          articleRecruitmentState: item.recruit,
+          articleApply: item.apply,
+          articleApplyNow: item.applyNow,
+          articleType: item.articleType,
+        }));
+        setArticleListState(transformedData);
+        console.log(transformedData);
       }
     } catch (error: any) {
       console.log(`다시 시도해주세요: ${error.message}`);

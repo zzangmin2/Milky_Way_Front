@@ -105,9 +105,11 @@ const deleteCurrentArticle = async (articleId: number) => {
 
 const viewArticleList = async () => {
   try {
-    const response = await api.get(`http://localhost:3000/currentArticle`);
+    const response = await api.get("http://localhost:8080/posts/list");
+    // const response = await api.get(`http://localhost:3000/currentArticle`);
     if (response.data) {
-      return response.data;
+      console.log(response.data.content);
+      return response.data.content;
     } else {
       return { success: false };
     }
