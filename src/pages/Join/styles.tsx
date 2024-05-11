@@ -58,6 +58,17 @@ export const TopSection = styled.section`
     flex-direction: column;
     display: flex;
   }
+
+  & > div:nth-child(4) {
+    justify-content: flex-start;
+    text-align: right;
+    color: red;
+    font-size: 14px;
+    flex-direction: row;
+    width: 100%;
+    margin-top: -10px;
+    display: flex;
+  }
 `;
 
 export const ProgressContainer = styled.div`

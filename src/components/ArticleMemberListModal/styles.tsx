@@ -1,22 +1,47 @@
 import styled from "styled-components";
 
-export const Section = styled.div`
-  padding: 0 30px;
-  display: flex;
-  height: auto;
-  overflow-y: scroll;
-  flex-direction: column;
-  &::-webkit-scrollbar {
+export const ModalWrapper = styled.div`
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100vw;
+  width: 80%;
+  background-color: white;
+  padding: 5px 10px 5px 10px;
+  border-radius: 10px;
+  box-shadow: 0px 3px 2px 4px rgba(0, 0, 0, 0.1);
+  @media (max-width: 1200px) {
+    max-width: 300px;
+  }
+  ::-webkit-scrollbar,
+  ::-webkit-scrollbar-vertical {
     display: none;
   }
 `;
 
-export const TopSection = styled.section`
-  display: flex;
-  flex-direction: column;
+export const ModalContent = styled.div`
+  margin-bottom: 20px;
+  margin: 0 20px;
+  height: 500px;
+  @media (max-width: 1200px) {
+    max-height: 540px;
+  }
 
-  flex: 1;
-  height: auto;
+  justify-content: flex-start;
+  flex-direction: column;
+  overflow-y: scroll;
+`;
+
+export const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #333;
 `;
 
 export const MyInfoTitle = styled.section`
@@ -35,34 +60,10 @@ export const MyInfoContent = styled.section`
   flex: 1;
   margin-top: 15px;
   flex-basis: 55px;
-  height: 100%;
   & > div {
     padding-bottom: 15px;
   }
   & > input {
-  }
-`;
-
-export const MyInfoContentEdit = styled(MyInfoContent)`
-  flex-directon: column;
-  flex: 1;
-  margin-top: 15px;
-  flex-basis: 55px;
-  height: 100%;
-
-  & > input {
-    border: none;
-    
-    color: gray;
-    background-color: none;
-    padding: 0 10px 10px 0px;
-\
-    margin-top: 19px;
-    font-size: 15px;
-    width: 50%;
-    &:focus {
-      outline: none;
-    }
   }
 `;
 
@@ -86,7 +87,6 @@ export const MyInfoText = styled.section`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 25px;
 `;
 
 export const InfoContentTitle = styled.div`
@@ -140,31 +140,24 @@ export const InfoContentLineText = styled.div`
     border: none;
   }
 `;
+
 export const BottomSection = styled.section`
-  display: flex;
-  flex: 0.2;
-  height: auto;
-
-  box-sizing: border-box;
-  padding: 10px;
-`;
-
-export const InputCareer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 100%;
+  margin-top: 20px;
   width: 100%;
-  outline: none;
-  align-items: center;
-  border-bottom: 1px solid #f1f1f1;
-  & > input {
-    border: none;
-    padding: 0 10px 10px 10px;
-    outline: none;
-    margin-top: 10px;
+  margin-right: 30px;
+  display: flex;
+  flex-grow: 1;
+  flex-basis: 20px;
+  height: 70px;
+  justify-content: center;
+  flex-direction: row;
+
+  & > div:nth-child(1) {
+    width: 47%;
   }
-  & > input:nth-child(1) {
-    font-weight: bold;
+
+  & > div:nth-child(2) {
+    width: 47%;
+    margin-left: 20px;
   }
 `;

@@ -12,6 +12,7 @@ import {
   InputCareer,
   FirstInfoContentTitle,
   InfoContentLineText,
+  MyInfoContentEdit,
 } from "./style";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -20,19 +21,30 @@ import { viewMyCareer } from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { userCareerState } from "../../utils/recoil/atom";
 import { sendUserEditCareer } from "../../utils/apimodule/member";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faTrash } from "@fortawesome/free-solid-svg-icons";
 const MyCareer = () => {
+  // 커리어 상태값 리코일사용
   const careerValue: any = useSetRecoilState(userCareerState);
-  const { userName, userCareer, userCertificate, userLineText } =
-    useRecoilValue(userCareerState);
 
+  //구조분해 할당
+  const {
+    userName,
+    userCareer = [],
+    userCertificate = [],
+    userLineText,
+  } = useRecoilValue(userCareerState);
+
+  // 수정상태인지 아닌지 확인하는 state
   const [edit, setEdit] = useState(true);
   const clickEdit = () => {
     setEdit(false);
   };
 
-  console.log(userCertificate);
+  /**
+   * 유효성 검사 후에 수정된 이력서 데이터 article api module을 거쳐서 백엔드로 전송
+   * @returns
+   */
   const sendCareerEdit = async () => {
     try {
       const emptyCareerNames = userCareer.filter(
@@ -65,6 +77,8 @@ const MyCareer = () => {
         return;
       }
 
+      console.log(userCertificate);
+
       const response = await sendUserEditCareer(
         userName,
         userCareer,
@@ -83,6 +97,9 @@ const MyCareer = () => {
     }
   };
 
+  /**
+   * 초기 유저데이터 담아와 usesetrecoil인 careervalue에 값 넣기
+   */
   const userInfoData = async () => {
     try {
       const data = await viewMyCareer();
@@ -98,39 +115,62 @@ const MyCareer = () => {
     }
   };
 
+  /**
+   * 페이지가 마운트될때 유저데이터 불러옴
+   */
   useEffect(() => {
     userInfoData();
   }, []);
 
+  /**
+   * 경력 추가버튼시 추가 input창 활성화
+   */
   const addCareerInput = () => {
-    careerValue((prev: { userCareer: any }) => ({
-      ...prev,
-      userCareer: [
-        ...prev.userCareer,
-        {
-          id: prev.userCareer.length + 1,
-          careerCompany: "",
-          careerFirstDate: "",
-          careerLastDate: "",
-        },
-      ],
-    }));
+    try {
+      careerValue((prev: { userCareer: any }) => ({
+        ...prev,
+        userCareer: [
+          ...prev.userCareer,
+          {
+            id: prev.userCareer.length + 1,
+            careerCompany: "",
+            careerFirstDate: "",
+            careerLastDate: "",
+          },
+        ],
+      }));
+    } catch (error: any) {
+      alert("경력 추가 실패");
+      throw error;
+    }
   };
 
+  /**
+   * 자격증 추가버튼시 추가 certificate창 활성화
+   */
   const addCertificateInput = () => {
-    careerValue((prev: { userCertificate: any[] }) => ({
-      ...prev,
-      userCertificate: [
-        ...prev.userCertificate,
-        {
-          id: prev.userCertificate.length + 1,
-          certificateName: "",
-          certificateDate: "",
-        },
-      ],
-    }));
+    try {
+      careerValue((prev: { userCertificate: any[] }) => ({
+        ...prev,
+        userCertificate: [
+          ...prev.userCertificate,
+          {
+            id: prev.userCertificate.length + 1,
+            certificateName: "",
+            certificateDate: "",
+          },
+        ],
+      }));
+    } catch (errror) {
+      alert("자격증 추가 실패!");
+      throw errror;
+    }
   };
 
+  /**
+   * id에 맞는 certificate지움
+   * @param certificateId
+   */
   const deleteCertificate = (certificateId: any) => {
     careerValue((prev: any) => ({
       ...prev,
@@ -141,6 +181,10 @@ const MyCareer = () => {
     console.log(certificateId);
   };
 
+  /**
+   * id에 맞는 career지움
+   * @param careerId
+   */
   const deleteCareer = (careerId: any) => {
     careerValue((prev: any) => ({
       ...prev,
@@ -156,12 +200,25 @@ const MyCareer = () => {
         <MyInfoTitle>
           <div>이력서</div>
         </MyInfoTitle>
-        <MyInfoContent>
-          <FirstInfoContentTitle>{userName} @ktg5679</FirstInfoContentTitle>
-          <div>대림대학교</div>
-          <div>컴퓨터정보학부</div>
-          <div>010-2992-5679</div>
-        </MyInfoContent>
+        {edit ? (
+          <MyInfoContent>
+            <FirstInfoContentTitle>{userName} @ktg5679</FirstInfoContentTitle>
+            <div>대림대학교</div>
+            <div>010-2992-5679</div>
+            <div>컴퓨터정보학부</div>
+            <div>안양시 만안구 안양1동</div>
+          </MyInfoContent>
+        ) : (
+          <>
+            <MyInfoContentEdit>
+              <FirstInfoContentTitle>{userName} @ktg5679</FirstInfoContentTitle>
+              <div>대림대학교</div>
+              <div>010-2992-5679</div>
+              <input placeholder="- 학과를 입력해주세요" />
+              <input placeholder="- 지역을 입력하세요" />
+            </MyInfoContentEdit>
+          </>
+        )}
         <MyInfoCareer>
           {edit ? (
             <>
@@ -241,11 +298,9 @@ const MyCareer = () => {
                     onClick={() => {
                       deleteCareer(career.id);
                     }}
+                    style={{ fontSize: "20px", fontWeight: "bold" }}
                   >
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      style={{ color: "#ff3333" }}
-                    />
+                    -
                   </p>
                 </InputCareer>
               ))}
@@ -309,12 +364,13 @@ const MyCareer = () => {
                       }))
                     }
                   ></input>
-                  <p onClick={() => deleteCertificate(certificate.id)}>
-                    {" "}
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      style={{ color: "#ff3333" }}
-                    />
+                  <p
+                    onClick={() => {
+                      deleteCertificate(certificate.id);
+                    }}
+                    style={{ fontSize: "20px", fontWeight: "bold" }}
+                  >
+                    -
                   </p>
                 </InputCareer>
               ))}
@@ -327,7 +383,13 @@ const MyCareer = () => {
             <p>한줄소개</p>
           </InfoContentTitle>
           {edit ? (
-            <InfoContentLineText>{userLineText}</InfoContentLineText>
+            <InfoContentLineText>
+              {userLineText ? (
+                <>{userLineText}</>
+              ) : (
+                <>등록된 한줄소개가 없습니다.</>
+              )}
+            </InfoContentLineText>
           ) : (
             <>
               <InfoContentLineText>

@@ -58,8 +58,8 @@ const sendNewArticle = async (newArticleData: Article) => {
 const viewCurrentArticle = async (articleId: number) => {
   try {
     const response = await api.get(
-      `http://localhost:8080/posts/${articleId}`
-      // `http://localhost:3000/currentArticle?articleId=${articleId}`
+      // `http://localhost:8080/posts/${articleId}`
+      `http://localhost:3000/currentArticle?articleId=${articleId}`
     );
     if (response.data) {
       return response.data;
@@ -119,10 +119,15 @@ const viewArticleList = async () => {
   }
 };
 
+/**
+ * 마이페이지 정보 불러오기
+ * @returns success, data
+ */
 const viewMyInfo = async () => {
   try {
     const response = await api.get(`http://localhost:3000/memberInfo`);
     const data = response.data[0];
+    console.log(data);
     if (response.data) {
       return { success: true, data };
     } else {
@@ -134,10 +139,15 @@ const viewMyInfo = async () => {
   }
 };
 
+/**
+ * 이력서 정보 불러오기
+ * @returns success, data
+ */
 const viewMyCareer = async () => {
   try {
     const response = await api.get(`http://localhost:3000/memberCareer`);
     const data = response.data[0];
+
     if (response.data) {
       return { success: true, data };
     } else {

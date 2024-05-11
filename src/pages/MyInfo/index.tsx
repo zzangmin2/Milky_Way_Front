@@ -8,6 +8,7 @@ import {
   InfoProjectList,
   ArticleInfoCardWrap,
   ArticleApplyStateTableWrap,
+  LogoutText,
 } from "./style";
 import { useState, useEffect } from "react";
 import ArticleInfoCard from "../../components/ArticleInfoCard";
@@ -17,6 +18,7 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { userInfoState } from "../../utils/recoil/atom";
 import { sendUserEditInfo } from "../../utils/apimodule/member";
 import { ArticleCurrentState } from "../../utils/recoil/atom";
+import { logout } from "../../utils/auth/auth";
 
 const MyInfo = () => {
   interface UserInfo {
@@ -40,8 +42,8 @@ const MyInfo = () => {
   const infoValue = useSetRecoilState(userInfoState);
   const { userName, userEmail, userNickName, userCareerCard, userNumber } =
     useRecoilValue(userInfoState);
-  const [activeTab, setActiveTab] = useState("all");
-  const [edit, setEdit] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("all");
+  const [edit, setEdit] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [additionalInfo, setAdditionalInfo] = useState<string>("");
   const [modalType, setModalType] = useState<string>("");
@@ -51,10 +53,19 @@ const MyInfo = () => {
     setEditUser({});
   }, []);
 
+  const logoutEventClick = async () => {
+    try {
+      const result = await logout();
+    } catch (error) {
+      alert("로그아웃 실패...");
+    }
+  };
+
   const userInfoData = async () => {
     try {
       const data: any = await viewMyInfo();
       const result = data.data;
+      console.log(result);
       infoValue({
         userName: result.userName,
         userEmail: result.userEmail,
@@ -62,6 +73,8 @@ const MyInfo = () => {
         userCareerCard: result.userCareerCard,
         userNumber: result.userNumber,
       });
+
+      console.log(infoValue);
     } catch (error) {
       console.error("error", error);
     }
@@ -75,9 +88,7 @@ const MyInfo = () => {
     try {
       const response: any = await sendUserEditInfo(
         editUser.userName,
-        editUser.userNickName,
         editUser.userEmail,
-        editUser.userCareerCard,
         editUser.userNumber
       );
       if (response.data.success) {
@@ -126,13 +137,13 @@ const MyInfo = () => {
             )}
           </InfoTitle>
           <InfoContent>
-            <div>수신용 이메일</div>
+            <div>이메일</div>
             <div>
               {edit ? (
                 <>
                   <input
                     type="text"
-                    placeholder={userEmail}
+                    placeholder={"이메일을 입력하세요"}
                     value={editUser.userEmail}
                     onChange={(e) => {
                       setEditUser({
@@ -150,37 +161,13 @@ const MyInfo = () => {
             </div>
           </InfoContent>
           <InfoContent>
-            <div>닉네임</div>
-            <div>
-              {edit ? (
-                <>
-                  <input
-                    type="text"
-                    placeholder={userNickName}
-                    value={editUser.userNickName}
-                    onChange={(e) => {
-                      setEditUser({
-                        ...editUser,
-                        userNickName: e.target.value,
-                      });
-                    }}
-                  ></input>
-                </>
-              ) : (
-                <>
-                  <p>{userNickName}</p>
-                </>
-              )}
-            </div>
-          </InfoContent>
-          <InfoContent>
             <div>이름</div>
             <div>
               {edit ? (
                 <>
                   <input
                     type="text"
-                    placeholder={userName}
+                    placeholder={"이름을 입력해주세요"}
                     value={editUser.userName}
                     onChange={(e) => {
                       setEditUser({
@@ -198,37 +185,13 @@ const MyInfo = () => {
             </div>
           </InfoContent>
           <InfoContent>
-            <div>커리어카드</div>
-            <div>
-              {edit ? (
-                <>
-                  <input
-                    type="text"
-                    placeholder={userCareerCard}
-                    value={editUser.userCareerCard}
-                    onChange={(e) => {
-                      setEditUser({
-                        ...editUser,
-                        userCareerCard: e.target.value,
-                      });
-                    }}
-                  ></input>
-                </>
-              ) : (
-                <>
-                  <p>{userCareerCard}</p>
-                </>
-              )}
-            </div>
-          </InfoContent>
-          <InfoContent>
             <div>전화번호</div>
             <div>
               {edit ? (
                 <>
                   <input
                     type="text"
-                    placeholder={userNumber}
+                    placeholder={"전화번호를 입력해주세요"}
                     value={editUser.userNumber}
                     onChange={(e) => {
                       setEditUser({
@@ -310,16 +273,17 @@ const MyInfo = () => {
                             {applicant.applicationDate}
                           </div>
                           <div className="tableCell">
-                            {applicant.status}
-                            <button
-                              onClick={() => {
-                                handleModalOpen("신청");
-                                setModalType("info");
-                                setAdditionalInfo("http://naver.com"); // 오픈채팅방 링크 들어갈 자리
-                              }}
-                            >
-                              click
-                            </button>
+                            {applicant.status === "선정" && (
+                              <button
+                                onClick={() => {
+                                  handleModalOpen("신청");
+                                  setModalType("info");
+                                  setAdditionalInfo("http://naver.com");
+                                }}
+                              >
+                                {applicant.status}
+                              </button>
+                            )}
                           </div>
                         </div>
                       );
@@ -405,6 +369,30 @@ const MyInfo = () => {
                     <div>아직 없네요 ..</div>
                   )}
                 </ArticleApplyStateTableWrap>
+                <ArticleInfoCardWrap style={{ marginTop: "30px" }}>
+                  <ArticleInfoCard
+                    navigateRoute="/articledetail/1"
+                    articleType={""}
+                    articleMentorNeeded={false}
+                    articleTitle={""}
+                    articleCurrentApply={0}
+                    articleApply={0}
+                    articleLikes={0}
+                    articleEndDay={""}
+                    articleRecruitmentState={false}
+                  />
+                  <ArticleInfoCard
+                    navigateRoute="/articledetail/1"
+                    articleType={""}
+                    articleMentorNeeded={false}
+                    articleTitle={""}
+                    articleCurrentApply={0}
+                    articleApply={0}
+                    articleLikes={0}
+                    articleEndDay={""}
+                    articleRecruitmentState={false}
+                  />
+                </ArticleInfoCardWrap>
               </section>
             </>
           )}
@@ -417,6 +405,7 @@ const MyInfo = () => {
             />
           )}
         </BottomSection>
+        <LogoutText onClick={logoutEventClick}>로그아웃</LogoutText>
       </Section>
     </>
   );
