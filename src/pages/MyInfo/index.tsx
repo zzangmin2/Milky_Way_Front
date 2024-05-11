@@ -8,6 +8,7 @@ import {
   InfoProjectList,
   ArticleInfoCardWrap,
   ArticleApplyStateTableWrap,
+  LogoutText,
 } from "./style";
 import { useState, useEffect } from "react";
 import ArticleInfoCard from "../../components/ArticleInfoCard";
@@ -17,6 +18,7 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { userInfoState } from "../../utils/recoil/atom";
 import { sendUserEditInfo } from "../../utils/apimodule/member";
 import { ArticleCurrentState } from "../../utils/recoil/atom";
+import { logout } from "../../utils/auth/auth";
 
 const MyInfo = () => {
   interface UserInfo {
@@ -50,6 +52,14 @@ const MyInfo = () => {
     userInfoData();
     setEditUser({});
   }, []);
+
+  const logoutEventClick = async () => {
+    try {
+      const result = await logout();
+    } catch (error) {
+      alert("로그아웃 실패...");
+    }
+  };
 
   const userInfoData = async () => {
     try {
@@ -263,16 +273,17 @@ const MyInfo = () => {
                             {applicant.applicationDate}
                           </div>
                           <div className="tableCell">
-                            {applicant.status}
-                            <button
-                              onClick={() => {
-                                handleModalOpen("신청");
-                                setModalType("info");
-                                setAdditionalInfo("http://naver.com"); // 오픈채팅방 링크 들어갈 자리
-                              }}
-                            >
-                              click
-                            </button>
+                            {applicant.status === "선정" && (
+                              <button
+                                onClick={() => {
+                                  handleModalOpen("신청");
+                                  setModalType("info");
+                                  setAdditionalInfo("http://naver.com");
+                                }}
+                              >
+                                {applicant.status}
+                              </button>
+                            )}
                           </div>
                         </div>
                       );
@@ -358,7 +369,7 @@ const MyInfo = () => {
                     <div>아직 없네요 ..</div>
                   )}
                 </ArticleApplyStateTableWrap>
-                <ArticleInfoCardWrap style={{ marginTop: "-70px" }}>
+                <ArticleInfoCardWrap style={{ marginTop: "30px" }}>
                   <ArticleInfoCard
                     navigateRoute="/articledetail/1"
                     articleType={""}
@@ -394,6 +405,7 @@ const MyInfo = () => {
             />
           )}
         </BottomSection>
+        <LogoutText onClick={logoutEventClick}>로그아웃</LogoutText>
       </Section>
     </>
   );

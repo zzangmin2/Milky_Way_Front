@@ -19,7 +19,7 @@ const api = axios.create({
  * 로컬 스토리지에 access_token이 없으면 url login으로 변경 ( /users 경로 제외 )
  */
 api.interceptors.request.use((config: any) => {
-  if (!localStorage.getItem("access_token") && !config.url.includes("/users")) {
+  if (!localStorage.getItem("ACCESS_TOKEN") && !config.url.includes("/users")) {
     config.url = "http://localhost:5173/users/login";
   }
   return config;
@@ -42,7 +42,7 @@ api.interceptors.response.use(
         return axios.request(error.config);
       } catch (error) {
         console.error("refresh_token없음:", error);
-        localStorage.removeItem("access_token");
+        localStorage.removeItem("ACCESS_TOKEN");
         window.location.href = "/users/login";
         return Promise.reject(error);
       }

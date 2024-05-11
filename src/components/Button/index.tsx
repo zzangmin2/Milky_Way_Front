@@ -7,9 +7,11 @@ interface Props {
   url?: string;
   onClick?: (
     e: React.MouseEvent<HTMLElement, MouseEvent>
-  ) => Promise<void> | void; // 수정: 프라미스 또는 void 반환
-  buttonState?: string; // 'active' -> 버튼 활성화, 'Inactive' -> 버튼 비활성화
+  ) => Promise<void> | void;
+  buttonState?: string;
   type?: string;
+  border?: string;
+  fontColor?: string;
 }
 
 const Button: React.FC<Props> = ({
@@ -18,6 +20,8 @@ const Button: React.FC<Props> = ({
   onClick,
   buttonState,
   type,
+  border,
+  fontColor,
 }) => {
   let buttonColor = buttonState === "inactive" ? "#959595" : "#133488";
 
@@ -30,6 +34,8 @@ const Button: React.FC<Props> = ({
       color={color || buttonColor}
       onClick={onClick}
       type={type === "submit" || type === "reset" ? type : "button"}
+      border={border}
+      fontColor={fontColor}
     >
       {text}
     </StyledButton>

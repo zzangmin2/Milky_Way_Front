@@ -383,7 +383,13 @@ const MyCareer = () => {
             <p>한줄소개</p>
           </InfoContentTitle>
           {edit ? (
-            <InfoContentLineText>{userLineText}</InfoContentLineText>
+            <InfoContentLineText>
+              {userLineText ? (
+                <>{userLineText}</>
+              ) : (
+                <>등록된 한줄소개가 없습니다.</>
+              )}
+            </InfoContentLineText>
           ) : (
             <>
               <InfoContentLineText>

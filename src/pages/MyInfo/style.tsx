@@ -5,8 +5,6 @@ export const Section = styled.div`
   display: flex;
   overflow-y: scroll;
   flex-direction: column;
-  letter-spacing: -1px;
-
   &::-webkit-scrollbar {
     display: none;
   }
@@ -18,6 +16,7 @@ export const TopSection = styled.section`
   flex-direction: column;
   align-items: space-beween;
   min-height: 500px;
+  margin-bottom: -90px;
 `;
 
 export const InfoTitle = styled.div`
@@ -70,7 +69,6 @@ export const BottomSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin-top: -40px;
 `;
 
 export const InfoNav = styled.nav`
@@ -122,6 +120,7 @@ export const ArticleInfoCardWrap = styled.section`
   height: 50vh;
   overflow-y: none;
   z-index: 999;
+
   > section {
     margin-bottom: 20px;
   }
@@ -130,6 +129,8 @@ export const ArticleInfoCardWrap = styled.section`
 export const LogoutText = styled.p`
   text-align: right;
   width: 100%;
+  margin-bottom: 0px;
+
   color: gray;
 `;
 
@@ -140,14 +141,13 @@ export const ArticleApplyStateTableWrap = styled.div`
 
   .tableRow {
     display: grid;
-    grid-template-columns: 3fr 2fr 2fr;
+    grid-template-columns: 3.1fr 3fr 2fr;
     border-bottom: 1px solid #d1d1d1;
-    padding: 5px;
+    align-items: center;
   }
 
   .tableRowTop {
     border-bottom: 2px solid black;
-    padding: 0 5px;
   }
 
   .tableCell {
