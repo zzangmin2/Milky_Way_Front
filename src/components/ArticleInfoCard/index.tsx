@@ -14,7 +14,7 @@ interface Props {
   articleTitle: string;
   articleContent?: string;
   articleCurrentApply: number;
-  articleApply: number;
+  articleApply: string;
   articleLikes: number;
   articleEndDay: string;
   articleRecruitmentState: boolean;

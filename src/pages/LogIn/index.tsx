@@ -35,13 +35,13 @@ const LogIn = () => {
         <Input
           placeholder="아이디를 입력해 주세요"
           setValue={setLoginId}
-          value={""}
+          value={loginId}
         />
 
         <Input
           placeholder="비밀번호를 입력해 주세요"
           setValue={setLoginPwd}
-          value={""}
+          value={loginPwd}
         />
         <Button text={"로그인"} onClick={sendLoginData} />
         <div>

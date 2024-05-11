@@ -10,13 +10,13 @@ import api from "../api/axiosInstance";
 
 export const loginedIn = async (loginId: string, password: string) => {
   try {
-    const response = await api.post("", {
-      loginId,
-      password,
+    const response = await api.post("/login", {
+      memberId: loginId,
+      memberPassword: password,
     });
     if (response.data.success) {
       const token = response.data.access_token;
-      localStorage.setItem("access_token", token);
+      localStorage.setItem("ACCESS_TOKEN", token);
       return { success: true };
     } else {
       return { success: false, error: "로그인 실패" };

@@ -20,12 +20,12 @@ import SignupInput from "../SignupInput";
 import { emailSuccesses } from "../../../utils/recoil/atom";
 import ErrorPage from "../../RoutePage/ErrorPage";
 import { sendUserCompareInfo } from "../../../utils/apimodule/member";
-import { error } from "console";
 
 const SignupIdCompare = () => {
   const emailSuccessIn = useRecoilValue(emailSuccesses);
   const userCompare = useSetRecoilState(userCompareValues);
   const compareValue = useRecoilValue(userCompareValues);
+  const [PwdValidate, setPwdValidate] = useState(false);
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -38,11 +38,12 @@ const SignupIdCompare = () => {
   const sendUseridVerify = async () => {
     try {
       const result = await sendUserCompareInfo(id);
-      if (result.success) {
+      if (true) {
         setCompareInState(true);
         alert("중복된 아이디가 없습니다");
       } else {
-        // throw error;
+        console.log(id);
+        alert("실패");
       }
     } catch (error: any) {
       alert(`실패: ${error.message}`);
@@ -58,7 +59,8 @@ const SignupIdCompare = () => {
       }
 
       if (password !== confirmPassword) {
-        alert("비밀번호가 일치하지 않습니다.");
+        // alert("비밀번호가 일치하지 않습니다.");
+        setPwdValidate(true);
 
         return;
       } else {
@@ -66,6 +68,7 @@ const SignupIdCompare = () => {
       }
 
       try {
+        setPwdValidate(false);
         compareSuccessIn(true);
         userCompare(newValue);
         navigate("/users/signupinfo");
@@ -135,6 +138,11 @@ const SignupIdCompare = () => {
                 setValue={setConfirmPassword}
               />
             </div>
+            {PwdValidate && (
+              <>
+                <div>비밀번호가 일치하지 않습니다.</div>
+              </>
+            )}
           </TopSection>
           <BottomSection>
             {compareInState ? (

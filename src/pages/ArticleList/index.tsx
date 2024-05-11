@@ -162,7 +162,7 @@ const ArticleList = () => {
                   return (
                     <ArticleInfoCard
                       key={idx}
-                      navigateRoute={`/articledetail/${article.articleId}/intro`}
+                      navigateRoute={`/articledetail/${article.articleId}`}
                       articleType={article.articleType}
                       articleRecruitmentState={article.articleRecruitmentState}
                       articleMentorNeeded={article.articleMentorNeeded}

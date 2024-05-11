@@ -10,7 +10,7 @@ import {
   EmailText,
 } from "../styles";
 import { useEffect, useState } from "react";
-import { sendEmailUserInfo } from "../../../utils/apimodule/member";
+// import { sendEmailUserInfo } from "../../../utils/apimodule/member";
 import { useNavigate } from "react-router-dom";
 import {
   emailSuccesses,

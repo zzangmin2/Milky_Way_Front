@@ -43,15 +43,15 @@ import api from "../api/axiosInstance";
 //   }
 // };
 /**
- * signupcompare에서 유저 아이디 중복확인 => 성공시 disabled atom으로 머지막에 한번에 넘김
+ * signupcompare에서 유저 아이디 중복확인 => 성공시 disabled  // atom으로 머지막에 한번에 넘김
  * @param id
  * @type {string | number}
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
 const sendUserCompareInfo = async (id: number | string) => {
   try {
-    const response = await api.post("", {
-      signupId: id,
+    const response = await api.post("/signup", {
+      id: id,
     });
 
     if (response.data.success) {
@@ -90,12 +90,13 @@ const sendUserInfo = async (
       name: name,
       Role: dpt,
       tel: number,
-      email: email,
       id: id,
       password: password,
+      email: email,
     });
 
     if (response.data.success) {
+      console.log(response.data);
       return { success: true };
     } else {
       return { success: false };

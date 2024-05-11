@@ -9,17 +9,17 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
   headers: {
-    Authorization: "Bearer " + localStorage.getItem("access_token"),
+    Authorization: "Bearer " + localStorage.getItem("ACCESS_TOKEN"),
     "Content-Type": "application/json",
   },
 });
 
 /**
  * 요청 인터셉터
- * 로컬 스토리지에 access_token이 없으면 요청 url을 /users/login으로 변경
+ * 로컬 스토리지에 access_token이 없으면 url login으로 변경 ( /users 경로 제외 )
  */
-api.interceptors.request.use((config) => {
-  if (!localStorage.getItem("access_token")) {
+api.interceptors.request.use((config: any) => {
+  if (!localStorage.getItem("access_token") && !config.url.includes("/users")) {
     config.url = "http://localhost:5173/users/login";
   }
   return config;
