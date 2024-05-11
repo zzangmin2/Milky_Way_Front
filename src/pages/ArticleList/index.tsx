@@ -180,6 +180,8 @@ const ArticleList = () => {
                       articleCurrentApply={article.articleApplyNow}
                       articleLikes={article.articleLikes}
                       articleEndDay={article.articleEndDay}
+                      // articleStartDay -> 아직 api에서 전달 x
+                      articleStartDay={article.articleStartDay}
                     />
                   );
                 }
