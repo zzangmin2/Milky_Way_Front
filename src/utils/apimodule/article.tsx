@@ -92,7 +92,7 @@ const editCurrentArticle = async (articleId: number) => {
 const deleteCurrentArticle = async (articleId: number) => {
   try {
     const response = await api.delete(
-      `http://localhost:3000/currentArticle?articleId=${articleId}`
+      `http://localhost:8080/posts/${articleId}`
     );
     console.log("Success:", response.data);
 
