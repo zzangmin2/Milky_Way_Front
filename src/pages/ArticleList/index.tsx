@@ -57,11 +57,6 @@ const ArticleList = () => {
     loadArticleList();
   }, []);
 
-  //모두/스터디/프로젝트 네비게이션 변경 시
-  useEffect(() => {
-    navigate(`/home/articlelist/${articleListFilterState}`);
-  }, [articleListFilterState]);
-
   //네비게이션 변경 함수
   const handleTabClick = (tab: string) => {
     setArticleListFilterState(tab);
@@ -143,10 +138,11 @@ const ArticleList = () => {
             <option value="recruitmentCompleted">모집 완료</option>
           </select>
 
-          <select name="" id="">
+          {/* 카테고리 */}
+          {/* <select name="" id="">
             <option value="">카테고리</option>
             <option value="">언어</option>
-          </select>
+          </select> */}
         </ArticleFilterWrap>
         <ArticleListWrap>
           <div>
@@ -155,7 +151,9 @@ const ArticleList = () => {
               id=""
               value={articleLatestOrPopularOptionState}
               onChange={(e) =>
-                setArticleLatestOrPopularOptionState(e.target.value)
+                // setArticleLatestOrPopularOptionState(e.target.value)
+                // 찜기능 미완성 -> 인기순 정렬 불가능
+                setArticleLatestOrPopularOptionState("latest")
               }
             >
               <option value="latest">최신순</option>
