@@ -146,7 +146,7 @@ const ArticleDetail = () => {
                       : "프로젝트"
                   }
                 />
-                <MentoTag />
+                {articleCurrentState.articleMentorNeeded && <MentoTag />}
               </div>
               <div className="articleInfoSummary">
                 <h3>{articleCurrentState.articleTitle}</h3>
