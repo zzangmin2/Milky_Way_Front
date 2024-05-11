@@ -1,5 +1,5 @@
 import { FC, ChangeEvent } from "react";
-import { StyledInput } from "./styles";
+import { StyledInput, StyledInputContainer } from "./styles";
 
 interface Props {
   placeholder?: string;
@@ -8,7 +8,7 @@ interface Props {
   onChange?: any;
   value?: string;
   setValue?: ((value: string) => void | undefined) | undefined;
-  children?: React.ReactNode;
+  onClick?: () => void;
   disable?: boolean;
 }
 
@@ -19,6 +19,7 @@ const SignupInput: FC<Props> = ({
   disable,
   value,
   setValue,
+  onClick,
 }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (setValue) {
@@ -27,7 +28,7 @@ const SignupInput: FC<Props> = ({
   };
 
   return (
-    <>
+    <StyledInputContainer>
       <StyledInput
         type={type}
         placeholder={placeholder}
@@ -35,8 +36,9 @@ const SignupInput: FC<Props> = ({
         value={value}
         name={name}
         disabled={disable}
-      ></StyledInput>
-    </>
+      />
+      {type === "verify" && <button onClick={onClick}>중복확인</button>}
+    </StyledInputContainer>
   );
 };
 

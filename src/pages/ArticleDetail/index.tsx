@@ -18,13 +18,24 @@ import {
   ArticleCurrentState,
   articleDetailIntroOrQnaTabState,
 } from "../../utils/recoil/atom";
+import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { viewCurrentArticle } from "../../utils/apimodule/article";
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
 import { getTimeAgo } from "../../utils/utils";
+import MemberListModal from "../../components/ArticleMemberListModal";
 
 const ArticleDetail = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModalMemberCareer = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
   //현재 페이지에서 보여주고 있는 article 데이터
   const [articleCurrentState, setArticleCurrentState] =
     useRecoilState(ArticleCurrentState);
@@ -232,7 +243,12 @@ const ArticleDetail = () => {
                             <div className="tableCell">
                               {applicant.applicationDate}
                             </div>
-                            <div className="tableCell">{applicant.status}</div>
+                            <div
+                              className="tableCell"
+                              onClick={openModalMemberCareer}
+                            >
+                              {applicant.status}
+                            </div>
                           </div>
                         );
                       }
@@ -251,6 +267,23 @@ const ArticleDetail = () => {
               <br />
               조금만 기다려주세요!
             </div>
+          )}
+          {modalOpen ? (
+            <>
+              <ArticleDetailMenuModal></ArticleDetailMenuModal>
+            </>
+          ) : (
+            <></>
+          )}
+          {modalOpen ? (
+            <>
+              <MemberListModal
+                show={modalOpen}
+                handleClose={handleModalClose}
+              />
+            </>
+          ) : (
+            <></>
           )}
         </ArticleDetailWrap>
       )}

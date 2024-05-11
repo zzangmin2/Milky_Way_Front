@@ -6,10 +6,15 @@ export const ModalWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
+
   max-width: 400px;
+  @media (max-width: 1200px) {
+    max-width: 300px;
+    max-height: 500px;
+  }
 
   background-color: white;
-  padding: 5px 10px 5px 10px;
+  padding: 40px 10px 5px 10px;
   border-radius: 10px;
   box-shadow: 0px 3px 2px 4px rgba(0, 0, 0, 0.1);
 `;
