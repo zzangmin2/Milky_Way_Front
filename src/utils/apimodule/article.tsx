@@ -125,7 +125,8 @@ const viewArticleList = async () => {
  */
 const viewMyInfo = async () => {
   try {
-    const response = await api.get(`http://localhost:3000/memberInfo`);
+    const memberIds = localStorage.getItem("memberNo");
+    const response = await api.post(`/${memberIds}/info`);
     const data = response.data[0];
     console.log(data);
     if (response.data) {
@@ -145,8 +146,11 @@ const viewMyInfo = async () => {
  */
 const viewMyCareer = async () => {
   try {
-    const response = await api.get(`http://localhost:3000/memberCareer`);
+    const memberIds = localStorage.getItem("memberNo");
+    // const token: any = localStorage.getItem("ACCESS_TOKEN");
+    const response = await api.post(`/${memberIds}/info`);
     const data = response.data[0];
+    console.log(response);
 
     if (response.data) {
       return { success: true, data };

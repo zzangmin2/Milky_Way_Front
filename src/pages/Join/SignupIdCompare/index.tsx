@@ -15,7 +15,11 @@ import {
   compareSuccesses,
   userCompareValues,
 } from "../../../utils/recoil/atom";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import {
+  useSetRecoilState,
+  useRecoilValue,
+  useRecoilValueLoadable,
+} from "recoil";
 import SignupInput from "../SignupInput";
 import { emailSuccesses } from "../../../utils/recoil/atom";
 import ErrorPage from "../../RoutePage/ErrorPage";
@@ -25,6 +29,7 @@ const SignupIdCompare = () => {
   const emailSuccessIn = useRecoilValue(emailSuccesses);
   const userCompare = useSetRecoilState(userCompareValues);
   const compareValue = useRecoilValue(userCompareValues);
+  const itemLoader = useRecoilValueLoadable(userCompareValues); // loadable
   const [PwdValidate, setPwdValidate] = useState(false);
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
@@ -38,7 +43,7 @@ const SignupIdCompare = () => {
   const sendUseridVerify = async () => {
     try {
       const result = await sendUserCompareInfo(id);
-      if (true) {
+      if (result.success) {
         setCompareInState(true);
         alert("중복된 아이디가 없습니다");
       } else {
@@ -84,8 +89,6 @@ const SignupIdCompare = () => {
     id: id,
     password: password,
   };
-
-  console.log(compareValue);
 
   return (
     <>

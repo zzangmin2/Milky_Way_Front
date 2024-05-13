@@ -4,6 +4,7 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 import { loginedIn } from "../../utils/auth/auth";
+import { useSetRecoilState } from "recoil";
 
 const LogIn = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const LogIn = () => {
   const sendLoginData = async () => {
     try {
       const result = await loginedIn(loginId, loginPwd);
+
       if (result.success) {
         navigate("/home");
       } else {

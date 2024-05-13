@@ -15,10 +15,17 @@ export const loginedIn = async (loginId: string, password: string) => {
       memberId: loginId,
       memberPassword: password,
     });
-    if (response.data.success) {
-      const token = response.data.access_token;
+
+    console.log(response.data);
+    console.log(response);
+    if (response.status === 200) {
+      console.log(response.data);
+      const memberNo = response.data.memberNo;
+      const token = response.data.accessToken;
+
+      localStorage.setItem("memberNo", memberNo);
       localStorage.setItem("ACCESS_TOKEN", token);
-      return { success: true };
+      return { success: true, memberNo };
     } else {
       return { success: false, error: "로그인 실패" };
     }
@@ -43,7 +50,7 @@ export const logout = async () => {
         Authorization: `Bearer ${ACCESS_TOKEN}`,
       },
     });
-    if (response.data.success) {
+    if (response.status === 200) {
       localStorage.removeItem("ACCESS_TOKEN");
       navigate("/users/login");
     } else {
