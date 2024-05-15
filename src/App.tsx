@@ -1,12 +1,16 @@
 import { Suspense } from "react";
 import { RouterProvider } from "react-router-dom";
-
 import router from "./utils/router";
-import Loading from "./pages/RoutePage/Loading";
+import { lazy } from "react";
+import useInterceptors from "./hooks/useInterceptors";
 
 const App = () => {
+  const LoadingPage = lazy(() => import("./pages/RoutePage/Loading"));
+
+  // 전역적으로 한번 호출
+  useInterceptors();
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<LoadingPage />}>
       <RouterProvider router={router} />
     </Suspense>
   );

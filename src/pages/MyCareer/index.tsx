@@ -21,10 +21,12 @@ import { viewMyCareer } from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { userCareerState } from "../../utils/recoil/atom";
 import { sendUserEditCareer } from "../../utils/apimodule/member";
+import { postUserEditCareer } from "../../utils/apimodule/member";
+
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faTrash } from "@fortawesome/free-solid-svg-icons";
 const MyCareer = () => {
-  // 커리어 상태값 리코일사용
+  // 커리어 상태값 리코일아톰사용
   const careerValue: any = useSetRecoilState(userCareerState);
   /**
    * 최초 데이터 받아올때 career가 빈 값인지 아닌지를 가리키는 state
@@ -80,8 +82,10 @@ const MyCareer = () => {
         alert("경력과 자격증의 날짜를 모두 작성해주세요.");
         return;
       }
-      
-      const response = await sendUserEditCareer(userName, userCareer);
+
+      const response: any = careerPostState
+        ? await postUserEditCareer(userName, userCareer)
+        : await sendUserEditCareer(userName, userCareer);
       if (response.success) {
         alert("이력서 수정이 완료되었습니다!");
         setEdit(true);
@@ -103,10 +107,10 @@ const MyCareer = () => {
       const result = data.data;
 
       careerValue({
-        // userName: result.userName,
-        // userCareer: result.userCareer,
+        userName: result.userName,
+        userCareerName: result.userCareer,
         // userCertificate: result.userCertificate,
-        // userLineText: result.userLineText,
+        userLineText: result.studentOneLineShow,
       });
     } catch (error) {
       console.error("error", error);

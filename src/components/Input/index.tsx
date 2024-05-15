@@ -14,6 +14,7 @@ interface Props {
   inputType?: string;
   inputState?: string;
   onEnterPress?: () => void;
+  disabled?: boolean;
 }
 
 const Input: FC<Props> = ({
@@ -23,6 +24,7 @@ const Input: FC<Props> = ({
   setValue,
   inputType,
   onEnterPress,
+  disabled,
 }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -50,6 +52,7 @@ const Input: FC<Props> = ({
       value={value}
       name={name}
       onKeyDown={handleKeyDown}
+      disabled={disabled}
     />
   );
 };

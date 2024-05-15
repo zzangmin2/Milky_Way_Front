@@ -14,6 +14,7 @@ import {
   userCompareState,
   compareSuccesses,
   userCompareValues,
+  loadingStateAtom,
 } from "../../../utils/recoil/atom";
 import {
   useSetRecoilState,
@@ -29,7 +30,6 @@ const SignupIdCompare = () => {
   const emailSuccessIn = useRecoilValue(emailSuccesses);
   const userCompare = useSetRecoilState(userCompareValues);
   const compareValue = useRecoilValue(userCompareValues);
-  const itemLoader = useRecoilValueLoadable(userCompareValues); // loadable
   const [PwdValidate, setPwdValidate] = useState(false);
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
