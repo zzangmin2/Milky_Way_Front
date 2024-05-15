@@ -264,17 +264,16 @@ export const filteredArticleRecruitmentOptionListState = selector({
     const filter = get(ArticleRecruitmentOptionState);
     const list = get(filteredArticleListTypeState);
 
-    const currentDate = new Date();
     switch (filter) {
       case "all":
         return list;
       case "recruting":
         return list.filter(
-          (article: Article) => new Date(article.articleEndDay) > currentDate
+          (article: Article) => article.articleRecruitmentState
         );
       case "recruitmentCompleted":
         return list.filter(
-          (article: Article) => new Date(article.articleEndDay) < currentDate
+          (article: Article) => !article.articleRecruitmentState
         );
 
       default:

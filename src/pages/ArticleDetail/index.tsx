@@ -21,7 +21,8 @@ import {
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { viewCurrentArticle } from "../../utils/apimodule/article";
-import moment from "moment";
+import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
+import { getTimeAgo } from "../../utils/utils";
 import MemberListModal from "../../components/ArticleMemberListModal";
 
 const ArticleDetail = () => {
@@ -97,26 +98,6 @@ const ArticleDetail = () => {
       }
     } catch (error: any) {
       console.log(`다시 시도해주세요: ${error.message}`);
-    }
-  };
-
-  // 게시물 시간과 현재 시간 사이의 간격 표현 함수
-  const getTimeAgo = (dateTime: string) => {
-    const now = moment();
-    const targetDateTime = moment(dateTime);
-
-    const diffInMinutes = now.diff(targetDateTime, "minutes");
-    const diffInHours = now.diff(targetDateTime, "hours");
-    const diffInDays = now.diff(targetDateTime, "days");
-
-    if (diffInMinutes < 60) {
-      return `${diffInMinutes} 분 전`;
-    } else if (diffInHours < 24) {
-      return `${diffInHours} 시간 전`;
-    } else if (diffInDays < 14) {
-      return `${diffInDays} 일 전`;
-    } else {
-      return targetDateTime.format("YYYY-MM-DD");
     }
   };
 
