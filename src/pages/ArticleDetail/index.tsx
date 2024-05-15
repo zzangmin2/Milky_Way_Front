@@ -20,7 +20,11 @@ import {
 } from "../../utils/recoil/atom";
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { useNavigate, useParams } from "react-router-dom";
-import { viewCurrentArticle } from "../../utils/apimodule/article";
+import {
+  sendArticleApplyUser,
+  viewCurrentArticle,
+} from "../../utils/apimodule/article";
+import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
 import { getTimeAgo } from "../../utils/utils";
 import MemberListModal from "../../components/ArticleMemberListModal";
@@ -136,7 +140,7 @@ const ArticleDetail = () => {
                       : "프로젝트"
                   }
                 />
-                <MentoTag />
+                {articleCurrentState.articleMentorNeeded && <MentoTag />}
               </div>
               <div className="articleInfoSummary">
                 <h3>{articleCurrentState.articleTitle}</h3>
@@ -219,6 +223,9 @@ const ArticleDetail = () => {
                       ? ""
                       : "inactive"
                   }
+                  onClick={() => {
+                    sendArticleApplyUser(articleCurrentState.articleId);
+                  }}
                 />
               </div>
               <section style={{ marginBottom: "100px" }}>
