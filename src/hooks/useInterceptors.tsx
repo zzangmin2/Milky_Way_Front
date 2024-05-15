@@ -6,7 +6,7 @@ import api from "../utils/api/axiosInstance";
  * useAxios 커스텀 훅? / 다른 파일로 빼서 관리해야할지 고민중 (interceptors안에서 loadingstate 불린형으로 설정)
  * @returns
  */
-const useAxios = () => {
+const useInterceptors = () => {
   const setLoading = useSetRecoilState(loadingStateAtom);
 
   /**
@@ -47,22 +47,27 @@ const useAxios = () => {
   api.interceptors.response.use(responseHandler, errorHandler);
 
   /**
-   * 헤더를 처리하는데 instance에서말고 한번 더 보내는게 맞는지 잘 모르겠음? /users를 제외한 나머지에서 로컬스토리지에 토큰값이 없을경우 로그인 페이지로 리디렉션
+   * 헤더를 처리하는데 instance에서말고 한번 더 보내는게 맞는지 잘 모르겠음? /users로 시작하는 Pathname 제외한 나머지에서 로컬스토리지에 토큰값이 없을경우 로그인 페이지로 리디렉션
    */
-  api.interceptors.request.use((config) => {
+  api.interceptors.request.use(
     // config.headers.Authorization =
     //   "Bearer " + localStorage.getItem("ACCESS_TOKEN");
+    (config) => {
+      if (window.location.pathname.startsWith("/users")) {
+        return config;
+      }
+      if (!localStorage.getItem("ACCESS_TOKEN")) {
+        alert("로그인을 진행해주세요");
+        window.location.href = "/users/login";
+        return Promise.reject(new Error("토큰이 업습니다."));
+      }
 
-    if (window.location.pathname.startsWith(`http://localhost:5173/users`)) {
       return config;
+    },
+    (error) => {
+      return Promise.reject(error);
     }
-    if (!localStorage.getItem("ACCESS_TOKEN")) {
-      window.location.href = "http://localhost:5173/users/login";
-      alert("로그인 해주세요");
-      return Promise.reject(new Error("access_token없음"));
-    }
-    return config;
-  });
+  );
 
   /**
    * 응답 인터셉터로 토큰이 갱신되었거나 권한이 없을경우 ? 로그인 페이지로 리디렉션 및 refresh_token재발급
@@ -90,4 +95,4 @@ const useAxios = () => {
   );
 };
 
-export default useAxios;
+export default useInterceptors;
