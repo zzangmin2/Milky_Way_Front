@@ -267,13 +267,7 @@ const ArticleDetail = () => {
               조금만 기다려주세요!
             </div>
           )}
-          {modalOpen ? (
-            <>
-              <ArticleDetailMenuModal></ArticleDetailMenuModal>
-            </>
-          ) : (
-            <></>
-          )}
+          {modalOpen ? <ArticleDetailMenuModal /> : <></>}
           {modalOpen ? (
             <>
               <MemberListModal

@@ -35,9 +35,11 @@ const SignupInfo = () => {
   const sendUserInfoOnClick = async () => {
     try {
       userCompare(newValue);
-      const { name, dpt, number, id, email, password } = compareValue;
-      const result = await sendUserInfo(name, dpt, number, id, email, password);
-      if (result.success) {
+      const { name, dpt, number, id, email, password } = newValue;
+      console.log(newValue);
+      const result = await sendUserInfo(name, number, id, email, password);
+
+      if (true) {
         alert(`${name}님! 회원가입이 완료되었습니다.`);
         navigate("/users/login");
       } else {

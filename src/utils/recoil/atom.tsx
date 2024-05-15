@@ -21,6 +21,11 @@ interface UserCareerState {
  * 네비게이션 바 상태
  */
 
+export const loadingStateAtom = atom<boolean>({
+  key: "loadingStateAtom",
+  default: true,
+});
+
 export const navState = atom({
   key: "navState",
   default: "home", //home, list, career

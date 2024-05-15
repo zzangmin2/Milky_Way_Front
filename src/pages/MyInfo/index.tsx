@@ -273,17 +273,17 @@ const MyInfo = () => {
                             {applicant.applicationDate}
                           </div>
                           <div className="tableCell">
-                            {applicant.status === "선정" && (
-                              <button
-                                onClick={() => {
-                                  handleModalOpen("신청");
-                                  setModalType("info");
-                                  setAdditionalInfo("http://naver.com");
-                                }}
-                              >
-                                {applicant.status}
-                              </button>
-                            )}
+                            {/* {applicant.status === "선정" && ( */}
+                            <button
+                              onClick={() => {
+                                handleModalOpen("신청");
+                                setModalType("info");
+                                setAdditionalInfo("http://naver.com");
+                              }}
+                            >
+                              {applicant.status}
+                            </button>
+                            {/* )} */}
                           </div>
                         </div>
                       );
@@ -369,7 +369,7 @@ const MyInfo = () => {
                     <div>아직 없네요 ..</div>
                   )}
                 </ArticleApplyStateTableWrap>
-                <ArticleInfoCardWrap style={{ marginTop: "30px" }}>
+                <ArticleInfoCardWrap style={{ marginTop: "-50px" }}>
                   <ArticleInfoCard
                     navigateRoute="/articledetail/1"
                     articleType={""}

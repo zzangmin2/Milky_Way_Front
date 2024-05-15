@@ -50,11 +50,11 @@ import api from "../api/axiosInstance";
  */
 const sendUserCompareInfo = async (id: number | string) => {
   try {
-    const response = await api.post("/signup", {
+    const response = await api.post("/signup/duplicationCheck", {
       id: id,
     });
 
-    if (response.data.success) {
+    if (response.status === 200) {
       return { success: true };
     } else {
       return { success: false };
@@ -66,7 +66,7 @@ const sendUserCompareInfo = async (id: number | string) => {
 };
 
 /**
- * signupinfo에서 이름, 학과, 전화번호 넘기기 => 성공시 버튼 활성화
+ * signupinfo 회원가입 데이터 전송 => 성공시 버튼 활성화
  * @param name
  * @param dpt
  * @param number
@@ -79,7 +79,7 @@ const sendUserCompareInfo = async (id: number | string) => {
 
 const sendUserInfo = async (
   name: string | undefined,
-  dpt: any,
+  // dpt: string | undefined,
   number: number | string | undefined,
   id: any,
   password: any,
@@ -88,21 +88,24 @@ const sendUserInfo = async (
   try {
     const response = await api.post("/signup", {
       name: name,
-      Role: dpt,
+      // Role: dpt,
       tel: number,
       id: id,
       password: password,
       email: email,
+      role: "STUDENT",
     });
 
-    if (response.data.success) {
+    if (response.status === 200) {
       console.log(response.data);
+
       return { success: true };
     } else {
       return { success: false };
     }
   } catch (error) {
     console.error("error:", error);
+
     return { success: false, error: "error" };
   }
 };
@@ -123,12 +126,13 @@ const sendUserEditInfo = async (
   phoneNumber: string
 ) => {
   try {
-    const response = await api.post("/users/usereditinfo", {
+    const memberIds = localStorage.getItem("memberNo");
+    const response = await api.post(`/${memberIds}/input-student-info/update`, {
       userName: name,
       userEmail: userEmail,
       userPhoneNumber: phoneNumber,
     });
-    if (response.data.success) {
+    if (response.status === 200) {
       return { success: true };
     } else {
       return { success: false };
@@ -149,19 +153,20 @@ const sendUserEditInfo = async (
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
 const sendUserEditCareer = async (
-  userName: any,
   userCareer: any,
-  userCertificate: any,
+  // userCertificate: any,
   userLineText: any
 ) => {
   try {
-    const response = await api.post("/users/userediticareer", {
-      userName,
-      userCareer,
-      userCertificate,
-      userLineText,
+    // const token = localStorage.getItem("ACCESS_TOKEN");
+    const memberIds = localStorage.getItem("memberNo");
+    const response = await api.put(`/${memberIds}/input-student-info/update`, {
+      careerStartDay: userCareer.careerFirstDate,
+      careerEndDay: userCareer.careerEndDay,
+      careerName: userCareer.careerCompany,
+      studentOneLineShow: userLineText,
     });
-    if (response.data.success) {
+    if (response.status === 200) {
       return { success: true };
     } else {
       return { success: false };
@@ -172,6 +177,26 @@ const sendUserEditCareer = async (
   }
 };
 
+const postUserEditCareer = async (userCareer: any, userLineText: any) => {
+  try {
+    const memberIds = localStorage.getItem("memberNo");
+    const response = await api.post(`/${memberIds}/input-student-info`, {
+      careerName: userCareer.careerCompany,
+      careerStartDay: userCareer.careerFirstDate,
+      careerEndDay: userCareer.careerEndDay,
+    });
+
+    console.log(response.data);
+    if (response.status === 200) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.log(`${error}`);
+  }
+};
+
 export {
   sendUserCompareInfo,
   // sendEmailUserInfo,
@@ -179,4 +204,5 @@ export {
   // sendEmailVerify,
   sendUserEditInfo,
   sendUserEditCareer,
+  postUserEditCareer,
 };
