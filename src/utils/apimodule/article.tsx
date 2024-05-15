@@ -103,6 +103,48 @@ const deleteCurrentArticle = async (articleId: number) => {
   }
 };
 
+/**
+ * 게시물 지원하기 (헤더에 토큰 심어서 보냄)
+ * @param articleId
+ * @returns
+ */
+const sendArticleApplyUser = async (articleId: number) => {
+  try {
+    const response = await api.post(
+      `http://localhost:8080/posts/apply/${articleId}`
+    );
+
+    console.log(response);
+    return { success: true };
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
+ * 게시물 지원자 리스트 조회
+ * @param articleId
+ * @returns
+ */
+const viewArticleApplyUserList = async (articleId: number) => {
+  try {
+    const response = await api.get(
+      `http://localhost:8080/posts/applylist/${articleId}`
+    );
+
+    if (response.data) {
+      console.log(response.data.content);
+      return response.data.content;
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
 const viewArticleList = async () => {
   try {
     const response = await api.get("http://localhost:8080/posts/list");
@@ -154,6 +196,8 @@ export {
   viewCurrentArticle,
   editCurrentArticle,
   deleteCurrentArticle,
+  sendArticleApplyUser,
+  viewArticleApplyUserList,
   viewArticleList,
   viewMyInfo,
   viewMyCareer,

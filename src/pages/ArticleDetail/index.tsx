@@ -19,7 +19,10 @@ import {
   articleDetailIntroOrQnaTabState,
 } from "../../utils/recoil/atom";
 import { useNavigate, useParams } from "react-router-dom";
-import { viewCurrentArticle } from "../../utils/apimodule/article";
+import {
+  sendArticleApplyUser,
+  viewCurrentArticle,
+} from "../../utils/apimodule/article";
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
@@ -229,6 +232,9 @@ const ArticleDetail = () => {
                       ? ""
                       : "inactive"
                   }
+                  onClick={() => {
+                    sendArticleApplyUser(articleCurrentState.articleId);
+                  }}
                 />
               </div>
               <section style={{ marginBottom: "100px" }}>
