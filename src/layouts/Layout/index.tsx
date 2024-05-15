@@ -76,6 +76,7 @@ const Layout: FC<Props> = ({ type }) => {
               className={activePage === "mypage" ? "activeIcon" : ""}
               icon={faUser}
               onClick={() => {
+                setActivePage("mypage");
                 navigate("/home/myinfo");
               }}
             />

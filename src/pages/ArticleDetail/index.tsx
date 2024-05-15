@@ -18,6 +18,7 @@ import {
   ArticleCurrentState,
   articleDetailIntroOrQnaTabState,
 } from "../../utils/recoil/atom";
+import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   sendArticleApplyUser,
@@ -25,9 +26,19 @@ import {
 } from "../../utils/apimodule/article";
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
-import moment from "moment";
+import { getTimeAgo } from "../../utils/utils";
+import MemberListModal from "../../components/ArticleMemberListModal";
 
 const ArticleDetail = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModalMemberCareer = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
   //현재 페이지에서 보여주고 있는 article 데이터
   const [articleCurrentState, setArticleCurrentState] =
     useRecoilState(ArticleCurrentState);
@@ -91,26 +102,6 @@ const ArticleDetail = () => {
       }
     } catch (error: any) {
       console.log(`다시 시도해주세요: ${error.message}`);
-    }
-  };
-
-  // 게시물 시간과 현재 시간 사이의 간격 표현 함수
-  const getTimeAgo = (dateTime: string) => {
-    const now = moment();
-    const targetDateTime = moment(dateTime);
-
-    const diffInMinutes = now.diff(targetDateTime, "minutes");
-    const diffInHours = now.diff(targetDateTime, "hours");
-    const diffInDays = now.diff(targetDateTime, "days");
-
-    if (diffInMinutes < 60) {
-      return `${diffInMinutes} 분 전`;
-    } else if (diffInHours < 24) {
-      return `${diffInHours} 시간 전`;
-    } else if (diffInDays < 14) {
-      return `${diffInDays} 일 전`;
-    } else {
-      return targetDateTime.format("YYYY-MM-DD");
     }
   };
 
@@ -258,7 +249,12 @@ const ArticleDetail = () => {
                             <div className="tableCell">
                               {applicant.applicationDate}
                             </div>
-                            <div className="tableCell">{applicant.status}</div>
+                            <div
+                              className="tableCell"
+                              onClick={openModalMemberCareer}
+                            >
+                              {applicant.status}
+                            </div>
                           </div>
                         );
                       }
@@ -277,6 +273,17 @@ const ArticleDetail = () => {
               <br />
               조금만 기다려주세요!
             </div>
+          )}
+          {modalOpen ? <ArticleDetailMenuModal /> : <></>}
+          {modalOpen ? (
+            <>
+              <MemberListModal
+                show={modalOpen}
+                handleClose={handleModalClose}
+              />
+            </>
+          ) : (
+            <></>
           )}
         </ArticleDetailWrap>
       )}

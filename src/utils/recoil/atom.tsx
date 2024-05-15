@@ -21,6 +21,11 @@ interface UserCareerState {
  * 네비게이션 바 상태
  */
 
+export const loadingStateAtom = atom<boolean>({
+  key: "loadingStateAtom",
+  default: true,
+});
+
 export const navState = atom({
   key: "navState",
   default: "home", //home, list, career
@@ -259,17 +264,16 @@ export const filteredArticleRecruitmentOptionListState = selector({
     const filter = get(ArticleRecruitmentOptionState);
     const list = get(filteredArticleListTypeState);
 
-    const currentDate = new Date();
     switch (filter) {
       case "all":
         return list;
       case "recruting":
         return list.filter(
-          (article: Article) => new Date(article.articleEndDay) > currentDate
+          (article: Article) => article.articleRecruitmentState
         );
       case "recruitmentCompleted":
         return list.filter(
-          (article: Article) => new Date(article.articleEndDay) < currentDate
+          (article: Article) => !article.articleRecruitmentState
         );
 
       default:

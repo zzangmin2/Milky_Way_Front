@@ -16,6 +16,8 @@ import ErrorPage from "../../RoutePage/ErrorPage";
 import {
   emailSuccesses,
   compareSuccesses,
+  // userCompareState,
+  userCompareValues,
   userCompareState,
 } from "../../../utils/recoil/atom";
 
@@ -24,17 +26,21 @@ const SignupInfo = () => {
   const [name, setName] = useState("");
   const [dpt, setDpt] = useState("");
   const [number, setNumber] = useState("");
-  const userCompare = useSetRecoilState(userCompareState);
-  const userCompares = useRecoilValue(userCompareState);
+  const userCompare = useSetRecoilState(userCompareValues);
   const emailSuccessIn = useRecoilValue(emailSuccesses);
   const compareSuccessIn = useRecoilValue(compareSuccesses);
+  const compareValue = useRecoilValue(userCompareValues);
+  const verifyValue = useRecoilValue(userCompareState);
 
   const sendUserInfoOnClick = async () => {
     try {
-      const result = await sendUserInfo(name, dpt, number);
-      if (result.success) {
+      userCompare(newValue);
+      const { name, dpt, number, id, email, password } = newValue;
+      console.log(newValue);
+      const result = await sendUserInfo(name, number, id, email, password);
+
+      if (true) {
         alert(`${name}님! 회원가입이 완료되었습니다.`);
-        userCompare(newValue);
         navigate("/users/login");
       } else {
         throw result;
@@ -42,12 +48,12 @@ const SignupInfo = () => {
     } catch (error: any) {
       console.log(`${error.message}`);
       alert(`다시 시도해주세요: ${error.message}`);
-      console.log(newValue);
-      console.log(userCompares);
+      console.log(verifyValue);
     }
   };
 
   const newValue = {
+    ...compareValue,
     name: name,
     dpt: dpt,
     number: number,
@@ -55,7 +61,7 @@ const SignupInfo = () => {
 
   return (
     <>
-      {!(emailSuccessIn && compareSuccessIn) ? (
+      {emailSuccessIn && compareSuccessIn ? (
         <Box>
           <TopSection>
             <ProgressContainer>

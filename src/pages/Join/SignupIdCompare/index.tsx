@@ -9,11 +9,12 @@ import {
   ProgressBar,
 } from "../styles";
 import { useNavigate } from "react-router-dom";
-import { sendUserCompareInfo } from "../../../utils/apimodule/member";
+// import { sendUserCompareInfo } from "../../../utils/apimodule/member";
 import {
   userCompareState,
   compareSuccesses,
   userCompareValues,
+  loadingStateAtom,
 } from "../../../utils/recoil/atom";
 import {
   useSetRecoilState,
@@ -23,29 +24,31 @@ import {
 import SignupInput from "../SignupInput";
 import { emailSuccesses } from "../../../utils/recoil/atom";
 import ErrorPage from "../../RoutePage/ErrorPage";
+import { sendUserCompareInfo } from "../../../utils/apimodule/member";
 
 const SignupIdCompare = () => {
   const emailSuccessIn = useRecoilValue(emailSuccesses);
-  const userCompareValuesConsole = useRecoilValueLoadable(userCompareValues);
-  const userCompare = useSetRecoilState(userCompareState);
+  const userCompare = useSetRecoilState(userCompareValues);
+  const compareValue = useRecoilValue(userCompareValues);
+  const [PwdValidate, setPwdValidate] = useState(false);
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const compareSuccessIn = useSetRecoilState(compareSuccesses);
-  const [confirmSuccess, setConfirmSuccess] = useState(false);
 
   const [compareInState, setCompareInState] = useState(false);
 
   const navigate = useNavigate();
 
-  const sendUserInfo = async () => {
+  const sendUseridVerify = async () => {
     try {
-      const result = await sendUserCompareInfo(id, password);
+      const result = await sendUserCompareInfo(id);
       if (result.success) {
         setCompareInState(true);
-        alert("중복된 아이디가 없습니다"); //유저 인포 상태 스테이트?추가
+        alert("중복된 아이디가 없습니다");
       } else {
-        throw result;
+        console.log(id);
+        alert("실패");
       }
     } catch (error: any) {
       alert(`실패: ${error.message}`);
@@ -56,18 +59,21 @@ const SignupIdCompare = () => {
     return new Promise((resolve, reject) => {
       if (!id || !password || !confirmPassword) {
         alert("아이디와 비밀번호를 입력해주세요.");
-        setCompareInState(false);
+
         return;
       }
 
       if (password !== confirmPassword) {
-        alert("비밀번호가 일치하지 않습니다.");
-        setCompareInState(false);
+        // alert("비밀번호가 일치하지 않습니다.");
+        setPwdValidate(true);
+
         return;
       } else {
         setConfirmPassword: Boolean(true);
       }
+
       try {
+        setPwdValidate(false);
         compareSuccessIn(true);
         userCompare(newValue);
         navigate("/users/signupinfo");
@@ -79,15 +85,14 @@ const SignupIdCompare = () => {
   };
 
   const newValue = {
+    ...compareValue,
     id: id,
     password: password,
   };
 
-  console.log(newValue);
-
   return (
     <>
-      {!emailSuccessIn ? (
+      {emailSuccessIn ? (
         <Box>
           <TopSection>
             <ProgressContainer>
@@ -101,14 +106,28 @@ const SignupIdCompare = () => {
               </p>
             </div>
             <div>
-              <SignupInput
-                placeholder={"아이디를 입력 해주세요"}
-                type="text"
-                name="id"
-                setValue={setId}
-              >
-                <button>saef</button>
-              </SignupInput>
+              {!compareInState ? (
+                <SignupInput
+                  placeholder={"아이디를 입력 해주세요"}
+                  type="verify"
+                  name="id"
+                  value={id}
+                  setValue={setId}
+                  onClick={sendUseridVerify}
+                />
+              ) : (
+                <>
+                  <SignupInput
+                    placeholder={"아이디를 입력 해주세요"}
+                    type="verify"
+                    disable
+                    name="id"
+                    value={id}
+                    onClick={sendUseridVerify}
+                  />
+                </>
+              )}
+
               <SignupInput
                 placeholder={"비밀번호를 입력 해주세요"}
                 name="password"
@@ -122,9 +141,14 @@ const SignupIdCompare = () => {
                 setValue={setConfirmPassword}
               />
             </div>
+            {PwdValidate && (
+              <>
+                <div>비밀번호가 일치하지 않습니다.</div>
+              </>
+            )}
           </TopSection>
           <BottomSection>
-            {!compareInState ? (
+            {compareInState ? (
               <Button text={"다음"} color={"#133488"} onClick={stateUserInfo} />
             ) : (
               <Button text={"다음"} color={"#a8a8a8"} />

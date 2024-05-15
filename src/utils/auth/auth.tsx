@@ -1,4 +1,5 @@
 import api from "../api/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 /**
  * 로그인 axios
@@ -10,14 +11,21 @@ import api from "../api/axiosInstance";
 
 export const loginedIn = async (loginId: string, password: string) => {
   try {
-    const response = await api.post("", {
-      loginId,
-      password,
+    const response = await api.post("/login", {
+      memberId: loginId,
+      memberPassword: password,
     });
-    if (response.data.success) {
-      const token = response.data.access_token;
-      localStorage.setItem("access_token", token);
-      return { success: true };
+
+    console.log(response.data);
+    console.log(response);
+    if (response.status === 200) {
+      console.log(response.data);
+      const memberNo = response.data.memberNo;
+      const token = response.data.accessToken;
+
+      localStorage.setItem("memberNo", memberNo);
+      localStorage.setItem("ACCESS_TOKEN", token);
+      return { success: true, memberNo };
     } else {
       return { success: false, error: "로그인 실패" };
     }
@@ -28,9 +36,28 @@ export const loginedIn = async (loginId: string, password: string) => {
 };
 
 /**
- * 로컬스토리지에 저장된 access_token삭제
+ * 로컬스토리지에 저장된 access_token삭제 및 백에 로그아웃 요청
+ * @param access_token
  * @description 추가 구성 필요 -> 리다이렉트 ?
  */
-export const logout = () => {
-  localStorage.removeItem("access_token");
+
+export const logout = async () => {
+  const navigate = useNavigate();
+  try {
+    const ACCESS_TOKEN = localStorage.getItem("ACCESS_TOKEN");
+    const response = await api.post("/logout", {
+      headers: {
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+    });
+    if (response.status === 200) {
+      localStorage.removeItem("ACCESS_TOKEN");
+      navigate("/users/login");
+    } else {
+      return { success: false, error: "로그아웃 실패" };
+    }
+  } catch (error) {
+    console.error("error", error);
+    return { success: false, error: "error" };
+  }
 };
