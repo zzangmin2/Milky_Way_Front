@@ -125,8 +125,8 @@ const viewArticleList = async () => {
  */
 const viewMyInfo = async () => {
   try {
-    const memberIds = localStorage.getItem("memberNo");
-    const response = await api.post(`/${memberIds}/info`);
+    // const memberIds = localStorage.getItem("memberNo");
+    const response = await api.post(`/info`);
     const data = response.data[0];
     console.log(data);
     if (response.data) {

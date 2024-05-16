@@ -16,43 +16,26 @@ import Modal from "../../components/Modal";
 import { viewMyInfo } from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { userInfoState } from "../../utils/recoil/atom";
-import { sendUserEditInfo } from "../../utils/apimodule/member";
+
 import { ArticleCurrentState } from "../../utils/recoil/atom";
 import { logout } from "../../utils/auth/auth";
+import MyInfoContent from "../../components/MyInfoContent";
 
 const MyInfo = () => {
-  interface UserInfo {
-    userName?: any;
-    userEmail?: any;
-    userNumber?: any;
-    userCareerCard?: any;
-    userNickName?: any;
-  }
-
-  const [editUser, setEditUser] = useState<UserInfo>({
-    userName: "",
-    userEmail: "",
-    userNumber: "",
-    userCareerCard: "",
-    userNickName: "",
-  });
-
+  const [activeTab, setActiveTab] = useState<string>("all");
   const [articleCurrentState, setArticleCurrentState] =
     useRecoilState(ArticleCurrentState);
+
   const infoValue = useSetRecoilState(userInfoState);
-  const { userName, userEmail, userNickName, userCareerCard, userNumber } =
-    useRecoilValue(userInfoState);
-  const [activeTab, setActiveTab] = useState<string>("all");
-  const [edit, setEdit] = useState<boolean>(false);
+  const { userName, userEmail, userNumber } = useRecoilValue(userInfoState);
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [additionalInfo, setAdditionalInfo] = useState<string>("");
   const [modalType, setModalType] = useState<string>("");
 
-  useEffect(() => {
-    userInfoData();
-    setEditUser({});
-  }, []);
-
+  /**
+   * 로그아웃
+   */
   const logoutEventClick = async () => {
     try {
       const result = await logout();
@@ -61,6 +44,9 @@ const MyInfo = () => {
     }
   };
 
+  /**
+   * 유저정보불러옴
+   */
   const userInfoData = async () => {
     try {
       const data: any = await viewMyInfo();
@@ -69,8 +55,6 @@ const MyInfo = () => {
       infoValue({
         userName: result.userName,
         userEmail: result.userEmail,
-        userNickname: result.userNickname,
-        userCareerCard: result.userCareerCard,
         userNumber: result.userNumber,
       });
 
@@ -80,24 +64,19 @@ const MyInfo = () => {
     }
   };
 
+  /**
+   * 마운트시에 유저정보불러오고 setEditUser초기화
+   */
+  useEffect(() => {
+    userInfoData();
+  }, []);
+
+  /**
+   * articlelist상태 탭바
+   * @param tab
+   */
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
-  };
-
-  const sendClickEdit = async () => {
-    try {
-      const response: any = await sendUserEditInfo(
-        editUser.userName,
-        editUser.userEmail,
-        editUser.userNumber
-      );
-      if (response.data.success) {
-        alert("수정완료");
-      }
-    } catch (error) {
-      alert("수정실패");
-      console.error("error", error);
-    }
   };
 
   const handleModalOpen = (additionalInfo: string) => {
@@ -113,101 +92,11 @@ const MyInfo = () => {
     <>
       <Section>
         <TopSection>
-          <InfoTitle>
-            <div>내정보</div>
-            {edit ? (
-              <p
-                onClick={() => {
-                  setEdit(false);
-                  sendClickEdit();
-                }}
-              >
-                수정완료
-              </p>
-            ) : (
-              <>
-                <p
-                  onClick={() => {
-                    setEdit(true);
-                  }}
-                >
-                  수정하기
-                </p>
-              </>
-            )}
-          </InfoTitle>
-          <InfoContent>
-            <div>이메일</div>
-            <div>
-              {edit ? (
-                <>
-                  <input
-                    type="text"
-                    placeholder={"이메일을 입력하세요"}
-                    value={editUser.userEmail}
-                    onChange={(e) => {
-                      setEditUser({
-                        ...editUser,
-                        userEmail: e.target.value,
-                      });
-                    }}
-                  />
-                </>
-              ) : (
-                <>
-                  <p>{userEmail}</p>
-                </>
-              )}
-            </div>
-          </InfoContent>
-          <InfoContent>
-            <div>이름</div>
-            <div>
-              {edit ? (
-                <>
-                  <input
-                    type="text"
-                    placeholder={"이름을 입력해주세요"}
-                    value={editUser.userName}
-                    onChange={(e) => {
-                      setEditUser({
-                        ...editUser,
-                        userName: e.target.value,
-                      });
-                    }}
-                  ></input>
-                </>
-              ) : (
-                <>
-                  <p>{userName}</p>
-                </>
-              )}
-            </div>
-          </InfoContent>
-          <InfoContent>
-            <div>전화번호</div>
-            <div>
-              {edit ? (
-                <>
-                  <input
-                    type="text"
-                    placeholder={"전화번호를 입력해주세요"}
-                    value={editUser.userNumber}
-                    onChange={(e) => {
-                      setEditUser({
-                        ...editUser,
-                        userNumber: e.target.value,
-                      });
-                    }}
-                  ></input>
-                </>
-              ) : (
-                <>
-                  <p>{userNumber}</p>
-                </>
-              )}
-            </div>
-          </InfoContent>
+          <MyInfoContent
+            userName={userName}
+            userNumber={userNumber}
+            userEmail={userEmail}
+          ></MyInfoContent>
         </TopSection>
         <BottomSection>
           <InfoTitle>

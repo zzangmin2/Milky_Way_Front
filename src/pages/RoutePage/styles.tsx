@@ -1,5 +1,25 @@
 import styled from "styled-components";
 
+export const Container = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #eee;
+`;
+
+export const MainContainer = styled.section`
+  width: 375px;
+  height: 100vh;
+  background-color: #fff;
+  overflow-x: hidden;
+
+  @media (max-width: 575px) {
+    width: 100vw;
+  }
+`;
+
 export const RoutePage = styled.div`
   width: 100%;
   display: flex;

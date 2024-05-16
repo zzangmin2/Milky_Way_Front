@@ -26,6 +26,11 @@ export const loadingStateAtom = atom<boolean>({
   default: true,
 });
 
+export const loadingStateSelector = selector<boolean>({
+  key: "loadingStateSelector",
+  get: ({ get }) => get(loadingStateAtom),
+});
+
 export const navState = atom({
   key: "navState",
   default: "home", //home, list, career

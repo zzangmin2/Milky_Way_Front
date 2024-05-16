@@ -1,13 +1,16 @@
 import styled from "styled-components";
 
-export const StyledInputContainer = styled.div`
+interface InputProps {
+  color?: string;
+}
+export const StyledInputContainer = styled.div<InputProps>`
   position: relative;
   &:focus {
     outline: none;
   }
   & > button:nth-child(2) {
     position: absolute;
-    background-color: #133482;
+    background-color: ${(props) => props.color || "#133482"};
     color: white;
     font-size: 15px;
     right: 0;

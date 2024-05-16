@@ -20,12 +20,11 @@ export const loginedIn = async (loginId: string, password: string) => {
     console.log(response);
     if (response.status === 200) {
       console.log(response.data);
-      const memberNo = response.data.memberNo;
+
       const token = response.data.accessToken;
 
-      localStorage.setItem("memberNo", memberNo);
       localStorage.setItem("ACCESS_TOKEN", token);
-      return { success: true, memberNo };
+      return { success: true };
     } else {
       return { success: false, error: "로그인 실패" };
     }

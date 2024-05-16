@@ -9,17 +9,19 @@ interface Props {
   value?: string;
   setValue?: ((value: string) => void | undefined) | undefined;
   onClick?: () => void;
-  disable?: boolean;
+  disabled?: boolean;
+  color?: string | undefined;
 }
 
 const SignupInput: FC<Props> = ({
   type = "text",
   placeholder,
   name,
-  disable,
+  disabled,
   value,
   setValue,
   onClick,
+  color,
 }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (setValue) {
@@ -35,9 +37,19 @@ const SignupInput: FC<Props> = ({
         onChange={handleChange}
         value={value}
         name={name}
-        disabled={disable}
+        disabled={disabled}
+        color={color}
       />
-      {type === "verify" && <button onClick={onClick}>중복확인</button>}
+      {type === "verify" && (
+        <button onClick={onClick} disabled={disabled}>
+          중복확인
+        </button>
+      )}
+      {type === "verifyloading" && (
+        <button onClick={onClick} color={color} disabled={disabled}>
+          ..
+        </button>
+      )}
     </StyledInputContainer>
   );
 };

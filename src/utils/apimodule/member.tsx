@@ -50,8 +50,8 @@ import api from "../api/axiosInstance";
  */
 const sendUserCompareInfo = async (id: number | string) => {
   try {
-    const response = await api.post("/signup/duplicationCheck", {
-      id: id,
+    const response = await api.post("/signup/checkId", {
+      memberId: id,
     });
 
     if (response.status === 200) {
