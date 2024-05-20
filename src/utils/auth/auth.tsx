@@ -16,15 +16,15 @@ export const loginedIn = async (loginId: string, password: string) => {
       memberPassword: password,
     });
 
-    console.log(response.data);
-    console.log(response);
     if (response.status === 200) {
       console.log(response.data);
 
       const token = response.data.accessToken;
+      const userName: any = response.data.userName;
 
       localStorage.setItem("ACCESS_TOKEN", token);
-      return { success: true };
+
+      return { success: true, userName };
     } else {
       return { success: false, error: "로그인 실패" };
     }

@@ -2,12 +2,10 @@ import {
   BottomSection,
   Section,
   TopSection,
-  InfoContent,
   InfoTitle,
   InfoNav,
   InfoProjectList,
   ArticleInfoCardWrap,
-  ArticleApplyStateTableWrap,
   LogoutText,
 } from "./style";
 import { useState, useEffect } from "react";
@@ -16,6 +14,7 @@ import Modal from "../../components/Modal";
 import { viewMyInfo } from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { userInfoState } from "../../utils/recoil/atom";
+import ArticleApplyStateTable from "../../components/ArticleApplyStateTable";
 
 import { ArticleCurrentState } from "../../utils/recoil/atom";
 import { logout } from "../../utils/auth/auth";
@@ -52,11 +51,11 @@ const MyInfo = () => {
       const data: any = await viewMyInfo();
       const result = data.data;
       console.log(result);
-      infoValue({
-        userName: result.userName,
-        userEmail: result.userEmail,
-        userNumber: result.userNumber,
-      });
+      // infoValue({
+      //   userName: result.userName,
+      //   userEmail: result.userEmail,
+      //   userNumber: result.userNumber,
+      // });
 
       console.log(infoValue);
     } catch (error) {
@@ -144,41 +143,11 @@ const MyInfo = () => {
                 </div>
               </InfoProjectList>
               <section style={{ marginTop: "50px" }}>
-                <ArticleApplyStateTableWrap>
-                  <div className="tableRow tableRowTop">
-                    <div className="tableCell">스터디/프로젝트명</div>
-                    <div className="tableCell">신청일</div>
-                    <div className="tableCell">상태</div>
-                  </div>
-
-                  {articleCurrentState.articleApplyState.map(
-                    (applicant, idx) => {
-                      return (
-                        <div className="tableRow" key={idx}>
-                          <div className="tableCell">
-                            {applicant.applicantName}
-                          </div>
-                          <div className="tableCell">
-                            {applicant.applicationDate}
-                          </div>
-                          <div className="tableCell">
-                            {/* {applicant.status === "선정" && ( */}
-                            <button
-                              onClick={() => {
-                                handleModalOpen("신청");
-                                setModalType("info");
-                                setAdditionalInfo("http://naver.com");
-                              }}
-                            >
-                              {applicant.status}
-                            </button>
-                            {/* )} */}
-                          </div>
-                        </div>
-                      );
-                    }
-                  )}
-                </ArticleApplyStateTableWrap>
+                <ArticleApplyStateTable
+                  articleApplyState={articleCurrentState.articleApplyState}
+                  handleModalOpen={handleModalOpen}
+                  setModalType={setModalType}
+                />
               </section>
             </>
           )}
@@ -223,41 +192,12 @@ const MyInfo = () => {
                 </div>
               </InfoProjectList>
               <section style={{ marginTop: "50px" }}>
-                <ArticleApplyStateTableWrap>
-                  <div className="tableRow tableRowTop">
-                    <div className="tableCell">스터디/프로젝트명</div>
-                    <div className="tableCell">등록일</div>
-                    <div className="tableCell">상태</div>
-                  </div>
-                  {articleCurrentState.articleApplyState ? (
-                    articleCurrentState.articleApplyState.map(
-                      (applicant, idx) => {
-                        return (
-                          <div className="tableRow" key={idx}>
-                            <div className="tableCell">
-                              {applicant.applicantName}
-                            </div>
-                            <div className="tableCell">
-                              {applicant.applicationDate}
-                            </div>
-                            <div className="tableCell">
-                              <p
-                                onClick={() => {
-                                  handleModalOpen;
-                                  setModalType("userList");
-                                }}
-                              >
-                                모집중
-                              </p>
-                            </div>
-                          </div>
-                        );
-                      }
-                    )
-                  ) : (
-                    <div>아직 없네요 ..</div>
-                  )}
-                </ArticleApplyStateTableWrap>
+                <ArticleApplyStateTable
+                  articleApplyState={articleCurrentState.articleApplyState}
+                  handleModalOpen={handleModalOpen}
+                  setModalType={setModalType}
+                />
+
                 <ArticleInfoCardWrap style={{ marginTop: "-50px" }}>
                   <ArticleInfoCard
                     navigateRoute="/articledetail/1"

@@ -59,6 +59,8 @@ const SignupInfo = () => {
     number: number,
   };
 
+  console.log(compareValue);
+
   return (
     <>
       {emailSuccessIn && compareSuccessIn ? (
