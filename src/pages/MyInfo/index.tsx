@@ -18,6 +18,7 @@ import ArticleApplyStateTable from "../../components/ArticleApplyStateTable";
 
 import { ArticleCurrentState } from "../../utils/recoil/atom";
 import { logout } from "../../utils/auth/auth";
+
 import MyInfoContent from "../../components/MyInfoContent";
 
 const MyInfo = () => {
@@ -164,6 +165,7 @@ const MyInfo = () => {
                   articleLikes={0}
                   articleEndDay={""}
                   articleRecruitmentState={false}
+                  articleStartDay={""}
                 />
                 <ArticleInfoCard
                   navigateRoute="/articledetail/1"
@@ -175,6 +177,7 @@ const MyInfo = () => {
                   articleLikes={0}
                   articleEndDay={""}
                   articleRecruitmentState={false}
+                  articleStartDay={""}
                 />
               </ArticleInfoCardWrap>
             </>
@@ -209,6 +212,7 @@ const MyInfo = () => {
                     articleLikes={0}
                     articleEndDay={""}
                     articleRecruitmentState={false}
+                    articleStartDay={""}
                   />
                   <ArticleInfoCard
                     navigateRoute="/articledetail/1"
@@ -220,6 +224,7 @@ const MyInfo = () => {
                     articleLikes={0}
                     articleEndDay={""}
                     articleRecruitmentState={false}
+                    articleStartDay={""}
                   />
                 </ArticleInfoCardWrap>
               </section>

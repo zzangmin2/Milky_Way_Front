@@ -27,9 +27,15 @@ const { persistAtom } = recoilPersist({
   storage: localStorage,
 });
 
-/**
- * 네비게이션 바 상태
- */
+interface UserCareerInfo {
+  userDpt?: string;
+  userLocation?: string;
+}
+
+const { persistAtom } = recoilPersist({
+  key: "localstrage",
+  storage: localStorage,
+});
 
 export const loadingStateAtom = atom<boolean>({
   key: "loadingStateAtom",
@@ -40,6 +46,15 @@ export const loadingStateSelector = selector<boolean>({
   key: "loadingStateSelector",
   get: ({ get }) => get(loadingStateAtom),
 });
+
+export const loadingStateSelector = selector<boolean>({
+  key: "loadingStateSelector",
+  get: ({ get }) => get(loadingStateAtom),
+});
+
+/**
+ * 네비게이션 바 상태
+ */
 
 export const navState = atom({
   key: "navState",
@@ -313,17 +328,16 @@ export const filteredArticleRecruitmentOptionListState = selector({
     const filter = get(ArticleRecruitmentOptionState);
     const list = get(filteredArticleListTypeState);
 
-    const currentDate = new Date();
     switch (filter) {
       case "all":
         return list;
       case "recruting":
         return list.filter(
-          (article: Article) => new Date(article.articleEndDay) > currentDate
+          (article: Article) => article.articleRecruitmentState
         );
       case "recruitmentCompleted":
         return list.filter(
-          (article: Article) => new Date(article.articleEndDay) < currentDate
+          (article: Article) => !article.articleRecruitmentState
         );
 
       default:

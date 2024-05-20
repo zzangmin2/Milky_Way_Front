@@ -63,7 +63,7 @@ const ArticleRegister = () => {
 
       if (result.success) {
         alert("등록 완료!");
-        navigate(`/home/articlelist/all`);
+        navigate(`/home/articlelist`);
       } else {
         throw new Error("등록 실패");
       }

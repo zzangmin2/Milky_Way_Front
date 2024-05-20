@@ -30,9 +30,9 @@ const sendNewArticle = async (newArticleData: Article) => {
   } = newArticleData;
 
   const newArticle = {
-    userNo: "1",
     articleType: articleType,
-    apply: parseInt(articleApply),
+    apply:
+      typeof articleApply === "string" ? parseInt(articleApply) : undefined,
     findMentor: articleMentorNeeded,
     mentorTag: articleMentorTag,
     startDay: articleStartDay,
@@ -43,7 +43,7 @@ const sendNewArticle = async (newArticleData: Article) => {
     conInfo: articleContactInfo,
   };
   try {
-    await api.post("http://localhost:8080/posts/edit", newArticle);
+    await api.post("/posts/edit", newArticle);
     console.log(newArticle);
 
     return { success: true };
@@ -57,10 +57,7 @@ const sendNewArticle = async (newArticleData: Article) => {
 
 const viewCurrentArticle = async (articleId: number) => {
   try {
-    const response = await api.get(
-      // `http://localhost:8080/posts/${articleId}`
-      `http://localhost:3000/currentArticle?articleId=${articleId}`
-    );
+    const response = await api.get(`/posts/${articleId}`);
     if (response.data) {
       return response.data;
     } else {
@@ -74,12 +71,9 @@ const viewCurrentArticle = async (articleId: number) => {
 
 const editCurrentArticle = async (articleId: number) => {
   try {
-    const response = await api.put(
-      `http://localhost:3000/currentArticle?articleId=${articleId}`,
-      {
-        articleRecruitmentState: false,
-      }
-    );
+    const response = await api.put(`/posts/${articleId}`, {
+      articleRecruitmentState: false,
+    });
     console.log("Success:", response.data);
 
     return { success: true };
@@ -91,9 +85,8 @@ const editCurrentArticle = async (articleId: number) => {
 
 const deleteCurrentArticle = async (articleId: number) => {
   try {
-    const response = await api.delete(
-      `http://localhost:3000/currentArticle?articleId=${articleId}`
-    );
+
+    const response = await api.delete(`/posts/${articleId}`);
     console.log("Success:", response.data);
 
     return { success: true };
@@ -103,12 +96,53 @@ const deleteCurrentArticle = async (articleId: number) => {
   }
 };
 
-const viewArticleList = async () => {
+/**
+ * 게시물 지원하기 (헤더에 토큰 심어서 보냄)
+ * @param articleId
+ * @returns
+ */
+const sendArticleApplyUser = async (articleId: number) => {
   try {
-    const response = await api.get("http://localhost:8080/posts/list");
-    // const response = await api.get(`http://localhost:3000/currentArticle`);
+    const response = await api.post(
+      `http://localhost:8080/posts/apply/${articleId}`
+    );
+
+    console.log(response);
+    return { success: true };
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
+ * 게시물 지원자 리스트 조회
+ * @param articleId
+ * @returns
+ */
+const viewArticleApplyUserList = async (articleId: number) => {
+  try {
+    const response = await api.get(
+      `http://localhost:8080/posts/applylist/${articleId}`
+    );
+
     if (response.data) {
       console.log(response.data.content);
+      return response.data.content;
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+const viewArticleList = async () => {
+  try {
+    const response = await api.get("/posts/list");
+    if (response.data) {
+      console.log(response.data);
       return response.data.content;
     } else {
       return { success: false };
@@ -166,6 +200,8 @@ export {
   viewCurrentArticle,
   editCurrentArticle,
   deleteCurrentArticle,
+  sendArticleApplyUser,
+  viewArticleApplyUserList,
   viewArticleList,
   viewMyInfo,
   viewMyCareer,
