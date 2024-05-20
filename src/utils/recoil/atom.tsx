@@ -17,14 +17,14 @@ interface UserCareerState {
   userLineText?: any;
 }
 
-/**
- * 네비게이션 바 상태
- */
-
 export const loadingStateAtom = atom<boolean>({
   key: "loadingStateAtom",
   default: true,
 });
+
+/**
+ * 네비게이션 바 상태
+ */
 
 export const navState = atom({
   key: "navState",
