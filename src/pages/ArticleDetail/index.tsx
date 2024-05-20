@@ -25,7 +25,6 @@ import {
   sendArticleApplyUser,
   viewCurrentArticle,
 } from "../../utils/apimodule/article";
-import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
 import { getTimeAgo } from "../../utils/utils";
 import MemberListModal from "../../components/ArticleMemberListModal";
@@ -44,11 +43,12 @@ const ArticleDetail = () => {
   const handleModalClose = () => {
     setModalOpen(false);
   };
-  //현재 페이지에서 보여주고 있는 article 데이터
+
+  // 현재 페이지에서 보여주고 있는 article 데이터
   const [articleCurrentState, setArticleCurrentState] =
     useRecoilState(ArticleCurrentState);
 
-  //소개 / QnA탭 상태
+  // 소개 / QnA 탭 상태
   const [articleDetailIntroOrQnaState, setArticleDetailIntroOrQnaState] =
     useRecoilState(articleDetailIntroOrQnaTabState);
 
@@ -65,7 +65,7 @@ const ArticleDetail = () => {
       if (articleId) {
         const result = await viewCurrentArticle(parseInt(articleId));
 
-        if (result.success === true) {
+        if (result) {
           const newResult = {
             articleId: result.article_no,
             articleMemberId: "testuser",
@@ -116,7 +116,7 @@ const ArticleDetail = () => {
     }
   };
 
-  // 소개 / qna 탭 클릭 함수
+  // 소개 / QnA 탭 클릭 함수
   const handleTabClick = (tab: string) => {
     setArticleDetailIntroOrQnaState(tab);
   };
@@ -138,38 +138,11 @@ const ArticleDetail = () => {
                     ) : (
                       <div className="articleRecruitmentState"></div>
                     )}
-
-                <div>{articleCurrentState.articleEndDay} 까지</div>
-              </div>
-              <div className="articleLike">
-                <FontAwesomeIcon icon={faStar} />
-                <p>{articleCurrentState.articleLikes}</p>
-              </div>
-            </ArticleInfoStateWrap>
-            <ArticleInfoSummaryWrap>
-              <div>
-                <ArticleTag
-                  tagType={
-                    articleCurrentState.articleType === "study"
-                      ? "스터디"
-                      : "프로젝트"
-                  }
-                />
-                {articleCurrentState.articleMentorNeeded && <MentoTag />}
-              </div>
-              <div className="articleInfoSummary">
-                <h3>{articleCurrentState.articleTitle}</h3>
-                <div className="articleRecruiter">
-                  <p>컴퓨터정보학부</p>
-                  <p>{articleCurrentState.articleMemberId}</p>
-                </div>
-                <div className="articleState">
-                  <div>
-                    <p>모집 현황</p>
-                    <p>
-                      {articleCurrentState.articleApplyNow}/
-                      {articleCurrentState.articleApply}
-                    </p>
+                    <div>{articleCurrentState.articleEndDay} 까지</div>
+                  </div>
+                  <div className="articleLike">
+                    <FontAwesomeIcon icon={faStar} />
+                    <p>{articleCurrentState.articleLikes}</p>
                   </div>
                 </ArticleInfoStateWrap>
                 <ArticleInfoSummaryWrap>
@@ -181,7 +154,7 @@ const ArticleDetail = () => {
                           : "프로젝트"
                       }
                     />
-                    <MentoTag />
+                    {articleCurrentState.articleMentorNeeded && <MentoTag />}
                   </div>
                   <div className="articleInfoSummary">
                     <h3>{articleCurrentState.articleTitle}</h3>
@@ -316,16 +289,11 @@ const ArticleDetail = () => {
                   조금만 기다려주세요!
                 </div>
               )}
-              {modalOpen ? <ArticleDetailMenuModal /> : <></>}
-              {modalOpen ? (
-                <>
-                  <MemberListModal
-                    show={modalOpen}
-                    handleClose={handleModalClose}
-                  />
-                </>
-              ) : (
-                <></>
+              {modalOpen && (
+                <MemberListModal
+                  show={modalOpen}
+                  handleClose={handleModalClose}
+                />
               )}
             </ArticleDetailWrap>
           )}
