@@ -24,7 +24,7 @@ const ArticleDetailMenuModal = () => {
         const result = await editCurrentArticle(parseInt(articleId));
         if (result.success) {
           alert("수정 완료!");
-          navigate(`/home/articlelist/all`);
+          navigate(`/home/articlelist`);
         } else {
           throw new Error("수정 실패");
         }
@@ -42,7 +42,7 @@ const ArticleDetailMenuModal = () => {
 
         if (result.success) {
           alert("삭제 완료!");
-          navigate(`/home/articlelist/all`);
+          navigate(`/home/articlelist`);
         } else {
           throw new Error("삭제 실패");
         }
