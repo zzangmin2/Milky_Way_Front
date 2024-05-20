@@ -32,19 +32,9 @@ interface UserCareerInfo {
   userLocation?: string;
 }
 
-const { persistAtom } = recoilPersist({
-  key: "localstrage",
-  storage: localStorage,
-});
-
 export const loadingStateAtom = atom<boolean>({
   key: "loadingStateAtom",
   default: true,
-});
-
-export const loadingStateSelector = selector<boolean>({
-  key: "loadingStateSelector",
-  get: ({ get }) => get(loadingStateAtom),
 });
 
 export const loadingStateSelector = selector<boolean>({

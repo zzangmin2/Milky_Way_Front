@@ -38,22 +38,27 @@ const SignupIdCompare = () => {
   const compareSuccessIn = useSetRecoilState(compareSuccesses);
   const loadingState = useRecoilValue(loadingStateSelector);
   const [compareInState, setCompareInState] = useState(false);
+  const loginex: RegExp = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/;
 
   const navigate = useNavigate();
 
   const sendUseridVerify = async () => {
-    try {
-      const result = await sendUserCompareInfo(id);
-      console.log(result);
-      if (result.success) {
-        alert("중복된 아이디가 없습니다");
-        setCompareInState(true);
-      } else {
-        console.log(id);
-        alert("실패");
+    if (loginex.test(id)) {
+      try {
+        const result = await sendUserCompareInfo(id);
+        console.log(result);
+        if (result.success) {
+          alert("중복된 아이디가 없습니다");
+          setCompareInState(true);
+        } else {
+          console.log(id);
+          alert("실패");
+        }
+      } catch (error: any) {
+        alert(`실패: ${error.message}`);
       }
-    } catch (error: any) {
-      alert(`실패: ${error.message}`);
+    } else {
+      alert("아이디에 숫자와 문자를 모두 입력해주세요!");
     }
   };
 
