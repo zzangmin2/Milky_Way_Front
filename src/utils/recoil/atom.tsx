@@ -1,5 +1,6 @@
 import { atom, selector } from "recoil";
 import { Article } from "../../typings/db";
+import { recoilPersist } from "recoil-persist";
 
 interface UserCompareState {
   email?: string;
@@ -11,15 +12,44 @@ interface UserCompareState {
 }
 
 interface UserCareerState {
-  userName?: any;
   userCareer?: any;
   userCertificate?: any;
   userLineText?: any;
 }
 
+interface UserCareerInfo {
+  userDpt?: string;
+  userLocation?: string;
+}
+
+const { persistAtom } = recoilPersist({
+  key: "localstrage",
+  storage: localStorage,
+});
+
+interface UserCareerInfo {
+  userDpt?: string;
+  userLocation?: string;
+}
+
+const { persistAtom } = recoilPersist({
+  key: "localstrage",
+  storage: localStorage,
+});
+
 export const loadingStateAtom = atom<boolean>({
   key: "loadingStateAtom",
   default: true,
+});
+
+export const loadingStateSelector = selector<boolean>({
+  key: "loadingStateSelector",
+  get: ({ get }) => get(loadingStateAtom),
+});
+
+export const loadingStateSelector = selector<boolean>({
+  key: "loadingStateSelector",
+  get: ({ get }) => get(loadingStateAtom),
 });
 
 /**
@@ -51,15 +81,25 @@ export const compareSuccesses = atom<boolean>({
 });
 
 /**
- * sendLogin 성공시 로그인 유저네임 저장
+ * sendLogin 성공시 recoil persist로 로컬스토리지에 로그인 유저네임 저장
  * @type {string}
  */
-
 export const isLoggedInUserName = atom<string>({
   key: "isLoggedInUserName",
   default: "",
+  effects_UNSTABLE: [persistAtom],
 });
 
+export const isLoggedInUserNameSelector = selector<string>({
+  key: "isLoggedInUserNameSelector",
+  get: ({ get }) => {
+    const userName = get(isLoggedInUserName);
+    return userName;
+  },
+  set: ({ set }, newValue: any) => {
+    set(userCompareState, newValue);
+  },
+});
 /**
  * 회원가입 state, 필요한지 따져봐야함k
  * @type {boolean}
@@ -131,24 +171,48 @@ export const userCompareValues = selector<UserCompareState>({
 export const userCareerState = atom<UserCareerState>({
   key: "userCareerState",
   default: {
-    userName: "",
     userCareer: [],
     userCertificate: [],
     userLineText: "",
   },
 });
 
-export const userCareerStateValues = selector<UserCareerState>({
+export const userCareerStateSelector = selector<UserCareerState>({
   key: "userCareerValues",
   get: ({ get }) => {
     const userCareer = get(userCareerState);
     return userCareer;
   },
   set: ({ set }, newValue: any) => {
-    set(userCompareState, newValue);
+    set(userCareerState, newValue);
   },
 });
 
+/**
+ * 이력서 내에 유저 정보atom
+ */
+export const userCareerUserInfoState = atom<UserCareerInfo>({
+  key: "userCareerUserInfostate",
+  default: {
+    userDpt: "",
+    userLocation: "",
+  },
+});
+
+/**
+ * 이력서 유저정보 selector
+ */
+export const userCareerUserInfoStateSelector = selector<UserCareerInfo>({
+  key: "userCareerUserInfoState",
+  get: ({ get }) => {
+    const userCareerUserInfo = get(userCareerUserInfoState);
+    return userCareerUserInfo;
+  },
+
+  set: ({ set }, newValue: any) => {
+    set(userCareerUserInfoState, newValue);
+  },
+});
 /**
  * 마이페이지 정보조회
  */

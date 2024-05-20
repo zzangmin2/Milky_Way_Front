@@ -7,6 +7,7 @@ const api = axios.create({
     Authorization: "Bearer " + localStorage.getItem("ACCESS_TOKEN"),
     "Content-Type": "application/json",
   },
+
   timeout: 3000,
 });
 export default api;
