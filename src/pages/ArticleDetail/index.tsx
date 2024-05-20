@@ -21,7 +21,11 @@ import {
 } from "../../utils/recoil/atom";
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { useNavigate, useParams } from "react-router-dom";
-import { viewCurrentArticle } from "../../utils/apimodule/article";
+import {
+  sendArticleApplyUser,
+  viewCurrentArticle,
+} from "../../utils/apimodule/article";
+import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
 import { getTimeAgo } from "../../utils/utils";
 import MemberListModal from "../../components/ArticleMemberListModal";
@@ -135,11 +139,37 @@ const ArticleDetail = () => {
                       <div className="articleRecruitmentState"></div>
                     )}
 
-                    <div>{articleCurrentState.articleEndDay} 까지</div>
-                  </div>
-                  <div className="articleLike">
-                    <FontAwesomeIcon icon={faStar} />
-                    <p>{articleCurrentState.articleLikes}</p>
+                <div>{articleCurrentState.articleEndDay} 까지</div>
+              </div>
+              <div className="articleLike">
+                <FontAwesomeIcon icon={faStar} />
+                <p>{articleCurrentState.articleLikes}</p>
+              </div>
+            </ArticleInfoStateWrap>
+            <ArticleInfoSummaryWrap>
+              <div>
+                <ArticleTag
+                  tagType={
+                    articleCurrentState.articleType === "study"
+                      ? "스터디"
+                      : "프로젝트"
+                  }
+                />
+                {articleCurrentState.articleMentorNeeded && <MentoTag />}
+              </div>
+              <div className="articleInfoSummary">
+                <h3>{articleCurrentState.articleTitle}</h3>
+                <div className="articleRecruiter">
+                  <p>컴퓨터정보학부</p>
+                  <p>{articleCurrentState.articleMemberId}</p>
+                </div>
+                <div className="articleState">
+                  <div>
+                    <p>모집 현황</p>
+                    <p>
+                      {articleCurrentState.articleApplyNow}/
+                      {articleCurrentState.articleApply}
+                    </p>
                   </div>
                 </ArticleInfoStateWrap>
                 <ArticleInfoSummaryWrap>
