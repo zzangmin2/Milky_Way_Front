@@ -37,11 +37,7 @@ const Layout: FC<Props> = ({ type }) => {
     let page = "";
     if (location.pathname === "/home/mycareer") {
       page = "career";
-    } else if (
-      location.pathname === "/home/articlelist/all" ||
-      location.pathname === "/home/articlelist/study" ||
-      location.pathname === "/home/articlelist/project"
-    ) {
+    } else if (location.pathname === "/home/articlelist") {
       page = "list";
     } else if (location.pathname === "/home") {
       page = "home";

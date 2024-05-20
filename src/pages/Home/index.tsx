@@ -31,14 +31,22 @@ const Home = () => {
         </TopSection>
         {/* <Button
           text={"스터디 / 프로젝트 등록"}
-          onClick={() => navigate("/articleregister")}
+          
         /> */}
         <BottomSection>
           <HomeContentContainer>
-            <div className="ContentButton">
-              <div className="ContentButtonIcon">🧐</div>
+            <div
+              className="ContentButton"
+              onClick={() => navigate("/articleregister")}
+            >
+              <div
+                className="ContentButtonIcon"
+                onClick={() => navigate("/home/articlelist")}
+              >
+                🧐
+              </div>
               <p>나에게 맞는</p>
-              스터디/프로젝트 찾아보기
+              스터디/프로젝트 <br /> 찾아보기
             </div>
             <div className="ContentButton">
               <div className="ContentButtonIcon">✏️</div>
@@ -78,10 +86,11 @@ const Home = () => {
                 articleTitle={"esfwsefwrge"}
                 articleContent={"ewfewfewsfefw"}
                 articleCurrentApply={0}
-                articleApply={0}
+                articleApply={""}
                 articleLikes={0}
                 articleEndDay={""}
                 articleRecruitmentState={false}
+                articleStartDay={""}
               />
             </div>
           </HomeContentContainer>

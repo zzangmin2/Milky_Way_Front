@@ -1,8 +1,5 @@
 import styled from "styled-components";
 
-interface HeaderProps {
-  type: string;
-}
 export const NavigationLayout = styled.div`
   display: flex;
   flex-direction: column;
