@@ -1,5 +1,5 @@
-import { lazy } from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { lazy, useEffect } from "react";
+import { createBrowserRouter, useNavigate } from "react-router-dom";
 import Loading from "../pages/RoutePage/Loading";
 import SignupEmail from "../pages/Join/SignupEmail";
 import SignupIdCompare from "../pages/Join/SignupIdCompare";
@@ -16,10 +16,29 @@ const ArticleDetailPage = lazy(() => import("../pages/ArticleDetail"));
 const ArticleListPage = lazy(() => import("../pages/ArticleList"));
 const ArticleRegisterPage = lazy(() => import("../pages/ArticleRegister"));
 
+const CheckAuth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("ACCESS_TOKEN");
+    if (accessToken) {
+      navigate("/home");
+    } else {
+      navigate("/users/login");
+    }
+  }, [navigate]);
+
+  return <>{children}</>;
+};
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ViewPortPage />,
+    element: (
+      <CheckAuth>
+        <ViewPortPage />
+      </CheckAuth>
+    ),
     errorElement: <ErrorPage />,
     children: [
       {
