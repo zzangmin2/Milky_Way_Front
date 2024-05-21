@@ -307,6 +307,7 @@ const MyInfo = () => {
                   articleLikes={0}
                   articleEndDay={""}
                   articleRecruitmentState={false}
+                  articleStartDay={""}
                 />
                 <ArticleInfoCard
                   navigateRoute="/articledetail/1"
@@ -318,6 +319,7 @@ const MyInfo = () => {
                   articleLikes={0}
                   articleEndDay={""}
                   articleRecruitmentState={false}
+                  articleStartDay={""}
                 />
               </ArticleInfoCardWrap>
             </>
@@ -381,6 +383,7 @@ const MyInfo = () => {
                     articleLikes={0}
                     articleEndDay={""}
                     articleRecruitmentState={false}
+                    articleStartDay={""}
                   />
                   <ArticleInfoCard
                     navigateRoute="/articledetail/1"
@@ -392,6 +395,7 @@ const MyInfo = () => {
                     articleLikes={0}
                     articleEndDay={""}
                     articleRecruitmentState={false}
+                    articleStartDay={""}
                   />
                 </ArticleInfoCardWrap>
               </section>

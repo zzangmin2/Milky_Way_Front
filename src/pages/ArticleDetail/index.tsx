@@ -132,8 +132,10 @@ const ArticleDetail = () => {
   //article 지원하기 함수
   const articleApplyUser = async () => {
     try {
-      if (articleCurrentState) {
+      if (articleCurrentState && articleCurrentState.articleRecruitmentState) {
         await sendArticleApplyUser(articleCurrentState.articleId);
+      } else {
+        toast.error("모집이 완료된 게시물입니다.");
       }
     } catch (error: any) {
       console.log(`다시 시도해주세요: ${error.message}`);

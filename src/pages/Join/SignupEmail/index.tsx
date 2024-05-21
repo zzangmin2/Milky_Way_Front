@@ -19,6 +19,7 @@ import {
 } from "../../../utils/recoil/atom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 // import { sendEmailVerify } from "../../../utils/apimodule/member";
+
 const SignupEmail = () => {
   const [email, setEmail] = useState("");
   const [emailInState, setEmailInState] = useState<boolean | undefined>(false);
