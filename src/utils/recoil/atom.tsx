@@ -27,24 +27,9 @@ const { persistAtom } = recoilPersist({
   storage: localStorage,
 });
 
-interface UserCareerInfo {
-  userDpt?: string;
-  userLocation?: string;
-}
-
-const { persistAtom } = recoilPersist({
-  key: "localstrage",
-  storage: localStorage,
-});
-
 export const loadingStateAtom = atom<boolean>({
   key: "loadingStateAtom",
   default: true,
-});
-
-export const loadingStateSelector = selector<boolean>({
-  key: "loadingStateSelector",
-  get: ({ get }) => get(loadingStateAtom),
 });
 
 export const loadingStateSelector = selector<boolean>({
@@ -224,6 +209,18 @@ export const userInfoState = atom<any>({
     userNickName: "",
     userCareerCard: "",
     userNumber: "",
+  },
+});
+
+export const userInfoStateSelector = selector<any>({
+  key: "userInfoStateSelector",
+  get: ({ get }) => {
+    const userInfoUserInfoState = get(userInfoState);
+    return userInfoUserInfoState;
+  },
+
+  set: ({ set }, newValue: any) => {
+    set(userInfoState, newValue);
   },
 });
 

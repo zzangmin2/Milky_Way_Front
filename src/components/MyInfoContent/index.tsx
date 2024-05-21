@@ -1,25 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { TopSection, InfoTitle, InfoContent } from "../../pages/MyInfo/style";
 import { sendUserEditInfo } from "../../utils/apimodule/member";
-
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { userInfoStateSelector } from "../../utils/recoil/atom";
 interface UserInfo {
   userName?: any;
   userEmail?: any;
   userNumber?: any;
 }
 
-interface MyInfoContentProps {
-  userName: any;
-  userEmail: any;
-  userNumber: any;
-}
-
-const MyInfoContent: React.FC<MyInfoContentProps> = ({
-  userName,
-  userEmail,
-  userNumber,
-}) => {
+const MyInfoContent = () => {
   const [edit, setEdit] = useState<boolean>(false);
+  const infoValue = useRecoilValue(userInfoStateSelector);
+  const { userName, userNumber, userEmail } = useRecoilValue(
+    userInfoStateSelector
+  );
 
   const [editUser, setEditUser] = useState<UserInfo>({
     userName: "",

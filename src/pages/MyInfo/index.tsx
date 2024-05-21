@@ -13,7 +13,7 @@ import ArticleInfoCard from "../../components/ArticleInfoCard";
 import Modal from "../../components/Modal";
 import { viewMyInfo } from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import { userInfoState } from "../../utils/recoil/atom";
+import { userInfoState, userInfoStateSelector } from "../../utils/recoil/atom";
 import ArticleApplyStateTable from "../../components/ArticleApplyStateTable";
 
 import { ArticleCurrentState } from "../../utils/recoil/atom";
@@ -26,8 +26,7 @@ const MyInfo = () => {
   const [articleCurrentState, setArticleCurrentState] =
     useRecoilState(ArticleCurrentState);
 
-  const infoValue = useSetRecoilState(userInfoState);
-  const { userName, userEmail, userNumber } = useRecoilValue(userInfoState);
+  const infoValue = useSetRecoilState(userInfoStateSelector);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [additionalInfo, setAdditionalInfo] = useState<string>("");
@@ -50,13 +49,13 @@ const MyInfo = () => {
   const userInfoData = async () => {
     try {
       const data: any = await viewMyInfo();
-      const result = data.data;
+      const result = data.data.member;
       console.log(result);
-      // infoValue({
-      //   userName: result.userName,
-      //   userEmail: result.userEmail,
-      //   userNumber: result.userNumber,
-      // });
+      infoValue({
+        userName: result.memberName,
+        userEmail: result.memberEmail,
+        userNumber: result.memberPhoneNum,
+      });
 
       console.log(infoValue);
     } catch (error) {
@@ -92,11 +91,7 @@ const MyInfo = () => {
     <>
       <Section>
         <TopSection>
-          <MyInfoContent
-            userName={userName}
-            userNumber={userNumber}
-            userEmail={userEmail}
-          ></MyInfoContent>
+          <MyInfoContent></MyInfoContent>
         </TopSection>
         <BottomSection>
           <InfoTitle>

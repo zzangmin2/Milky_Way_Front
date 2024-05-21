@@ -126,8 +126,7 @@ const sendUserEditInfo = async (
   phoneNumber: string
 ) => {
   try {
-    const memberIds = localStorage.getItem("memberNo");
-    const response = await api.post(`/${memberIds}/input-student-info/update`, {
+    const response = await api.put(`/update`, {
       userName: name,
       userEmail: userEmail,
       userPhoneNumber: phoneNumber,
