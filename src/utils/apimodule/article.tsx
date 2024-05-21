@@ -71,7 +71,7 @@ const viewCurrentArticle = async (articleId: number) => {
 
 const editCurrentArticle = async (articleId: number) => {
   try {
-    const response = await api.put(`/posts/${articleId}`, {
+    const response = await api.put(`/posts/done/${articleId}`, {
       articleRecruitmentState: false,
     });
     console.log("Success:", response.data);

@@ -44,7 +44,7 @@ const SignupEmail = () => {
   //       throw result;
   //     }
   //   } catch (error: any) {
-  //     alert(`실패: ${error.message}`);
+  //     toast.error(`실패: ${error.message}`);
   //   }
   // };
 
@@ -61,7 +61,7 @@ const SignupEmail = () => {
   //       throw result;
   //     }
   //   } catch (error: any) {
-  //     alert(`실패: ${error.message}`);
+  //     toast.error(`실패: ${error.message}`);
   //   }
   // };
 

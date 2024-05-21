@@ -1,6 +1,7 @@
 import { useSetRecoilState } from "recoil";
 import { loadingStateAtom } from "../utils/recoil/atom";
 import api from "../utils/api/axiosInstance";
+import { toast } from "react-toastify";
 
 /**
  * useAxios 커스텀 훅? / 다른 파일로 빼서 관리해야할지 고민중 (interceptors안에서 loadingstate 불린형으로 설정)
@@ -57,7 +58,7 @@ const useInterceptors = () => {
         return config;
       }
       if (!localStorage.getItem("ACCESS_TOKEN")) {
-        alert("로그인을 진행해주세요");
+        toast.error("로그인을 진행해주세요");
         window.location.href = "/users/login";
         return Promise.reject(new Error("토큰이 업습니다."));
       }

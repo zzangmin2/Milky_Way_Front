@@ -19,6 +19,7 @@ import { userInfoState } from "../../utils/recoil/atom";
 import { sendUserEditInfo } from "../../utils/apimodule/member";
 import { ArticleCurrentState } from "../../utils/recoil/atom";
 import { logout } from "../../utils/auth/auth";
+import { toast } from "react-toastify";
 
 const MyInfo = () => {
   interface UserInfo {
@@ -57,7 +58,7 @@ const MyInfo = () => {
     try {
       const result = await logout();
     } catch (error) {
-      alert("로그아웃 실패...");
+      toast.error("로그아웃 실패...");
     }
   };
 
@@ -92,10 +93,10 @@ const MyInfo = () => {
         editUser.userNumber
       );
       if (response.data.success) {
-        alert("수정완료");
+        toast.success("수정완료");
       }
     } catch (error) {
-      alert("수정실패");
+      toast.error("수정실패");
       console.error("error", error);
     }
   };

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { loginedIn } from "../../utils/auth/auth";
 import { useRecoilValue } from "recoil";
 import { loadingStateAtom } from "../../utils/recoil/atom";
+import { toast } from "react-toastify";
 
 const LogIn = () => {
   const loadingState = useRecoilValue(loadingStateAtom);
@@ -14,6 +15,7 @@ const LogIn = () => {
   const [loginId, setLoginId] = useState("");
 
   const sendLoginData = async () => {
+    console.log(loginId, loginPwd);
     try {
       const result = await loginedIn(loginId, loginPwd);
 
@@ -23,7 +25,7 @@ const LogIn = () => {
         throw result;
       }
     } catch (error: any) {
-      alert(`실패: ${error.message}`);
+      toast.error(`실패: ${error.message}`);
     }
   };
 

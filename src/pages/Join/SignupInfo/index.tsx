@@ -20,6 +20,7 @@ import {
   userCompareValues,
   userCompareState,
 } from "../../../utils/recoil/atom";
+import { toast } from "react-toastify";
 
 const SignupInfo = () => {
   const navigate = useNavigate();
@@ -40,14 +41,14 @@ const SignupInfo = () => {
       const result = await sendUserInfo(name, number, id, email, password);
 
       if (true) {
-        alert(`${name}님! 회원가입이 완료되었습니다.`);
+        toast.success(`${name}님! 회원가입이 완료되었습니다.`);
         navigate("/users/login");
       } else {
         throw result;
       }
     } catch (error: any) {
       console.log(`${error.message}`);
-      alert(`다시 시도해주세요: ${error.message}`);
+      toast.error(`다시 시도해주세요: ${error.message}`);
       console.log(verifyValue);
     }
   };

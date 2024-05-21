@@ -21,6 +21,7 @@ import {
 } from "../../utils/recoil/atom";
 import { useNavigate } from "react-router-dom";
 import { Article } from "../../typings/db";
+import { toast } from "react-toastify";
 
 const ArticleList = () => {
   // article 전체 리스트
@@ -95,7 +96,7 @@ const ArticleList = () => {
             value={articleListSearchState}
             setValue={setArticleListSearchState}
             onEnterPress={() => {
-              alert("검색 기능을 열심히 개발 중이니 조금만 기다려 주세요.");
+              toast.info("검색 기능은 개발 중입니다.");
               setArticleListSearchState("");
             }}
           />

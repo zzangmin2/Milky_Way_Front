@@ -25,6 +25,7 @@ import SignupInput from "../SignupInput";
 import { emailSuccesses } from "../../../utils/recoil/atom";
 import ErrorPage from "../../RoutePage/ErrorPage";
 import { sendUserCompareInfo } from "../../../utils/apimodule/member";
+import { toast } from "react-toastify";
 
 const SignupIdCompare = () => {
   const emailSuccessIn = useRecoilValue(emailSuccesses);
@@ -45,26 +46,26 @@ const SignupIdCompare = () => {
       const result = await sendUserCompareInfo(id);
       if (result.success) {
         setCompareInState(true);
-        alert("중복된 아이디가 없습니다");
+        toast.success("중복된 아이디가 없습니다");
       } else {
         console.log(id);
-        alert("실패");
+        toast.error("중복된 아이디가 있습니다");
       }
     } catch (error: any) {
-      alert(`실패: ${error.message}`);
+      toast.error(`실패: ${error.message}`);
     }
   };
 
   const stateUserInfo = (): Promise<void | undefined> => {
     return new Promise((resolve, reject) => {
       if (!id || !password || !confirmPassword) {
-        alert("아이디와 비밀번호를 입력해주세요.");
+        toast.warning("아이디와 비밀번호를 입력해주세요.");
 
         return;
       }
 
       if (password !== confirmPassword) {
-        // alert("비밀번호가 일치하지 않습니다.");
+        // toast.error("비밀번호가 일치하지 않습니다.");
         setPwdValidate(true);
 
         return;
