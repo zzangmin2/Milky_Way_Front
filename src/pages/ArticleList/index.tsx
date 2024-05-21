@@ -18,10 +18,13 @@ import {
   ArticleListTypeState,
   ArticleRecruitmentOptionState,
   filteredArticleLatestOrPopularOptionListState,
+  loadingStateAtom,
 } from "../../utils/recoil/atom";
 import { useNavigate } from "react-router-dom";
 import { Article } from "../../typings/db";
 import { toast } from "react-toastify";
+import SkeletonArticleDetail from "../../utils/skeleton/SkeletonArticleDetail";
+import SkeletonArticleList from "../../utils/skeleton/SkeletonArticleList";
 
 const ArticleList = () => {
   // article 전체 리스트
@@ -53,6 +56,9 @@ const ArticleList = () => {
   );
   const navigate = useNavigate();
 
+  // const [loading, setLoading] = useRecoilState(loadingStateAtom);
+  const [loading, setLoading] = useState(true);
+
   //마운트 시 article리스트 불러오기!
   useEffect(() => {
     loadArticleList();
@@ -66,6 +72,7 @@ const ArticleList = () => {
   //현재 article 데이터 불러오는 함수
   const loadArticleList = async () => {
     try {
+      console.log(loading);
       const result = await viewArticleList();
       if (result) {
         const transformedData = result.map((item: any) => ({
@@ -81,9 +88,13 @@ const ArticleList = () => {
         }));
         setArticleListState(transformedData);
         console.log(transformedData);
+        setLoading(true);
       }
     } catch (error: any) {
       console.log(`다시 시도해주세요: ${error.message}`);
+      window.location.reload();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -165,29 +176,38 @@ const ArticleList = () => {
             +
           </ArticleAddButton>
 
-          <ArticleInfoCardWrap>
-            {filteredArticleLatestOrPopularOptionList &&
-              filteredArticleLatestOrPopularOptionList?.map(
-                (article: Article, idx: any) => {
-                  return (
-                    <ArticleInfoCard
-                      key={idx}
-                      navigateRoute={`/articledetail/${article.articleId}`}
-                      articleType={article.articleType}
-                      articleRecruitmentState={article.articleRecruitmentState}
-                      articleMentorNeeded={article.articleMentorNeeded}
-                      articleTitle={article.articleTitle}
-                      articleApply={article.articleApply}
-                      articleCurrentApply={article.articleApplyNow}
-                      articleLikes={article.articleLikes}
-                      articleEndDay={article.articleEndDay}
-                      // articleStartDay -> 아직 api에서 전달 x
-                      articleStartDay={article.articleStartDay}
-                    />
-                  );
-                }
+          {loading ? (
+            <SkeletonArticleList />
+          ) : (
+            <ArticleInfoCardWrap>
+              {filteredArticleLatestOrPopularOptionList.length >= 1 ? (
+                filteredArticleLatestOrPopularOptionList?.map(
+                  (article: Article, idx: any) => {
+                    return (
+                      <ArticleInfoCard
+                        key={idx}
+                        navigateRoute={`/articledetail/${article.articleId}`}
+                        articleType={article.articleType}
+                        articleRecruitmentState={
+                          article.articleRecruitmentState
+                        }
+                        articleMentorNeeded={article.articleMentorNeeded}
+                        articleTitle={article.articleTitle}
+                        articleApply={article.articleApply}
+                        articleCurrentApply={article.articleApplyNow}
+                        articleLikes={article.articleLikes}
+                        articleEndDay={article.articleEndDay}
+                        // articleStartDay -> 아직 api에서 전달 x
+                        articleStartDay={article.articleStartDay}
+                      />
+                    );
+                  }
+                )
+              ) : (
+                <div>게시물이 없습니다...</div>
               )}
-          </ArticleInfoCardWrap>
+            </ArticleInfoCardWrap>
+          )}
         </ArticleListWrap>
       </ArticleListContainer>
     </>

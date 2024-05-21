@@ -136,7 +136,7 @@ const viewArticleList = async () => {
   try {
     const response = await api.get("/posts/list");
     if (response.data) {
-      console.log(response.data);
+      console.log(response.data.content);
       return response.data.content;
     } else {
       return { success: false };
