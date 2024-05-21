@@ -15,14 +15,16 @@ import { useEffect, useState } from "react";
 import ArticleTag from "../../components/ArticleTag";
 import { useRecoilState } from "recoil";
 import {
+  ArticleApplyUserListState,
   ArticleCurrentState,
-  articleDetailIntroOrQnaTabState,
+  ArticleDetailIntroOrQnaTabState,
   loadingStateAtom,
 } from "../../utils/recoil/atom";
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   sendArticleApplyUser,
+  viewArticleApplyUserList,
   viewCurrentArticle,
 } from "../../utils/apimodule/article";
 import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
@@ -30,6 +32,7 @@ import { getTimeAgo } from "../../utils/utils";
 import MemberListModal from "../../components/ArticleMemberListModal";
 import SkeletonArticleDetail from "../../utils/skeleton/SkeletonArticleDetail";
 import { toast } from "react-toastify";
+import { ArticleApplyState } from "../../typings/db";
 
 const ArticleDetail = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -50,7 +53,11 @@ const ArticleDetail = () => {
 
   // 소개 / QnA 탭 상태
   const [articleDetailIntroOrQnaState, setArticleDetailIntroOrQnaState] =
-    useRecoilState(articleDetailIntroOrQnaTabState);
+    useRecoilState(ArticleDetailIntroOrQnaTabState);
+
+  //현재 게시물 지원자 리스트 상태
+  const [articleApplyUserListState, setArticleApplyUserListState] =
+    useRecoilState(ArticleApplyUserListState);
 
   const { articleId } = useParams();
 
@@ -59,16 +66,22 @@ const ArticleDetail = () => {
     loadCurrentArticle();
   }, []);
 
+  useEffect(() => {
+    if (articleCurrentState && articleCurrentState.articleId) {
+      articleApplyUserList();
+    }
+  }, [articleCurrentState]);
+
   // 해당 article 불러오는 함수
   const loadCurrentArticle = async () => {
     try {
       if (articleId) {
         const result = await viewCurrentArticle(parseInt(articleId));
-
+        console.log(result);
         if (result) {
           const newResult = {
             articleId: result.article_no,
-            articleMemberId: "testuser",
+            articleMemberId: result.member.memberId,
             articleType: result.articleType,
             articleTitle: result.title,
             articleContent: result.content,
@@ -77,9 +90,9 @@ const ArticleDetail = () => {
             articleApplyNow: result.applyNow,
             articleStartDay: result.startDay,
             articleEndDay: result.endDay,
-            articleRecruitmentState: result.recruit,
+            articleRecruitmentState: result.recurit,
             articleMentorNeeded: result.findMentor,
-            articleMentorTag: result.mentorTag,
+            articleMentorTag: result.metorTag,
             articleApplyState: [
               {
                 id: 1,
@@ -116,6 +129,34 @@ const ArticleDetail = () => {
     }
   };
 
+  //article 지원하기 함수
+  const articleApplyUser = async () => {
+    try {
+      if (articleCurrentState) {
+        await sendArticleApplyUser(articleCurrentState.articleId);
+      }
+    } catch (error: any) {
+      console.log(`다시 시도해주세요: ${error.message}`);
+      toast.error("오류가 발생했습니다. 다시 시도해주세요");
+    }
+  };
+
+  //article 지원자 리스트 조회 함수
+  const articleApplyUserList = async () => {
+    try {
+      if (articleCurrentState.articleId >= 1) {
+        const result = await viewArticleApplyUserList(
+          articleCurrentState.articleId
+        );
+
+        console.log(result);
+        setArticleApplyUserListState(result);
+      }
+    } catch (error: any) {
+      console.log(`다시 시도해주세요: ${error.message}`);
+      toast.error("오류가 발생했습니다. 다시 시도해주세요");
+    }
+  };
   // 소개 / QnA 탭 클릭 함수
   const handleTabClick = (tab: string) => {
     setArticleDetailIntroOrQnaState(tab);
@@ -239,6 +280,7 @@ const ArticleDetail = () => {
                           ? ""
                           : "inactive"
                       }
+                      onClick={articleApplyUser}
                     />
                   </div>
                   <section style={{ marginBottom: "100px" }}>
@@ -250,23 +292,25 @@ const ArticleDetail = () => {
                         <div className="tableCell">신청일</div>
                         <div className="tableCell">상태</div>
                       </div>
-                      {articleCurrentState.articleApplyState.length >= 1 ? (
-                        articleCurrentState.articleApplyState.map(
-                          (applicant, idx) => {
+                      {articleApplyUserListState.length >= 1 ? (
+                        articleApplyUserListState.map(
+                          (applicant: ArticleApplyState, idx) => {
                             return (
                               <div className="tableRow" key={idx}>
-                                <div className="tableCell">{applicant.id}</div>
                                 <div className="tableCell">
-                                  {applicant.applicantName}
+                                  {applicant.applyNo}
                                 </div>
                                 <div className="tableCell">
-                                  {applicant.applicationDate}
+                                  {applicant.memberName}
+                                </div>
+                                <div className="tableCell">
+                                  {getTimeAgo(applicant.applyDate)}
                                 </div>
                                 <div
                                   className="tableCell"
                                   onClick={openModalMemberCareer}
                                 >
-                                  {applicant.status}
+                                  {applicant.applyResult}
                                 </div>
                               </div>
                             );

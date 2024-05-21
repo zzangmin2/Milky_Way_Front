@@ -185,14 +185,6 @@ export const ArticleCurrentState = atom({
     articleEndDay: "",
     articleMentorNeeded: false,
     articleMentorTag: "",
-    articleApplyState: [
-      {
-        id: 0,
-        applicantName: "",
-        applicationDate: "",
-        status: "",
-      },
-    ],
   },
 });
 
@@ -332,7 +324,16 @@ export const articleDetailModalClickState = atom({
 /**
  * <atom> 게시물 소개 /QnA 탭 클릭 상태
  */
-export const articleDetailIntroOrQnaTabState = atom({
+export const ArticleDetailIntroOrQnaTabState = atom({
   key: "articleDetailIntroOrQnaTabState",
   default: "intro", // intro, qna
+});
+
+/**
+ * <atom> 현재 게시물 지원자 리스트 상태
+ */
+
+export const ArticleApplyUserListState = atom({
+  key: "articleApplyUserListState",
+  default: [],
 });
