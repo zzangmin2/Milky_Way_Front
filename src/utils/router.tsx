@@ -21,9 +21,9 @@ const CheckAuth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     const accessToken = localStorage.getItem("ACCESS_TOKEN");
-    if (accessToken) {
+    if (accessToken && window.location.pathname === "/") {
       navigate("/home");
-    } else {
+    } else if (!accessToken && window.location.pathname === "/") {
       navigate("/users/login");
     }
   }, [navigate]);
