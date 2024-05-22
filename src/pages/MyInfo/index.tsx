@@ -27,6 +27,7 @@ const MyInfo = () => {
     useRecoilState<ArticleCard>(ArticleCardStateSelector);
 
   const infoValue = useSetRecoilState(userInfoStateSelector);
+
   const articleCardState = useSetRecoilState<ArticleCard>(
     ArticleCardStateSelector
   );
@@ -55,8 +56,9 @@ const MyInfo = () => {
   const userInfoData = async () => {
     try {
       const data: any = await viewMyInfo();
-      const member = data.data.member;
+      const member = data.data;
       const article = data.data.article;
+      console.log(data);
 
       infoValue({
         userName: member.memberName,

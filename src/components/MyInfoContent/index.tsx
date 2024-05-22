@@ -22,6 +22,7 @@ const MyInfoContent = () => {
     editNumber: userNumber,
   });
 
+  console.log(userEmail);
   const sendClickEdit = async () => {
     try {
       const response: any = await sendUserEditInfo(

@@ -5,17 +5,12 @@ import {
   Section,
   TopSection,
 } from "./styles";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
+
 import ArticleInfoCard from "../../components/ArticleInfoCard";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { viewArticleList, viewMyCareer } from "../../utils/apimodule/article";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { isLoggedInUserName } from "../../utils/recoil/atom";
+
 const Home = () => {
-  const userNameState = useSetRecoilState<any>(isLoggedInUserName);
-  const userName = useRecoilValue<any>(isLoggedInUserName);
+  const userName = localStorage.getItem("memberName");
   const navigate = useNavigate();
 
   return (

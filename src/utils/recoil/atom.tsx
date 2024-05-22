@@ -22,15 +22,15 @@ interface UserCareerInfo {
   userLocation?: string;
 }
 
-const { persistAtom } = recoilPersist({
-  key: "localstrage",
-  storage: localStorage,
-});
-
 interface UserCareerInfo {
   userDpt?: string;
   userLocation?: string;
 }
+
+const { persistAtom } = recoilPersist({
+  key: "userName",
+  storage: localStorage,
+});
 
 export const loadingStateAtom = atom<boolean>({
   key: "loadingStateAtom",
@@ -74,22 +74,22 @@ export const compareSuccesses = atom<boolean>({
  * sendLogin 성공시 recoil persist로 로컬스토리지에 로그인 유저네임 저장
  * @type {string}
  */
-export const isLoggedInUserName = atom<string>({
-  key: "isLoggedInUserName",
-  default: "",
-  effects_UNSTABLE: [persistAtom],
-});
+// export const isLoggedInUserName = atom<string>({
+//   key: "",
+//   default: "",
+//   effects_UNSTABLE: [persistAtom],
+// });
 
-export const isLoggedInUserNameSelector = selector<string>({
-  key: "isLoggedInUserNameSelector",
-  get: ({ get }) => {
-    const userName = get(isLoggedInUserName);
-    return userName;
-  },
-  set: ({ set }, newValue: any) => {
-    set(userCompareState, newValue);
-  },
-});
+// export const isLoggedInUserNameSelector = selector<string>({
+//   key: "isLoggedInUserNameSelector",
+//   get: ({ get }) => {
+//     const userName = get(isLoggedInUserName);
+//     return userName;
+//   },
+//   set: ({ set }, newValue: any) => {
+//     set(userCompareState, newValue);
+//   },
+// });
 /**
  * 회원가입 state, 필요한지 따져봐야함k
  * @type {boolean}

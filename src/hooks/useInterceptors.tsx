@@ -70,8 +70,8 @@ const useInterceptors = () => {
       async (error) => {
         if (error.response.status === 401) {
           try {
-            const memberNumber = localStorage.getItem("memberNumber");
-            const response = await api.post("/reissue", { memberNumber });
+            const memberNum = localStorage.getItem("memberNum");
+            const response = await api.post("/reissue", { memberNum });
             const accessToken = response.data.access_token;
             error.config.headers["Authorization"] = `Bearer ${accessToken}`;
             return api.request(error.config);

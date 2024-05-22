@@ -23,7 +23,7 @@ import {
   userCareerState,
   userCareerStateSelector,
 } from "../../utils/recoil/atom";
-import { sendUserEditCareer } from "../../utils/apimodule/member";
+import { putUserEditCareer } from "../../utils/apimodule/member";
 import { postUserEditCareer } from "../../utils/apimodule/member";
 import { userCareerUserInfoStateSelector } from "../../utils/recoil/atom";
 
@@ -34,22 +34,25 @@ const MyCareer = () => {
   const careerValue: any = useSetRecoilState(userCareerStateSelector);
   const userInfoValue: any = useSetRecoilState(userCareerUserInfoStateSelector);
 
-  const [userCareerInfo, setUserCareerInfo] = useState("");
-  const [userCareerPhoneNumber, setUserCareerPhoneNumber] = useState("");
-
   const [sendCareerState, setSendCareerState] = useState(false);
   /**
    * 최초 데이터 받아올때 career가 빈 값인지 아닌지를 가리키는 state
    */
   const [careerPostState, setCareerPostState] = useState(false);
+  //구조분해 할당
   const {
     userName,
     userId,
     userDpt,
     userPhoneNumber,
-    userUni,
+
     userLocation,
   }: any = useRecoilValue(userCareerUserInfoStateSelector);
+
+  const [infoEdit, setInfoEdit] = useState<any>({
+    editDpt: userDpt,
+    editLocation: userLocation,
+  });
   //구조분해 할당
   const {
     userCareer = [],
@@ -57,20 +60,18 @@ const MyCareer = () => {
     userLineText,
   }: any = useRecoilValue(userCareerStateSelector);
 
-  console.log(userCareer);
-
   // 수정상태인지 아닌지 확인하는 state
   const [edit, setEdit] = useState(true);
   const clickEdit = () => {
     setEdit(false);
   };
 
-  console.log(userCertificate);
   /**
    * 유효성 검사 후에 수정된 이력서 데이터 article api module을 거쳐서 백엔드로 전송
    * @returns
    */
   const sendCareerEdit = async () => {
+    console.log(infoEdit);
     try {
       const emptyCareerNames = userCareer.filter(
         (userCareer: any) => userCareer.carName.trim() == ""
@@ -101,7 +102,7 @@ const MyCareer = () => {
 
       const response: any = careerPostState
         ? await postUserEditCareer(userCareer, userCertificate)
-        : await sendUserEditCareer(userCareer, userCertificate);
+        : await putUserEditCareer(userCareer, userCertificate);
       if (response.success) {
         window.location.reload();
         console.log(careerValue);
@@ -110,6 +111,7 @@ const MyCareer = () => {
         setEdit(true);
       } else {
         alert("서버연결 안됨!");
+        window.location.reload();
       }
     } catch (error) {
       console.log("실패 : ", error);
@@ -122,19 +124,22 @@ const MyCareer = () => {
   const userCareerData = async () => {
     try {
       const data = await viewMyCareer();
-      const result = data.data;
+      const member: any = data.data.basicInfos[0].member;
+      const career: any = data.data.careers;
+      console.log(member);
+      console.log(data.data);
 
       careerValue({
-        userCareer: result.careers,
-        userCertificate: result.certifications,
+        userCareer: career.careers || [],
+        userCertificate: career.certifications || [],
       });
       userInfoValue({
-        userName: result.basicInfos[0].member.memberName,
-        userId: result.basicInfos[0].member.memberId,
-        userPhoneNumber: result.basicInfos[0].member.memberPhoneNum,
-        userDpt: result.basicInfos[0].member.memberDpt,
-        userLocation: result.basicInfos[0].member.memberLocation,
-        userUni: result.basicInfos[0].member.memberUniversity,
+        userName: member.memberName,
+        userId: member.memberId,
+        userPhoneNumber: member.memberPhoneNum,
+        userDpt: member.memberDpt,
+        userLocation: member.memberLocation,
+        userUni: member.memberUniversity,
       });
     } catch (error) {
       console.error("error", error);
@@ -149,6 +154,10 @@ const MyCareer = () => {
    */
   useEffect(() => {
     userCareerData();
+    setInfoEdit({
+      editDpt: userDpt,
+      editLocation: userLocation,
+    });
   }, []);
 
   /**
@@ -207,7 +216,6 @@ const MyCareer = () => {
         (certificate: any) => certificate.id !== certificateId
       ),
     }));
-    console.log(certificateId);
   };
 
   /**
@@ -223,8 +231,6 @@ const MyCareer = () => {
     }));
   };
 
-  console.log(userCareer);
-
   return (
     <Section>
       <TopSection>
@@ -237,9 +243,8 @@ const MyCareer = () => {
             <FirstInfoContentTitle>
               {userName} @{userId}
             </FirstInfoContentTitle>
-            <div>
-              {userUni ? <>{userUni}</> : <>등록된 대학교가 없습니다.</>}
-            </div>
+            <div></div>
+
             <div>
               {userPhoneNumber ? (
                 <>{userPhoneNumber}</>
@@ -264,20 +269,40 @@ const MyCareer = () => {
               <FirstInfoContentTitle>
                 {userName} {userId}
               </FirstInfoContentTitle>
-              <div>{userUni}</div>
+              <div></div>
+
               <div>{userPhoneNumber}</div>
               {userDpt ? (
                 <input placeholder={userDpt} />
               ) : (
                 <>
-                  <input placeholder={"학과를 입력해주세요"} />
+                  <input
+                    type="text"
+                    placeholder={userDpt || "학과를 입력해주세요"}
+                    value={infoEdit.editDpt || ""}
+                    onChange={(e) => {
+                      setInfoEdit({
+                        ...setInfoEdit,
+                        editDpt: e.target.value,
+                      });
+                    }}
+                  />
                 </>
               )}
-              {userPhoneNumber ? (
-                <input placeholder={userPhoneNumber} />
+              {userLocation ? (
+                <input placeholder={userLocation} />
               ) : (
                 <>
-                  <input placeholder={"전화번호를 입력해주세요"} />
+                  <input
+                    placeholder={userLocation || "지역을 입력해주세요"}
+                    value={infoEdit.editLocation || ""}
+                    onChange={(e) => {
+                      setInfoEdit({
+                        ...setInfoEdit,
+                        editLocation: e.target.value,
+                      });
+                    }}
+                  />
                 </>
               )}
             </MyInfoContentEdit>

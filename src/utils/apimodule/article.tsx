@@ -1,6 +1,6 @@
 import { useSetRecoilState } from "recoil";
 import api from "../api/axiosInstance";
-import { ArticleCurrentState, isLoggedInUserName } from "../recoil/atom";
+import { isLoggedInUserName } from "../recoil/atom";
 import { Article } from "../../typings/db";
 
 /**
@@ -180,8 +180,7 @@ const viewMyInfo = async () => {
 const viewMyCareer = async () => {
   try {
     const response = await api.get(`/myResume`);
-    const data = response.data[0];
-    console.log(response.data);
+    const data = response.data;
 
     if (response.data) {
       return { success: true, data };

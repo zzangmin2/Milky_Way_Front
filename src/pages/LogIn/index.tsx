@@ -6,22 +6,18 @@ import { useNavigate } from "react-router-dom";
 import { loginedIn } from "../../utils/auth/auth";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { loadingStateSelector } from "../../utils/recoil/atom";
-import { isLoggedInUserName } from "../../utils/recoil/atom";
 
 const LogIn = () => {
   const loadingState = useRecoilValue(loadingStateSelector);
   const navigate = useNavigate();
   const [loginPwd, setLoginPwd] = useState("");
   const [loginId, setLoginId] = useState("");
-  let userNameAtom: any = useSetRecoilState(isLoggedInUserName);
 
   const sendLoginData = async () => {
     try {
-      const result = await loginedIn(loginId, loginPwd);
-      userNameAtom = result.userName;
+      const result: any = await loginedIn(loginId, loginPwd);
 
       if (result.success) {
-        // userNameAtom(userNameData);
         navigate("/home");
       } else {
         throw result;
