@@ -8,27 +8,31 @@ import {
   ArticleInfoCardWrap,
   LogoutText,
 } from "./style";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Key } from "react";
 import ArticleInfoCard from "../../components/ArticleInfoCard";
 import Modal from "../../components/Modal";
 import { viewMyInfo } from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import { userInfoState, userInfoStateSelector } from "../../utils/recoil/atom";
+import { userInfoStateSelector } from "../../utils/recoil/atom";
 import ArticleApplyStateTable from "../../components/ArticleApplyStateTable";
-import { ArticleCardCurrentStateSelector } from "../../utils/recoil/atom";
+import { ArticleCardStateSelector } from "../../utils/recoil/atom";
 import { logout } from "../../utils/auth/auth";
+import { ArticleCard } from "../../typings/db";
 
 import MyInfoContent from "../../components/MyInfoContent";
 
 const MyInfo = () => {
   const [activeTab, setActiveTab] = useState<string>("all");
-  const [articleCurrentState, setArticleCurrentState] = useRecoilState(
-    ArticleCardCurrentStateSelector
-  );
+  const [articleCurrentState, setArticleCurrentState] =
+    useRecoilState<ArticleCard>(ArticleCardStateSelector);
 
   const infoValue = useSetRecoilState(userInfoStateSelector);
-  const articleCardValue = useSetRecoilState(ArticleCardCurrentStateSelector);
-  const articleCardState = useRecoilValue(ArticleCardCurrentStateSelector);
+  const articleCardState = useSetRecoilState<ArticleCard>(
+    ArticleCardStateSelector
+  );
+  const articleCardValue = useRecoilValue<ArticleCard>(
+    ArticleCardStateSelector
+  );
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [additionalInfo, setAdditionalInfo] = useState<string>("");
@@ -51,12 +55,37 @@ const MyInfo = () => {
   const userInfoData = async () => {
     try {
       const data: any = await viewMyInfo();
-      const result = data.data.member;
-      console.log(result);
+      const member = data.data.member;
+      const article = data.data.article;
+
       infoValue({
-        userName: result.memberName,
-        userEmail: result.memberEmail,
-        userNumber: result.memberPhoneNum,
+        userName: member.memberName,
+        userEmail: member.memberEmail,
+        userNumber: member.memberPhoneNum,
+      });
+      articleCardState({
+        articleId: 2,
+        articleMemberId: "",
+        //articleMemberName 필요
+        articleType: "",
+        articleRecruitmentState: true,
+        articleTitle: "",
+        articleContent: "",
+        articleLikes: 2,
+        articleApply: "",
+        articleApplyNow: 0,
+        articleStartDay: "",
+        articleEndDay: "",
+        articleMentorNeeded: false,
+        articleMentorTag: "",
+        articleApplyState: [
+          {
+            id: 0,
+            applicantName: "",
+            applicationDate: 0,
+            status: "",
+          },
+        ],
       });
 
       console.log(infoValue);
@@ -152,30 +181,40 @@ const MyInfo = () => {
           {activeTab === "like" && (
             <>
               <ArticleInfoCardWrap>
-                <ArticleInfoCard
-                  navigateRoute="/articledetail/1"
-                  articleType={""}
-                  articleMentorNeeded={false}
-                  articleTitle={""}
-                  articleCurrentApply={0}
-                  articleApply={0}
-                  articleLikes={0}
-                  articleEndDay={""}
-                  articleRecruitmentState={false}
-                  articleStartDay={""}
-                />
-                <ArticleInfoCard
-                  navigateRoute="/articledetail/1"
-                  articleType={""}
-                  articleMentorNeeded={false}
-                  articleTitle={""}
-                  articleCurrentApply={0}
-                  articleApply={0}
-                  articleLikes={0}
-                  articleEndDay={""}
-                  articleRecruitmentState={false}
-                  articleStartDay={""}
-                />
+                {Array.isArray(articleCardValue) &&
+                  articleCardValue.map(
+                    (
+                      article: {
+                        articleId: any;
+                        articleType: string;
+                        articleMentorNeeded: string | boolean;
+                        articleTitle: string;
+                        articleApplyNow: number;
+                        articleApply: string | number;
+                        articleLikes: number;
+                        articleEndDay: string;
+                        articleRecruitmentState: boolean;
+                        articleStartDay: string;
+                      },
+                      index: Key | null | undefined
+                    ) => (
+                      <ArticleInfoCard
+                        key={index}
+                        navigateRoute={`/articledetail/${article.articleId}`}
+                        articleType={article.articleType}
+                        articleMentorNeeded={article.articleMentorNeeded}
+                        articleTitle={article.articleTitle}
+                        articleCurrentApply={article.articleApplyNow}
+                        articleApply={article.articleApply}
+                        articleLikes={article.articleLikes}
+                        articleEndDay={article.articleEndDay}
+                        articleRecruitmentState={
+                          article.articleRecruitmentState
+                        }
+                        articleStartDay={article.articleStartDay}
+                      />
+                    )
+                  )}
               </ArticleInfoCardWrap>
             </>
           )}
@@ -199,30 +238,40 @@ const MyInfo = () => {
                 />
 
                 <ArticleInfoCardWrap style={{ marginTop: "" }}>
-                  <ArticleInfoCard
-                    navigateRoute="/articledetail/1"
-                    articleType={""}
-                    articleMentorNeeded={false}
-                    articleTitle={""}
-                    articleCurrentApply={0}
-                    articleApply={0}
-                    articleLikes={0}
-                    articleEndDay={""}
-                    articleRecruitmentState={false}
-                    articleStartDay={""}
-                  />
-                  <ArticleInfoCard
-                    navigateRoute="/articledetail/1"
-                    articleType={""}
-                    articleMentorNeeded={false}
-                    articleTitle={""}
-                    articleCurrentApply={0}
-                    articleApply={0}
-                    articleLikes={0}
-                    articleEndDay={""}
-                    articleRecruitmentState={false}
-                    articleStartDay={""}
-                  />
+                  {Array.isArray(articleCardValue) &&
+                    articleCardValue.map(
+                      (
+                        article: {
+                          articleId: any;
+                          articleType: string;
+                          articleMentorNeeded: string | boolean;
+                          articleTitle: string;
+                          articleApplyNow: number;
+                          articleApply: string | number;
+                          articleLikes: number;
+                          articleEndDay: string;
+                          articleRecruitmentState: boolean;
+                          articleStartDay: string;
+                        },
+                        index: Key | null | undefined
+                      ) => (
+                        <ArticleInfoCard
+                          key={index}
+                          navigateRoute={`/articledetail/${article.articleId}`}
+                          articleType={article.articleType}
+                          articleMentorNeeded={article.articleMentorNeeded}
+                          articleTitle={article.articleTitle}
+                          articleCurrentApply={article.articleApplyNow}
+                          articleApply={article.articleApply}
+                          articleLikes={article.articleLikes}
+                          articleEndDay={article.articleEndDay}
+                          articleRecruitmentState={
+                            article.articleRecruitmentState
+                          }
+                          articleStartDay={article.articleStartDay}
+                        />
+                      )
+                    )}
                 </ArticleInfoCardWrap>
               </section>
             </>
