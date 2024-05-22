@@ -1,41 +1,38 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TopSection, InfoTitle, InfoContent } from "../../pages/MyInfo/style";
 import { sendUserEditInfo } from "../../utils/apimodule/member";
+import { useRecoilValue } from "recoil";
+import { userInfoStateSelector } from "../../utils/recoil/atom";
 
 interface UserInfo {
-  userName?: any;
-  userEmail?: any;
-  userNumber?: any;
+  editName?: any;
+  editEmail?: any;
+  editNumber?: any;
 }
 
-interface MyInfoContentProps {
-  userName: any;
-  userEmail: any;
-  userNumber: any;
-}
-
-const MyInfoContent: React.FC<MyInfoContentProps> = ({
-  userName,
-  userEmail,
-  userNumber,
-}) => {
+const MyInfoContent = () => {
   const [edit, setEdit] = useState<boolean>(false);
+  const { userName, userNumber, userEmail } = useRecoilValue(
+    userInfoStateSelector
+  );
 
   const [editUser, setEditUser] = useState<UserInfo>({
-    userName: "",
-    userEmail: "",
-    userNumber: "",
+    editName: userName,
+    editEmail: userEmail,
+    editNumber: userNumber,
   });
 
   const sendClickEdit = async () => {
     try {
       const response: any = await sendUserEditInfo(
-        editUser.userName,
-        editUser.userEmail,
-        editUser.userNumber
+        editUser.editName,
+        editUser.editEmail,
+        editUser.editNumber
       );
+      console.log(editUser);
       if (response.data.success) {
         alert("수정완료");
+        window.location.reload();
       }
     } catch (error) {
       alert("수정실패");
@@ -44,8 +41,14 @@ const MyInfoContent: React.FC<MyInfoContentProps> = ({
   };
 
   useEffect(() => {
-    setEditUser({});
-  }, []);
+    setEditUser({
+      editName: userName,
+      editEmail: userEmail,
+      editNumber: userNumber,
+    });
+  }, [userName, userEmail, userNumber]);
+
+  console.log(userNumber);
   return (
     <>
       <TopSection>
@@ -61,38 +64,32 @@ const MyInfoContent: React.FC<MyInfoContentProps> = ({
               수정완료
             </p>
           ) : (
-            <>
-              <p
-                onClick={() => {
-                  setEdit(true);
-                }}
-              >
-                수정하기
-              </p>
-            </>
+            <p
+              onClick={() => {
+                setEdit(true);
+              }}
+            >
+              수정하기
+            </p>
           )}
         </InfoTitle>
         <InfoContent>
           <div>이메일</div>
           <div>
             {edit ? (
-              <>
-                <input
-                  type="text"
-                  placeholder={"이메일을 입력하세요"}
-                  value={editUser.userEmail}
-                  onChange={(e) => {
-                    setEditUser({
-                      ...editUser,
-                      userEmail: e.target.value,
-                    });
-                  }}
-                />
-              </>
+              <input
+                type="text"
+                placeholder={userEmail}
+                value={editUser.editEmail || ""}
+                onChange={(e) => {
+                  setEditUser({
+                    ...editUser,
+                    editEmail: e.target.value,
+                  });
+                }}
+              />
             ) : (
-              <>
-                <p>{userEmail}</p>
-              </>
+              <p>{userEmail}</p>
             )}
           </div>
         </InfoContent>
@@ -100,23 +97,19 @@ const MyInfoContent: React.FC<MyInfoContentProps> = ({
           <div>이름</div>
           <div>
             {edit ? (
-              <>
-                <input
-                  type="text"
-                  placeholder={"이름을 입력해주세요"}
-                  value={editUser.userName}
-                  onChange={(e) => {
-                    setEditUser({
-                      ...editUser,
-                      userName: e.target.value,
-                    });
-                  }}
-                ></input>
-              </>
+              <input
+                type="text"
+                placeholder={userName}
+                value={editUser.editName || ""}
+                onChange={(e) => {
+                  setEditUser({
+                    ...editUser,
+                    editName: e.target.value,
+                  });
+                }}
+              />
             ) : (
-              <>
-                <p>{userName}</p>
-              </>
+              <p>{userName}</p>
             )}
           </div>
         </InfoContent>
@@ -124,23 +117,19 @@ const MyInfoContent: React.FC<MyInfoContentProps> = ({
           <div>전화번호</div>
           <div>
             {edit ? (
-              <>
-                <input
-                  type="text"
-                  placeholder={"전화번호를 입력해주세요"}
-                  value={editUser.userNumber}
-                  onChange={(e) => {
-                    setEditUser({
-                      ...editUser,
-                      userNumber: e.target.value,
-                    });
-                  }}
-                ></input>
-              </>
+              <input
+                type="text"
+                placeholder={userNumber}
+                value={editUser.editNumber || ""}
+                onChange={(e) => {
+                  setEditUser({
+                    ...editUser,
+                    editNumber: e.target.value,
+                  });
+                }}
+              />
             ) : (
-              <>
-                <p>{userNumber}</p>
-              </>
+              <p>{userNumber}</p>
             )}
           </div>
         </InfoContent>

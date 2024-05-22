@@ -42,8 +42,10 @@ const SignupIdCompare = () => {
 
   const navigate = useNavigate();
 
+  const regex: RegExp = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/;
+
   const sendUseridVerify = async () => {
-    if (loginex.test(id)) {
+    if (regex.test(id)) {
       try {
         const result = await sendUserCompareInfo(id);
         console.log(result);

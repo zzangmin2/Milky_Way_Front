@@ -121,16 +121,16 @@ const sendUserInfo = async (
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
 const sendUserEditInfo = async (
-  name: string,
-  userEmail: string,
-  phoneNumber: string
+  editName: string,
+  editEmail: string,
+  editNumber: string
 ) => {
+  console.log(editName, editEmail, editNumber);
   try {
-    const memberIds = localStorage.getItem("memberNo");
-    const response = await api.post(`/${memberIds}/input-student-info/update`, {
-      userName: name,
-      userEmail: userEmail,
-      userPhoneNumber: phoneNumber,
+    const response = await api.put(`/update`, {
+      memberName: editName,
+      memberEmail: editEmail,
+      memberPhoneNum: editNumber,
     });
     if (response.status === 200) {
       return { success: true };

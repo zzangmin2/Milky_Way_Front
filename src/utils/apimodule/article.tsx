@@ -85,7 +85,6 @@ const editCurrentArticle = async (articleId: number) => {
 
 const deleteCurrentArticle = async (articleId: number) => {
   try {
-
     const response = await api.delete(`/posts/${articleId}`);
     console.log("Success:", response.data);
 
@@ -159,9 +158,9 @@ const viewArticleList = async () => {
  */
 const viewMyInfo = async () => {
   try {
-    // const memberIds = localStorage.getItem("memberNo");
-    const response = await api.post(`/info`);
-    const data = response.data[0];
+    const response = await api.get(`/info`);
+    const data = response.data;
+
     console.log(data);
     if (response.status === 200) {
       return { success: true, data };

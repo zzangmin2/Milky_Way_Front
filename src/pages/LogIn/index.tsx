@@ -13,12 +13,12 @@ const LogIn = () => {
   const navigate = useNavigate();
   const [loginPwd, setLoginPwd] = useState("");
   const [loginId, setLoginId] = useState("");
-  const userNameAtom = useSetRecoilState(isLoggedInUserName);
+  let userNameAtom: any = useSetRecoilState(isLoggedInUserName);
 
   const sendLoginData = async () => {
     try {
       const result = await loginedIn(loginId, loginPwd);
-      const userNameData: any = result.userName;
+      userNameAtom = result.userName;
 
       if (result.success) {
         // userNameAtom(userNameData);
@@ -54,6 +54,7 @@ const LogIn = () => {
               setValue={setLoginPwd}
               value={loginPwd}
               disabled
+              inputType="password"
             />
           </>
         ) : (
@@ -68,6 +69,7 @@ const LogIn = () => {
               placeholder="비밀번호를 입력해 주세요"
               setValue={setLoginPwd}
               value={loginPwd}
+              inputType="password"
             />
           </>
         )}
