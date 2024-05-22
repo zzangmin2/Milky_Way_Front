@@ -41,19 +41,25 @@ const SignupIdCompare = () => {
 
   const navigate = useNavigate();
 
+  const regex: RegExp = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/;
+
   const sendUseridVerify = async () => {
-    try {
-      const result = await sendUserCompareInfo(id);
-      console.log(result);
-      if (result.success) {
-        alert("중복된 아이디가 없습니다");
-        setCompareInState(true);
-      } else {
-        console.log(id);
-        alert("실패");
+    if (regex.test(id)) {
+      try {
+        const result = await sendUserCompareInfo(id);
+        console.log(result);
+        if (result.success) {
+          alert("중복된 아이디가 없습니다");
+          setCompareInState(true);
+        } else {
+          console.log(id);
+          alert("실패");
+        }
+      } catch (error: any) {
+        alert(`실패: ${error.message}`);
       }
-    } catch (error: any) {
-      alert(`실패: ${error.message}`);
+    } else {
+      alert("아이디에는 영문자와 숫자가 모두 포함되어야합니다.");
     }
   };
 

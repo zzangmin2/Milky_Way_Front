@@ -15,18 +15,20 @@ import { viewMyInfo } from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { userInfoState, userInfoStateSelector } from "../../utils/recoil/atom";
 import ArticleApplyStateTable from "../../components/ArticleApplyStateTable";
-
-import { ArticleCurrentState } from "../../utils/recoil/atom";
+import { ArticleCardCurrentStateSelector } from "../../utils/recoil/atom";
 import { logout } from "../../utils/auth/auth";
 
 import MyInfoContent from "../../components/MyInfoContent";
 
 const MyInfo = () => {
   const [activeTab, setActiveTab] = useState<string>("all");
-  const [articleCurrentState, setArticleCurrentState] =
-    useRecoilState(ArticleCurrentState);
+  const [articleCurrentState, setArticleCurrentState] = useRecoilState(
+    ArticleCardCurrentStateSelector
+  );
 
   const infoValue = useSetRecoilState(userInfoStateSelector);
+  const articleCardValue = useSetRecoilState(ArticleCardCurrentStateSelector);
+  const articleCardState = useRecoilValue(ArticleCardCurrentStateSelector);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [additionalInfo, setAdditionalInfo] = useState<string>("");
@@ -196,7 +198,7 @@ const MyInfo = () => {
                   setModalType={setModalType}
                 />
 
-                <ArticleInfoCardWrap style={{ marginTop: "-50px" }}>
+                <ArticleInfoCardWrap style={{ marginTop: "" }}>
                   <ArticleInfoCard
                     navigateRoute="/articledetail/1"
                     articleType={""}
@@ -229,8 +231,8 @@ const MyInfo = () => {
             <Modal
               show={isModalOpen}
               handleClose={handleModalClose}
-              modalType={modalType}
-              additionalInfo={additionalInfo}
+              modalType={"info"}
+              additionalInfo={"http://google.com"}
             />
           )}
         </BottomSection>

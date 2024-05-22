@@ -1,4 +1,4 @@
-import { atom, selector } from "recoil";
+import { atom, selector, selectorFamily } from "recoil";
 import { Article } from "../../typings/db";
 import { recoilPersist } from "recoil-persist";
 
@@ -229,7 +229,7 @@ export const userInfoStateSelector = selector<any>({
 /**
  * <atom> article 상세 조회
  */
-export const ArticleCurrentState = atom({
+export const ArticleCardCurrentState = atom({
   key: "articleCurrentState",
   default: {
     articleId: 0,
@@ -254,6 +254,16 @@ export const ArticleCurrentState = atom({
         status: "",
       },
     ],
+  },
+});
+
+export const ArticleCardStateSelector = selector({
+  key: "ArticleCurrentStateSelector",
+  get: ({ get }) => {
+    return get(ArticleCardCurrentState);
+  },
+  set: ({ set }, newValue: any) => {
+    set(ArticleCardCurrentState, newValue);
   },
 });
 

@@ -158,8 +158,9 @@ const viewArticleList = async () => {
  */
 const viewMyInfo = async () => {
   try {
-    const response = await api.post(`/info`);
+    const response = await api.get(`/info`);
     const data = response.data;
+
     console.log(data);
     if (response.status === 200) {
       return { success: true, data };

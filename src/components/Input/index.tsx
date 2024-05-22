@@ -46,7 +46,7 @@ const Input: FC<Props> = ({
 
   return (
     <StyledInput
-      type={inputType}
+      type={inputType === "password" ? "password" : inputType}
       placeholder={placeholder}
       onChange={handleChange}
       value={value}
