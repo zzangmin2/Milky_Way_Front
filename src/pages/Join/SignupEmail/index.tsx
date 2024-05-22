@@ -19,6 +19,7 @@ import {
 } from "../../../utils/recoil/atom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 // import { sendEmailVerify } from "../../../utils/apimodule/member";
+
 const SignupEmail = () => {
   const [email, setEmail] = useState("");
   const [emailInState, setEmailInState] = useState<boolean | undefined>(false);
@@ -44,7 +45,7 @@ const SignupEmail = () => {
   //       throw result;
   //     }
   //   } catch (error: any) {
-  //     alert(`실패: ${error.message}`);
+  //     toast.error(`실패: ${error.message}`);
   //   }
   // };
 
@@ -61,7 +62,7 @@ const SignupEmail = () => {
   //       throw result;
   //     }
   //   } catch (error: any) {
-  //     alert(`실패: ${error.message}`);
+  //     toast.error(`실패: ${error.message}`);
   //   }
   // };
 

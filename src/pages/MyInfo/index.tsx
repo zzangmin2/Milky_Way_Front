@@ -18,6 +18,7 @@ import ArticleApplyStateTable from "../../components/ArticleApplyStateTable";
 
 import { ArticleCurrentState } from "../../utils/recoil/atom";
 import { logout } from "../../utils/auth/auth";
+import { toast } from "react-toastify";
 
 import MyInfoContent from "../../components/MyInfoContent";
 
@@ -40,7 +41,7 @@ const MyInfo = () => {
     try {
       const result = await logout();
     } catch (error) {
-      alert("로그아웃 실패...");
+      toast.error("로그아웃 실패...");
     }
   };
 

@@ -10,7 +10,7 @@ import { ArticleDetailPageNavWrap } from "../../../pages/ArticleDetail/styles";
 import { useRecoilState } from "recoil";
 import {
   ArticleCurrentState,
-  articleDetailIntroOrQnaTabState,
+  ArticleDetailIntroOrQnaTabState,
 } from "../../recoil/atom";
 
 const SkeletonArticleDetail = () => {
@@ -20,7 +20,7 @@ const SkeletonArticleDetail = () => {
 
   //소개 / QnA탭 상태
   const [articleDetailIntroOrQnaState, setArticleDetailIntroOrQnaState] =
-    useRecoilState(articleDetailIntroOrQnaTabState);
+    useRecoilState(ArticleDetailIntroOrQnaTabState);
 
   // 소개 / qna 탭 클릭 함수
   const handleTabClick = (tab: string) => {

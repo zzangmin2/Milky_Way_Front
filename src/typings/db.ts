@@ -14,12 +14,12 @@ export interface Article {
   articleRecruitmentState: boolean;
   articleContactMethod: string;
   articleContactInfo: string;
-  articleApplyState: [
-    {
-      id: number;
-      applicantName: string;
-      applicationDate: Date;
-      status: string;
-    }
-  ];
+}
+
+export interface ArticleApplyState {
+  applyNo: number;
+  articleNo: number;
+  memberName: string;
+  applyDate: string;
+  applyResult: string;
 }

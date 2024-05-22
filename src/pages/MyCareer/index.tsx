@@ -25,6 +25,7 @@ import {
 } from "../../utils/recoil/atom";
 import { sendUserEditCareer } from "../../utils/apimodule/member";
 import { postUserEditCareer } from "../../utils/apimodule/member";
+import { toast } from "react-toastify";
 import { userCareerUserInfoStateSelector } from "../../utils/recoil/atom";
 
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -88,12 +89,12 @@ const MyCareer = () => {
       );
 
       if (emptyCareerNames.length > 0 || emptyCertificateNames.length > 0) {
-        alert("경력과 자격증의 이름을 모두 작성해주세요.");
+        toast.warning("경력과 자격증의 이름을 모두 작성해주세요.");
         return;
       }
 
       if (emptyCareerDates.length > 0 || emptyCertificateDates.length > 0) {
-        alert("경력과 자격증의 날짜를 모두 작성해주세요.");
+        toast.warning("경력과 자격증의 날짜를 모두 작성해주세요.");
         return;
       }
 
@@ -105,11 +106,11 @@ const MyCareer = () => {
       if (response.success) {
         window.location.reload();
         console.log(careerValue);
-        alert("이력서 수정이 완료되었습니다!");
+        toast.error("이력서 수정이 완료되었습니다!");
 
         setEdit(true);
       } else {
-        alert("서버연결 안됨!");
+        toast.error("서버연결 안됨!");
       }
     } catch (error) {
       console.log("실패 : ", error);
@@ -169,7 +170,7 @@ const MyCareer = () => {
         ],
       }));
     } catch (error: any) {
-      alert("경력 추가 실패");
+      toast.error("경력 추가 실패");
       throw error;
     }
   };
@@ -191,7 +192,7 @@ const MyCareer = () => {
         ],
       }));
     } catch (errror) {
-      alert("자격증 추가 실패!");
+      toast.error("자격증 추가 실패!");
       throw errror;
     }
   };

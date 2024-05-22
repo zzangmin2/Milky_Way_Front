@@ -14,11 +14,11 @@ export const StudyInfoWrap = styled.section`
     margin: 0px;
   }
 
-  & > p {
+  & > div {
     font-size: 0.75rem;
   }
 
-  & > p > div {
+  & > div > div {
     width: 100%;
     height: 1px;
     margin-top: 10px;

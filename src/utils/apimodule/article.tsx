@@ -43,7 +43,7 @@ const sendNewArticle = async (newArticleData: Article) => {
     conInfo: articleContactInfo,
   };
   try {
-    await api.post("/posts/edit", newArticle);
+    await api.post("/posts/write", newArticle);
     console.log(newArticle);
 
     return { success: true };
@@ -71,7 +71,7 @@ const viewCurrentArticle = async (articleId: number) => {
 
 const editCurrentArticle = async (articleId: number) => {
   try {
-    const response = await api.put(`/posts/${articleId}`, {
+    const response = await api.put(`/posts/done/${articleId}`, {
       articleRecruitmentState: false,
     });
     console.log("Success:", response.data);
@@ -85,7 +85,6 @@ const editCurrentArticle = async (articleId: number) => {
 
 const deleteCurrentArticle = async (articleId: number) => {
   try {
-
     const response = await api.delete(`/posts/${articleId}`);
     console.log("Success:", response.data);
 
@@ -103,9 +102,7 @@ const deleteCurrentArticle = async (articleId: number) => {
  */
 const sendArticleApplyUser = async (articleId: number) => {
   try {
-    const response = await api.post(
-      `http://localhost:8080/posts/apply/${articleId}`
-    );
+    const response = await api.post(`/posts/apply/${articleId}`);
 
     console.log(response);
     return { success: true };
@@ -122,13 +119,10 @@ const sendArticleApplyUser = async (articleId: number) => {
  */
 const viewArticleApplyUserList = async (articleId: number) => {
   try {
-    const response = await api.get(
-      `http://localhost:8080/posts/applylist/${articleId}`
-    );
+    const response = await api.get(`/posts/applylist/${articleId.toString()}`);
 
     if (response.data) {
-      console.log(response.data.content);
-      return response.data.content;
+      return response.data;
     } else {
       return { success: false };
     }
@@ -142,7 +136,7 @@ const viewArticleList = async () => {
   try {
     const response = await api.get("/posts/list");
     if (response.data) {
-      console.log(response.data);
+      console.log(response.data.content);
       return response.data.content;
     } else {
       return { success: false };

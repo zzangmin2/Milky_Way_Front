@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { loadingStateAtom } from "../utils/recoil/atom";
 import api from "../utils/api/axiosInstance";
+import { toast } from "react-toastify";
 
 const useInterceptors = () => {
   const setLoading = useSetRecoilState(loadingStateAtom);

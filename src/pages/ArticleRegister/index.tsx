@@ -12,6 +12,7 @@ import { sendNewArticle } from "../../utils/apimodule/article";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Article } from "../../typings/db";
+import { toast } from "react-toastify";
 
 const ArticleRegister = () => {
   const {
@@ -62,7 +63,7 @@ const ArticleRegister = () => {
       console.log(result);
 
       if (result.success) {
-        alert("등록 완료!");
+        toast.success("등록 완료!");
         navigate(`/home/articlelist`);
       } else {
         throw new Error("등록 실패");

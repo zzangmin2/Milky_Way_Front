@@ -7,6 +7,7 @@ import {
   editCurrentArticle,
 } from "../../utils/apimodule/article";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ArticleDetailMenuModal = () => {
   //모달 클릭 상태
@@ -23,9 +24,10 @@ const ArticleDetailMenuModal = () => {
       if (articleId) {
         const result = await editCurrentArticle(parseInt(articleId));
         if (result.success) {
-          alert("수정 완료!");
+          toast.success("수정 완료!");
           navigate(`/home/articlelist`);
         } else {
+          toast.error("수정 실패");
           throw new Error("수정 실패");
         }
       }
@@ -41,9 +43,11 @@ const ArticleDetailMenuModal = () => {
         const result = await deleteCurrentArticle(parseInt(articleId));
 
         if (result.success) {
-          alert("삭제 완료!");
+          toast.success("삭제 성공!");
           navigate(`/home/articlelist`);
         } else {
+          toast.error("삭제 실패");
+
           throw new Error("삭제 실패");
         }
       }
