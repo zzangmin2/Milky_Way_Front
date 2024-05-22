@@ -10,9 +10,12 @@ import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
 import ArticleInfoCard from "../../components/ArticleInfoCard";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { viewArticleList } from "../../utils/apimodule/article";
-
+import { viewArticleList, viewMyCareer } from "../../utils/apimodule/article";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isLoggedInUserName } from "../../utils/recoil/atom";
 const Home = () => {
+  const userNameState = useSetRecoilState<any>(isLoggedInUserName);
+  const userName = useRecoilValue<any>(isLoggedInUserName);
   const navigate = useNavigate();
 
   return (
@@ -20,7 +23,7 @@ const Home = () => {
       <Section>
         <TopSection>
           <div>
-            <h2>안녕하세요 홍길동님!</h2>
+            <h2>안녕하세요 {userName}님!</h2>
             <p>학생회원</p>
           </div>
           <img

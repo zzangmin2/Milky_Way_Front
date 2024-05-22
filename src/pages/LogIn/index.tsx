@@ -4,22 +4,27 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 import { loginedIn } from "../../utils/auth/auth";
-import { useRecoilValue } from "recoil";
 import { loadingStateAtom } from "../../utils/recoil/atom";
 import { toast } from "react-toastify";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { loadingStateSelector } from "../../utils/recoil/atom";
+import { isLoggedInUserName } from "../../utils/recoil/atom";
 
 const LogIn = () => {
-  const loadingState = useRecoilValue(loadingStateAtom);
+  const loadingState = useRecoilValue(loadingStateSelector);
   const navigate = useNavigate();
   const [loginPwd, setLoginPwd] = useState("");
   const [loginId, setLoginId] = useState("");
+  const userNameAtom = useSetRecoilState(isLoggedInUserName);
 
   const sendLoginData = async () => {
     console.log(loginId, loginPwd);
     try {
       const result = await loginedIn(loginId, loginPwd);
+      const userNameData: any = result.userName;
 
       if (result.success) {
+        // userNameAtom(userNameData);
         navigate("/home");
       } else {
         throw result;
@@ -38,18 +43,20 @@ const LogIn = () => {
         <div></div>
       </TopSection>
       <BottomSection>
-        {loadingState ? (
+        {!loadingState ? (
           <>
             <Input
               placeholder="아이디를 입력해 주세요"
               setValue={setLoginId}
               value={loginId}
+              disabled
             />
 
             <Input
               placeholder="비밀번호를 입력해 주세요"
               setValue={setLoginPwd}
               value={loginPwd}
+              disabled
             />
           </>
         ) : (
@@ -58,23 +65,19 @@ const LogIn = () => {
               placeholder="아이디를 입력해 주세요"
               setValue={setLoginId}
               value={loginId}
-              disabled
             />
 
             <Input
               placeholder="비밀번호를 입력해 주세요"
               setValue={setLoginPwd}
               value={loginPwd}
-              disabled
             />
           </>
         )}
-        {loadingState ? (
-          <Button text={"로그인"} onClick={sendLoginData} />
+        {!loadingState ? (
+          <Button text={"로그인"} color="gray" />
         ) : (
-          <>
-            <Button text={"로그인"} color="gray" />
-          </>
+          <Button text={"로그인"} onClick={sendLoginData} />
         )}
         <div>
           <p>아직 회원이 아니신가요?</p>

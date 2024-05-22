@@ -1,5 +1,5 @@
 import Button from "../../../components/Button";
-import SignupInput from "../SignupInput";
+import SignupInput from "../../../components/SignupInput";
 import {
   BottomSection,
   TopSection,
@@ -127,7 +127,7 @@ const SignupEmail = () => {
                     type="email"
                     name="email"
                     placeholder={email}
-                    disable={true}
+                    disabled={true}
                   />
                   <SignupInput
                     type="text"

@@ -153,11 +153,11 @@ const viewArticleList = async () => {
  */
 const viewMyInfo = async () => {
   try {
-    const memberIds = localStorage.getItem("memberNo");
-    const response = await api.post(`/${memberIds}/info`);
+    // const memberIds = localStorage.getItem("memberNo");
+    const response = await api.post(`/info`);
     const data = response.data[0];
     console.log(data);
-    if (response.data) {
+    if (response.status === 200) {
       return { success: true, data };
     } else {
       return { success: false };
@@ -174,11 +174,9 @@ const viewMyInfo = async () => {
  */
 const viewMyCareer = async () => {
   try {
-    const memberIds = localStorage.getItem("memberNo");
-    // const token: any = localStorage.getItem("ACCESS_TOKEN");
-    const response = await api.post(`/${memberIds}/info`);
+    const response = await api.get(`/myResume`);
     const data = response.data[0];
-    console.log(response);
+    console.log(response.data);
 
     if (response.data) {
       return { success: true, data };

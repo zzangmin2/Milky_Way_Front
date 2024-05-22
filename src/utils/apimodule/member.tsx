@@ -50,9 +50,11 @@ import api from "../api/axiosInstance";
  */
 const sendUserCompareInfo = async (id: number | string) => {
   try {
-    const response = await api.post("/signup/duplicationCheck", {
-      id: id,
+    const response = await api.post("/signup/checkId", {
+      memberId: id,
     });
+
+    console.log(response);
 
     if (response.status === 200) {
       return { success: true };
@@ -68,7 +70,6 @@ const sendUserCompareInfo = async (id: number | string) => {
 /**
  * signupinfo 회원가입 데이터 전송 => 성공시 버튼 활성화
  * @param name
- * @param dpt
  * @param number
  * @param email
  * @param password
@@ -79,16 +80,15 @@ const sendUserCompareInfo = async (id: number | string) => {
 
 const sendUserInfo = async (
   name: string | undefined,
-  // dpt: string | undefined,
   number: number | string | undefined,
   id: any,
-  password: any,
-  email: string | undefined
+  email: string | undefined,
+  password: any
 ) => {
   try {
     const response = await api.post("/signup", {
       name: name,
-      // Role: dpt,
+
       tel: number,
       id: id,
       password: password,
@@ -152,20 +152,21 @@ const sendUserEditInfo = async (
  * @type {string | number} 이름 / 학과 / 전화번호
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
-const sendUserEditCareer = async (
-  userCareer: any,
-  // userCertificate: any,
-  userLineText: any
-) => {
+const sendUserEditCareer = async (userCareer: any, userCertificate: any) => {
   try {
-    // const token = localStorage.getItem("ACCESS_TOKEN");
-    const memberIds = localStorage.getItem("memberNo");
-    const response = await api.put(`/${memberIds}/input-student-info/update`, {
-      careerStartDay: userCareer.careerFirstDate,
-      careerEndDay: userCareer.careerEndDay,
-      careerName: userCareer.careerCompany,
-      studentOneLineShow: userLineText,
+    const response = await api.post(`/member/updateInfo`, {
+      // careers: careerData.userCareer.map((career: any) => ({
+      //   carName: career.careerCompany,
+      //   carStartDay: career.careerFirstDate,
+      //   carEndDay: career.careerLastDate,
+      // })),
+      carName: userCareer.carName,
+      carStartDay: userCareer.carStartDay,
+      carEndDay: userCareer.carEndDay,
+      certName: userCertificate.certName,
+      cerDate: userCertificate.certDate,
     });
+
     if (response.status === 200) {
       return { success: true };
     } else {
@@ -177,14 +178,22 @@ const sendUserEditCareer = async (
   }
 };
 
-const postUserEditCareer = async (userCareer: any, userLineText: any) => {
+const postUserEditCareer = async (userCareer: any, userCertificate: any) => {
   try {
-    const memberIds = localStorage.getItem("memberNo");
-    const response = await api.post(`/${memberIds}/input-student-info`, {
-      careerName: userCareer.careerCompany,
-      careerStartDay: userCareer.careerFirstDate,
-      careerEndDay: userCareer.careerEndDay,
+    const response = await api.post(`/member/updateCareerAndCertification`, {
+      // careers: careerData.userCareer.map((career: any) => ({
+      //   carName: career.careerCompany,
+      //   carStartDay: career.careerFirstDate,
+      //   carEndDay: career.careerLastDate,
+      // })),
+      carName: userCareer.carName,
+      carStartDay: userCareer.carStartDay,
+      carEndDay: userCareer.carEndDay,
+      certName: userCertificate.certName,
+      cerDate: userCertificate.certDate,
     });
+
+    console.log(response);
 
     console.log(response.data);
     if (response.status === 200) {
@@ -195,6 +204,12 @@ const postUserEditCareer = async (userCareer: any, userLineText: any) => {
   } catch (error) {
     console.log(`${error}`);
   }
+};
+
+const postUserEditInfo = async () => {
+  try {
+    const response = await api.post(`/member/updateInfo`, {});
+  } catch {}
 };
 
 export {

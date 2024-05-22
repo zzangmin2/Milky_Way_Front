@@ -1,5 +1,5 @@
 import Button from "../../../components/Button";
-import SignupInput from "../SignupInput";
+import SignupInput from "../../../components/SignupInput";
 import {
   BottomSection,
   TopSection,
@@ -59,6 +59,8 @@ const SignupInfo = () => {
     dpt: dpt,
     number: number,
   };
+
+  console.log(compareValue);
 
   return (
     <>

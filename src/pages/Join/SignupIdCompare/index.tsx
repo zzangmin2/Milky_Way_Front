@@ -21,11 +21,12 @@ import {
   useRecoilValue,
   useRecoilValueLoadable,
 } from "recoil";
-import SignupInput from "../SignupInput";
+import SignupInput from "../../../components/SignupInput";
 import { emailSuccesses } from "../../../utils/recoil/atom";
 import ErrorPage from "../../RoutePage/ErrorPage";
 import { sendUserCompareInfo } from "../../../utils/apimodule/member";
 import { toast } from "react-toastify";
+import { loadingStateSelector } from "../../../utils/recoil/atom";
 
 const SignupIdCompare = () => {
   const emailSuccessIn = useRecoilValue(emailSuccesses);
@@ -36,7 +37,7 @@ const SignupIdCompare = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const compareSuccessIn = useSetRecoilState(compareSuccesses);
-
+  const loadingState = useRecoilValue(loadingStateSelector);
   const [compareInState, setCompareInState] = useState(false);
 
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const SignupIdCompare = () => {
   const sendUseridVerify = async () => {
     try {
       const result = await sendUserCompareInfo(id);
+      console.log(result);
       if (result.success) {
         setCompareInState(true);
         toast.success("중복된 아이디가 없습니다");
@@ -91,6 +93,8 @@ const SignupIdCompare = () => {
     password: password,
   };
 
+  console.log(compareValue);
+
   return (
     <>
       {emailSuccessIn ? (
@@ -117,16 +121,15 @@ const SignupIdCompare = () => {
                   onClick={sendUseridVerify}
                 />
               ) : (
-                <>
-                  <SignupInput
-                    placeholder={"아이디를 입력 해주세요"}
-                    type="verify"
-                    disable
-                    name="id"
-                    value={id}
-                    onClick={sendUseridVerify}
-                  />
-                </>
+                <SignupInput
+                  placeholder={"아이디를 입력 해주세요"}
+                  type="verify"
+                  disabled={true}
+                  name="id"
+                  color="#111111"
+                  value={id}
+                  onClick={sendUseridVerify}
+                />
               )}
 
               <SignupInput
