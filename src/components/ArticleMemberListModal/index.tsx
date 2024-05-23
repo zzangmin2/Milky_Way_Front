@@ -23,8 +23,8 @@ import { ModalProps } from "../../typings/db";
 const MemberListModal: React.FC<ModalProps> = ({
   show,
   handleClose,
-  children,
-  memberId,
+  // children,
+  // memberId,
 }) => {
   const careerValue = useSetRecoilState(userCareerState);
   const {
