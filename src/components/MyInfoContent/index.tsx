@@ -3,12 +3,7 @@ import { TopSection, InfoTitle, InfoContent } from "../../pages/MyInfo/style";
 import { sendUserEditInfo } from "../../utils/apimodule/member";
 import { useRecoilValue } from "recoil";
 import { userInfoStateSelector } from "../../utils/recoil/atom";
-
-interface UserInfo {
-  editName?: any;
-  editEmail?: any;
-  editNumber?: any;
-}
+import { UserInfo } from "../../typings/db";
 
 const MyInfoContent = () => {
   const [edit, setEdit] = useState<boolean>(false);

@@ -8,12 +8,7 @@ import { ArticleArticleSelector } from "../../utils/recoil/atom";
 import { useRecoilValue } from "recoil";
 import { ArticleCardPageCount } from "./styles";
 import Modal from "../Modal";
-
-interface BottomTableProps {
-  articleApplyState: any[];
-
-  type: string;
-}
+import { BottomTableProps } from "../../typings/db";
 
 const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
   const articleCard: any[] = useRecoilValue(ArticleArticleSelector);

@@ -1,6 +1,5 @@
-import { atom, selector, selectorFamily } from "recoil";
+import { atom, selector } from "recoil";
 import { Article } from "../../typings/db";
-import { recoilPersist } from "recoil-persist";
 
 interface UserCompareState {
   email?: string;
@@ -26,11 +25,6 @@ interface UserCareerInfo {
   userDpt?: string;
   userLocation?: string;
 }
-
-const { persistAtom } = recoilPersist({
-  key: "userName",
-  storage: localStorage,
-});
 
 export const loadingStateAtom = atom<boolean>({
   key: "loadingStateAtom",

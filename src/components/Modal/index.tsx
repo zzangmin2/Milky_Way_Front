@@ -1,13 +1,6 @@
 import React from "react";
 import { ModalWrapper, ModalContent, CloseButton, LinkButton } from "./styles";
-
-interface ModalProps {
-  show: boolean;
-  handleClose: () => void;
-  children?: React.ReactNode;
-  modalType: any; // 추가한 type
-  additionalInfo?: any; // 추가
-}
+import { ModalProps } from "../../typings/db";
 
 const Modal: React.FC<ModalProps> = ({
   show,

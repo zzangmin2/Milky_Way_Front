@@ -10,15 +10,10 @@ import {
   EmailText,
 } from "../styles";
 import { useEffect, useState } from "react";
-// import { sendEmailUserInfo } from "../../../utils/apimodule/member";
+
 import { useNavigate } from "react-router-dom";
-import {
-  emailSuccesses,
-  userCompareState,
-  userCompareValues,
-} from "../../../utils/recoil/atom";
+import { emailSuccesses, userCompareValues } from "../../../utils/recoil/atom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-// import { sendEmailVerify } from "../../../utils/apimodule/member";
 
 const SignupEmail = () => {
   const [email, setEmail] = useState("");
@@ -26,7 +21,7 @@ const SignupEmail = () => {
   const [emailSendon, setEmailSendon] = useState<boolean | undefined>(false);
   const [verifyEmail, setVerifyEmail] = useState<string>("");
   const userCompare = useSetRecoilState(userCompareValues);
-  const compareValue = useRecoilValue(userCompareValues);
+  // const compareValue = useRecoilValue(userCompareValues);
 
   const emailSuccessIn = useSetRecoilState(emailSuccesses);
   // 라우터 프로텍트 위한 아톰
