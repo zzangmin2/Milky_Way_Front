@@ -19,35 +19,27 @@ import Button from "../../components/Button";
 import { useState, useEffect } from "react";
 import { viewMyCareer } from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import {
-  userCareerState,
-  userCareerStateSelector,
-} from "../../utils/recoil/atom";
+import { userCareerStateSelector } from "../../utils/recoil/atom";
 import { putUserEditCareer } from "../../utils/apimodule/member";
 import { postUserEditCareer } from "../../utils/apimodule/member";
+import { postUserEditCareerInfo } from "../../utils/apimodule/member";
+import { putUserEditCareerInfo } from "../../utils/apimodule/member";
 import { userCareerUserInfoStateSelector } from "../../utils/recoil/atom";
+import { validateCareer } from "../../utils/validations/validation";
 
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faTrash } from "@fortawesome/free-solid-svg-icons";
 const MyCareer = () => {
   // 커리어 상태값 리코일아톰사용 careervalue = recoil set사용 / careerdata = recoil value사용
   const careerValue: any = useSetRecoilState(userCareerStateSelector);
   const userInfoValue: any = useSetRecoilState(userCareerUserInfoStateSelector);
 
-  const [sendCareerState, setSendCareerState] = useState(false);
   /**
    * 최초 데이터 받아올때 career가 빈 값인지 아닌지를 가리키는 state
    */
   const [careerPostState, setCareerPostState] = useState(false);
-  //구조분해 할당
-  const {
-    userName,
-    userId,
-    userDpt,
-    userPhoneNumber,
 
-    userLocation,
-  }: any = useRecoilValue(userCareerUserInfoStateSelector);
+  //구조분해 할당
+  const { userName, userId, userDpt, userPhoneNumber, userLocation }: any =
+    useRecoilValue(userCareerUserInfoStateSelector);
 
   const [infoEdit, setInfoEdit] = useState<any>({
     editDpt: userDpt,
@@ -73,36 +65,21 @@ const MyCareer = () => {
   const sendCareerEdit = async () => {
     console.log(infoEdit);
     try {
-      const emptyCareerNames = userCareer.filter(
-        (userCareer: any) => userCareer.carName.trim() == ""
-      );
-      const emptyCareerDates = userCareer.filter(
-        (userCareer: any) =>
-          userCareer.carStartDay.trim() == "" ||
-          userCareer.carEndDay.trim() == ""
-      );
-      const emptyCertificateNames = userCertificate.filter(
-        (userCertificate: any) => userCertificate.certName.trim() == ""
-      );
-      const emptyCertificateDates = userCertificate.filter(
-        (userCertificate: any) => userCertificate.certDate.trim() == ""
-      );
-
-      if (emptyCareerNames.length > 0 || emptyCertificateNames.length > 0) {
-        alert("경력과 자격증의 이름을 모두 작성해주세요.");
+      if (!validateCareer(userCareer, userCertificate)) {
         return;
       }
-
-      if (emptyCareerDates.length > 0 || emptyCertificateDates.length > 0) {
-        alert("경력과 자격증의 날짜를 모두 작성해주세요.");
-        return;
+      let response: any;
+      if (careerPostState) {
+        response = await Promise.all([
+          postUserEditCareer(userCareer, userCertificate),
+          postUserEditCareerInfo(),
+        ]);
+      } else {
+        response = await Promise.all([
+          putUserEditCareer(userCareer, userCertificate),
+          putUserEditCareerInfo(),
+        ]);
       }
-
-      setSendCareerState(true);
-
-      const response: any = careerPostState
-        ? await postUserEditCareer(userCareer, userCertificate)
-        : await putUserEditCareer(userCareer, userCertificate);
       if (response.success) {
         window.location.reload();
         console.log(careerValue);
@@ -134,31 +111,32 @@ const MyCareer = () => {
         userCertificate: career.certifications || [],
       });
       userInfoValue({
-        userName: member.memberName,
-        userId: member.memberId,
-        userPhoneNumber: member.memberPhoneNum,
-        userDpt: member.memberDpt,
-        userLocation: member.memberLocation,
-        userUni: member.memberUniversity,
+        // userName: member.memberName,
+        // userId: member.memberId,
+        // userPhoneNumber: member.memberPhoneNum,
+        // userDpt: member.memberDpt,
+        // userLocation: member.memberLocation,
+        // userUni: member.memberUniversity,
+        userName: "김태겸",
+        userId: "1",
+        userPhoneNumber: "010",
+        userDpt: "컴퓨터정보학부",
+        userLocation: "안양시",
+        userUni: "대학교",
       });
     } catch (error) {
       console.error("error", error);
     }
-    if (userCareer.length > 0 && userCertificate.length > 0) {
+    if (
+      userCareer.length > 0 &&
+      userCertificate.length > 0 &&
+      userInfoValue.length > 0
+    ) {
       setCareerPostState(true);
     }
   };
 
-  /**
-   * 페이지가 마운트될때 유저데이터 불러옴
-   */
-  useEffect(() => {
-    userCareerData();
-    setInfoEdit({
-      editDpt: userDpt,
-      editLocation: userLocation,
-    });
-  }, []);
+  console.log(userName);
 
   /**
    * 경력 추가버튼시 추가 input창 활성화
@@ -231,6 +209,19 @@ const MyCareer = () => {
     }));
   };
 
+  /**
+   * 페이지가 마운트될때 유저데이터 불러옴
+   */
+  useEffect(() => {
+    userCareerData();
+    setInfoEdit({
+      editDpt: userDpt,
+      editLocation: userLocation,
+    });
+  }, []);
+
+  console.log(infoEdit);
+
   return (
     <Section>
       <TopSection>
@@ -239,7 +230,6 @@ const MyCareer = () => {
         </MyInfoTitle>
         {edit ? (
           <MyInfoContent>
-            {/* {userId.length > 0 ? <>@{userId}</> : <></>} */}
             <FirstInfoContentTitle>
               {userName} @{userId}
             </FirstInfoContentTitle>
@@ -271,7 +261,11 @@ const MyCareer = () => {
               </FirstInfoContentTitle>
               <div></div>
 
-              <div>{userPhoneNumber}</div>
+              <div>
+                {userPhoneNumber
+                  ? userPhoneNumber
+                  : "등록된 전화번호가 없습니다."}
+              </div>
               {userDpt ? (
                 <input placeholder={userDpt} />
               ) : (
@@ -279,7 +273,7 @@ const MyCareer = () => {
                   <input
                     type="text"
                     placeholder={userDpt || "학과를 입력해주세요"}
-                    value={infoEdit.editDpt || ""}
+                    value={infoEdit.editDpt}
                     onChange={(e) => {
                       setInfoEdit({
                         ...setInfoEdit,
@@ -295,7 +289,7 @@ const MyCareer = () => {
                 <>
                   <input
                     placeholder={userLocation || "지역을 입력해주세요"}
-                    value={infoEdit.editLocation || ""}
+                    value={infoEdit.editLocation}
                     onChange={(e) => {
                       setInfoEdit({
                         ...setInfoEdit,

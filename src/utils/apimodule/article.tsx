@@ -1,6 +1,5 @@
-import { useSetRecoilState } from "recoil";
 import api from "../api/axiosInstance";
-import { isLoggedInUserName } from "../recoil/atom";
+
 import { Article } from "../../typings/db";
 
 /**
@@ -174,6 +173,48 @@ const viewMyInfo = async () => {
 };
 
 /**
+ * 마이페이지에서 내가 등록한 게시글정보 가져오기
+ * @returns @success @data
+ */
+const viewMyApplyInfo = async () => {
+  try {
+    const response = await api.get(`/applyinfo`);
+    const data = response.data;
+
+    console.log(data);
+    if (response.status === 200) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
+ * 마이페이지에서 내가 등록한 게시글정보 가져오기
+ * @returns @success @data
+ */
+const viewMyArticleInfo = async () => {
+  try {
+    const response = await api.get(`/articleinfo`);
+    const data = response.data;
+
+    console.log(data);
+    if (response.status === 200) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
  * 이력서 정보 불러오기
  * @returns success, data
  */
@@ -203,4 +244,6 @@ export {
   viewArticleList,
   viewMyInfo,
   viewMyCareer,
+  viewMyArticleInfo,
+  viewMyApplyInfo,
 };

@@ -11,7 +11,11 @@ import {
 import { useState, useEffect, Key } from "react";
 import ArticleInfoCard from "../../components/ArticleInfoCard";
 import Modal from "../../components/Modal";
-import { viewMyInfo } from "../../utils/apimodule/article";
+import {
+  viewMyApplyInfo,
+  viewMyInfo,
+  viewMyArticleInfo,
+} from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { userInfoStateSelector } from "../../utils/recoil/atom";
 import ArticleApplyStateTable from "../../components/ArticleApplyStateTable";
@@ -55,39 +59,19 @@ const MyInfo = () => {
    */
   const userInfoData = async () => {
     try {
-      const data: any = await viewMyInfo();
-      const member = data.data;
-      const article = data.data.article;
-      console.log(data);
+      const response: any = await viewMyInfo();
+      const articleData: any = await viewMyArticleInfo();
+      const applyData: any = await viewMyApplyInfo();
+      const member = response.data;
+      const article = articleData.data;
+      const apply = applyData.data;
+
+      console.log(article, apply);
 
       infoValue({
         userName: member.memberName,
         userEmail: member.memberEmail,
         userNumber: member.memberPhoneNum,
-      });
-      articleCardState({
-        articleId: 2,
-        articleMemberId: "",
-        //articleMemberName 필요
-        articleType: "",
-        articleRecruitmentState: true,
-        articleTitle: "",
-        articleContent: "",
-        articleLikes: 2,
-        articleApply: "",
-        articleApplyNow: 0,
-        articleStartDay: "",
-        articleEndDay: "",
-        articleMentorNeeded: false,
-        articleMentorTag: "",
-        articleApplyState: [
-          {
-            id: 0,
-            applicantName: "",
-            applicationDate: 0,
-            status: "",
-          },
-        ],
       });
 
       console.log(infoValue);

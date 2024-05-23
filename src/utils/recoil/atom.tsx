@@ -262,6 +262,11 @@ export const ArticleCardCurrentState = atom({
   },
 });
 
+export const ArticleCurrentState = atom<any>({
+  key: "ArticleCurrentState",
+  default: "",
+});
+
 export const ArticleCardStateSelector = selector({
   key: "ArticleCurrentStateSelector",
   get: ({ get }) => {
