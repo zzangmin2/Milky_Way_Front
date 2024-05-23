@@ -18,19 +18,13 @@ import Button from "../Button";
 import { viewMyCareer } from "../../utils/apimodule/article";
 import { userCareerState } from "../../utils/recoil/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-
-interface ModalProps {
-  show: boolean;
-  handleClose: () => void;
-  children?: React.ReactNode;
-  memberId?: any;
-}
+import { ModalProps } from "../../typings/db";
 
 const MemberListModal: React.FC<ModalProps> = ({
   show,
   handleClose,
-  children,
-  memberId,
+  // children,
+  // memberId,
 }) => {
   const careerValue = useSetRecoilState(userCareerState);
   const {

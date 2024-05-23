@@ -23,6 +23,19 @@ const useInterceptors = () => {
       return Promise.reject(error);
     };
 
+    api.interceptors.request.use(
+      (config) => {
+        const ACCESS_TOKEN = localStorage.getItem("ACCESS_TOKEN");
+        if (ACCESS_TOKEN) {
+          config.headers.Authorization = `Bearer ${ACCESS_TOKEN}`;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+
     const requestInterceptor = api.interceptors.request.use(
       requestHandler,
       errorHandler
@@ -58,7 +71,8 @@ const useInterceptors = () => {
       async (error) => {
         if (error.response.status === 401) {
           try {
-            const response = await api.post("/reissue");
+            const memberNum = localStorage.getItem("memberNum");
+            const response = await api.post("/reissue", { memberNum });
             const accessToken = response.data.access_token;
             error.config.headers["Authorization"] = `Bearer ${accessToken}`;
             return api.request(error.config);

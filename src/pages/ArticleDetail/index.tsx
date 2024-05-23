@@ -255,8 +255,8 @@ const ArticleDetail = () => {
                       {articleCurrentState.articleMentorTag.length >= 1 &&
                         articleCurrentState.articleMentorTag
                           .split("#")
-                          .filter((tag) => tag !== "")
-                          .map((tag, idx) => {
+                          .filter((tag: any) => tag !== "")
+                          .map((tag: any, idx: any) => {
                             return (
                               <p className="mentorTag" key={idx}>
                                 #{tag}
@@ -294,9 +294,9 @@ const ArticleDetail = () => {
                         <div className="tableCell">신청일</div>
                         <div className="tableCell">상태</div>
                       </div>
-                      {articleApplyUserListState.length >= 1 ? (
-                        articleApplyUserListState.map(
-                          (applicant: ArticleApplyState, idx) => {
+                      {articleCurrentState.articleApplyState.length >= 1 ? (
+                        articleCurrentState.articleApplyState.map(
+                          (applicant: any, idx: any) => {
                             return (
                               <div className="tableRow" key={idx}>
                                 <div className="tableCell">

@@ -1,18 +1,10 @@
 import React from "react";
 import { ModalWrapper, ModalContent, CloseButton, LinkButton } from "./styles";
-
-interface ModalProps {
-  show: boolean;
-  handleClose: () => void;
-  children?: React.ReactNode;
-  modalType: any; // 추가한 type
-  additionalInfo?: any; // 추가
-}
+import { ModalProps } from "../../typings/db";
 
 const Modal: React.FC<ModalProps> = ({
   show,
   handleClose,
-  children,
   modalType,
   additionalInfo,
 }) => {
@@ -47,7 +39,9 @@ const Modal: React.FC<ModalProps> = ({
                 </LinkButton>
               ) : (
                 <>
-                  <div>등록된 링크가 없어요 ㅠ</div>
+                  <LinkButton style={{ backgroundColor: "gray" }}>
+                    등록된 링크가 없어요 ㅠ
+                  </LinkButton>
                 </>
               )}
             </div>

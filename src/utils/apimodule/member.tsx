@@ -121,16 +121,16 @@ const sendUserInfo = async (
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
 const sendUserEditInfo = async (
-  name: string,
-  userEmail: string,
-  phoneNumber: string
+  editName: string,
+  editEmail: string,
+  editNumber: string
 ) => {
+  console.log(editName, editEmail, editNumber);
   try {
-    const memberIds = localStorage.getItem("memberNo");
-    const response = await api.post(`/${memberIds}/input-student-info/update`, {
-      userName: name,
-      userEmail: userEmail,
-      userPhoneNumber: phoneNumber,
+    const response = await api.put(`/update`, {
+      memberName: editName,
+      memberEmail: editEmail,
+      memberPhoneNum: editNumber,
     });
     if (response.status === 200) {
       return { success: true };
@@ -152,9 +152,9 @@ const sendUserEditInfo = async (
  * @type {string | number} 이름 / 학과 / 전화번호
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
-const sendUserEditCareer = async (userCareer: any, userCertificate: any) => {
+const putUserEditCareer = async (userCareer: any, userCertificate: any) => {
   try {
-    const response = await api.post(`/member/updateInfo`, {
+    const response = await api.put(`/member/modify/profile`, {
       // careers: careerData.userCareer.map((career: any) => ({
       //   carName: career.careerCompany,
       //   carStartDay: career.careerFirstDate,
@@ -180,7 +180,7 @@ const sendUserEditCareer = async (userCareer: any, userCertificate: any) => {
 
 const postUserEditCareer = async (userCareer: any, userCertificate: any) => {
   try {
-    const response = await api.post(`/member/updateCareerAndCertification`, {
+    const response = await api.post(`/member/update/profile`, {
       // careers: careerData.userCareer.map((career: any) => ({
       //   carName: career.careerCompany,
       //   carStartDay: career.careerFirstDate,
@@ -206,10 +206,30 @@ const postUserEditCareer = async (userCareer: any, userCertificate: any) => {
   }
 };
 
-const postUserEditInfo = async () => {
+const postUserEditCareerInfo = async () => {
   try {
-    const response = await api.post(`/member/updateInfo`, {});
-  } catch {}
+    const response = await api.post(`/member/update/info`, {});
+    if (response.status === 200) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.log(`${error}`);
+  }
+};
+
+const putUserEditCareerInfo = async () => {
+  try {
+    const response = await api.put(`/member/modify/info`, {});
+    if (response.status === 200) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.log(`${error}`);
+  }
 };
 
 export {
@@ -218,6 +238,8 @@ export {
   sendUserInfo,
   // sendEmailVerify,
   sendUserEditInfo,
-  sendUserEditCareer,
+  putUserEditCareer,
   postUserEditCareer,
+  postUserEditCareerInfo,
+  putUserEditCareerInfo,
 };
