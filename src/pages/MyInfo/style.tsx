@@ -65,14 +65,14 @@ export const InfoContent = styled.div`
   }
 `;
 export const BottomSection = styled.section`
-  flex: 1;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
 `;
 
 export const InfoNav = styled.nav`
   width: 100%;
+  flex: 1;
   margin-bottom: 20px;
   & > ul {
     display: flex;
@@ -126,9 +126,12 @@ export const ArticleInfoCardWrap = styled.section`
   }
 `;
 
-export const LogoutText = styled.p`
+export const LogoutText = styled.section`
   text-align: right;
-  width: 100%;
-  margin-bottom: 10px;
+  flex: 1;
   color: gray;
+  display: flex;
+  justify-content: flex-end;
+  align-self: felx-end;
+  align-items: flex-end;
 `;

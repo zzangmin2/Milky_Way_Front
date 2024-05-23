@@ -251,14 +251,6 @@ export const ArticleCardCurrentState = atom({
     articleEndDay: "",
     articleMentorNeeded: false,
     articleMentorTag: "",
-    articleApplyState: [
-      {
-        id: 0,
-        applicantName: "",
-        applicationDate: "",
-        status: "",
-      },
-    ],
   },
 });
 
@@ -283,6 +275,44 @@ export const ArticleCardStateSelector = selector({
 export const ArticleListTypeState = atom({
   key: "articleListTypeState",
   default: [],
+});
+
+/**
+ *  마이페이지에서 내가 "등록"한 프로젝트 보여주기
+ */
+
+export const ArticleApplyAtom = atom<any>({
+  key: "ArticleApplyAtom",
+  default: "",
+});
+
+export const ArticleApplySelector = selector({
+  key: "ArticleApplySelector",
+  get: ({ get }) => {
+    return get(ArticleApplyAtom);
+  },
+  set: ({ set }, newValue: any) => {
+    set(ArticleApplyAtom, newValue);
+  },
+});
+
+/**
+ *  마이페이지에서 내가 "신청"한 프로젝트 보여주기
+ */
+
+export const ArticleArticleAtom = atom<any>({
+  key: "ArticleArticleAtom",
+  default: "",
+});
+
+export const ArticleArticleSelector = selector({
+  key: "ArticleArticleSelector",
+  get: ({ get }) => {
+    return get(ArticleArticleAtom);
+  },
+  set: ({ set }, newValue: any) => {
+    set(ArticleArticleAtom, newValue);
+  },
 });
 
 /**
@@ -413,7 +443,16 @@ export const articleDetailModalClickState = atom({
 /**
  * <atom> 게시물 소개 /QnA 탭 클릭 상태
  */
-export const articleDetailIntroOrQnaTabState = atom({
+export const ArticleDetailIntroOrQnaTabState = atom({
   key: "articleDetailIntroOrQnaTabState",
   default: "intro", // intro, qna
+});
+
+/**
+ * <atom> 현재 게시물 지원자 리스트 상태
+ */
+
+export const ArticleApplyUserListState = atom({
+  key: "articleApplyUserListState",
+  default: [],
 });

@@ -26,6 +26,7 @@ import { postUserEditCareerInfo } from "../../utils/apimodule/member";
 import { putUserEditCareerInfo } from "../../utils/apimodule/member";
 import { userCareerUserInfoStateSelector } from "../../utils/recoil/atom";
 import { validateCareer } from "../../utils/validations/validation";
+import { toast } from "react-toastify";
 
 const MyCareer = () => {
   // 커리어 상태값 리코일아톰사용 careervalue = recoil set사용 / careerdata = recoil value사용
@@ -83,11 +84,11 @@ const MyCareer = () => {
       if (response.success) {
         window.location.reload();
         console.log(careerValue);
-        alert("이력서 수정이 완료되었습니다!");
+        toast.error("이력서 수정이 완료되었습니다!");
 
         setEdit(true);
       } else {
-        alert("서버연결 안됨!");
+        toast.error("서버연결 안됨!");
         window.location.reload();
       }
     } catch (error) {
@@ -156,7 +157,7 @@ const MyCareer = () => {
         ],
       }));
     } catch (error: any) {
-      alert("경력 추가 실패");
+      toast.error("경력 추가 실패");
       throw error;
     }
   };
@@ -178,7 +179,7 @@ const MyCareer = () => {
         ],
       }));
     } catch (errror) {
-      alert("자격증 추가 실패!");
+      toast.error("자격증 추가 실패!");
       throw errror;
     }
   };

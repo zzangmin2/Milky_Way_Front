@@ -49,7 +49,6 @@ const MyInfoContent = () => {
     });
   }, [userName, userEmail, userNumber]);
 
-  console.log(userNumber);
   return (
     <>
       <TopSection>

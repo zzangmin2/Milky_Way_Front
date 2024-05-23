@@ -19,12 +19,13 @@ export const loginedIn = async (loginId: string, password: string) => {
     if (response.status === 200) {
       console.log(response.data);
 
-      const token = response.data.accessToken;
+      const access_token = response.data.accessToken;
+      const refresh_token: any = response.data.memberNo;
       const memberName: any = response.data.memberName;
-      const memberNo: any = response.data.memberNo;
+
       localStorage.setItem("memberName", memberName);
-      localStorage.setItem("ACCESS_TOKEN", token);
-      localStorage.setItem("memberNo", memberNo);
+      localStorage.setItem("ACCESS_TOKEN", access_token);
+      localStorage.setItem("REFRESH_TOKEN", refresh_token);
 
       return { success: true };
     } else {
@@ -53,8 +54,9 @@ export const logout = async () => {
     });
     if (response.status === 200) {
       localStorage.removeItem("ACCESS_TOKEN");
+      localStorage.removeItem("REFRESH_TOKEN");
       localStorage.removeItem("memberName");
-      localStorage.removeItem("memberNo");
+
       navigate("/users/login");
     } else {
       return { success: false, error: "로그아웃 실패" };
