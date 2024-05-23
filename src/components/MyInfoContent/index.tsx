@@ -22,7 +22,6 @@ const MyInfoContent = () => {
     editNumber: userNumber,
   });
 
-  console.log(userEmail);
   const sendClickEdit = async () => {
     try {
       const response: any = await sendUserEditInfo(
@@ -30,7 +29,7 @@ const MyInfoContent = () => {
         editUser.editEmail,
         editUser.editNumber
       );
-      console.log(editUser);
+
       if (response.data.success) {
         alert("수정완료");
         window.location.reload();

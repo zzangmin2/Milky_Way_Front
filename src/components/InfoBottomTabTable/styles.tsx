@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const ArticleApplyStateTableWrap = styled.div`
   flex: 1;
+  margin-bottom: 70px;
   grid-template-rows: repeat(4, 1fr);
   font-size: 0.9rem;
 
@@ -11,11 +12,11 @@ export const ArticleApplyStateTableWrap = styled.div`
     border-bottom: 1px solid #d1d1d1;
 
     align-items: center;
-    &:not(.tableRowTop) {
-      .tableCell:nth-child(1) {
-        font-weight: bold;
-      }
-    }
+    // &:not(.tableRowTop) {
+    //   .tableCell:nth-child(1) {
+    //     font-weight: bold;
+    //   }
+    // }
   }
 
   .tableRowTop {
@@ -28,6 +29,25 @@ export const ArticleApplyStateTableWrap = styled.div`
   }
 
   &:focus {
+    outline: none;
+  }
+`;
+
+export const ArticleCardPageCount = styled.div`
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  & > button {
+    margin-left: 5px;
+  }
+
+  & > p {
+    margin-left: 20px;
+  }
+  :&focus  {
     outline: none;
   }
 `;

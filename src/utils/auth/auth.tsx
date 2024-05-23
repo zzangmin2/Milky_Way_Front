@@ -20,7 +20,7 @@ export const loginedIn = async (loginId: string, password: string) => {
       console.log(response.data);
 
       const access_token = response.data.accessToken;
-      const refresh_token: any = response.data.memberNo;
+      const refresh_token: any = response.data.refreshToken;
       const memberName: any = response.data.memberName;
 
       localStorage.setItem("memberName", memberName);

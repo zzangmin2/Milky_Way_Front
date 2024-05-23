@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import {
   BottomSection,
   Section,
@@ -6,9 +7,7 @@ import {
   InfoNav,
   LogoutText,
 } from "./style";
-import { useState, useEffect } from "react";
 
-import Modal from "../../components/Modal";
 import {
   viewMyApplyInfo,
   viewMyInfo,
@@ -18,12 +17,13 @@ import { useSetRecoilState, useRecoilState } from "recoil";
 import {
   ArticleArticleSelector,
   userInfoStateSelector,
+  ArticleApplySelector,
 } from "../../utils/recoil/atom";
-import ArticleApplyStateTable from "../../components/ArticleApplyStateTable";
+
 import { logout } from "../../utils/auth/auth";
 import { toast } from "react-toastify";
-import { ArticleApplySelector } from "../../utils/recoil/atom";
 import MyInfoContent from "../../components/MyInfoContent";
+import InfoBottomTabTable from "../../components/InfoBottomTabTable";
 
 const MyInfo = () => {
   const [activeTab, setActiveTab] = useState<string>("article");
@@ -31,30 +31,21 @@ const MyInfo = () => {
   /** 유저 데이터 정보 */
   const infoValue = useSetRecoilState(userInfoStateSelector);
 
-  /**
-   * 등록한 정보
-   */
+  /** 등록한 정보 */
   const [apply, setApply] = useRecoilState<any>(ArticleApplySelector);
 
-  /**
-   * 신청한 정보
-   */
-
+  /** 신청한 정보 */
   const [article, setArticle] = useRecoilState<any>(ArticleArticleSelector);
 
-  /** 모달오픈, 오픈채팅방 링크 넘기기 등 */
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [additionalInfo, setAdditionalInfo] = useState<string>("");
-  const [modalType, setModalType] = useState<string>("");
+  /** BottomSection 참조 */
+  const bottomSection = useRef<HTMLDivElement>(null);
 
-  /**
-   * 로그아웃
-   */
+  /** 로그아웃 */
   const logoutEventClick = async () => {
     try {
       const result: any = await logout();
       if (result.success) {
-        alert("로그아웃 되었습니다..");
+        alert("로그아웃 되었습니다.");
       } else {
         alert("로그아웃 실패 (client)");
       }
@@ -63,9 +54,7 @@ const MyInfo = () => {
     }
   };
 
-  /**
-   * 유저정보불러옴
-   */
+  /** 유저 정보 불러옴 */
   const userInfoData = async () => {
     try {
       const response: any = await viewMyInfo();
@@ -74,6 +63,9 @@ const MyInfo = () => {
       const member = response.data;
       const article = articleData.data;
       const apply = applyData.data;
+
+      setApply(apply);
+      setArticle(article);
 
       infoValue({
         userName: member.memberName,
@@ -85,28 +77,19 @@ const MyInfo = () => {
     }
   };
 
-  /**
-   * 마운트시에 유저정보불러오고 setEditUser초기화
-   */
+  /** 마운트 시에 유저 정보 불러오고 setEditUser 초기화 */
   useEffect(() => {
     userInfoData();
   }, []);
 
-  /**
-   * articlelist상태 탭바
-   * @param tab
+  /** articlelist 상태 탭 바
+   * react_scroll 애니메이션 추가
    */
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
-  };
-
-  const handleModalOpen = (additionalInfo: string) => {
-    setIsModalOpen(true);
-    setAdditionalInfo(additionalInfo);
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
+    if (bottomSection.current) {
+      bottomSection.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -115,7 +98,7 @@ const MyInfo = () => {
         <TopSection>
           <MyInfoContent></MyInfoContent>
         </TopSection>
-        <BottomSection>
+        <BottomSection ref={bottomSection}>
           <InfoTitle>
             <div>스터디/프로젝트 관리</div>
           </InfoTitle>
@@ -131,7 +114,6 @@ const MyInfo = () => {
                 className={activeTab === "apply" ? "activeTab" : ""}
                 onClick={() => {
                   handleTabClick("apply");
-                  setIsModalOpen(false);
                 }}
               >
                 등록
@@ -140,7 +122,6 @@ const MyInfo = () => {
                 className={activeTab === "like" ? "activeTab" : ""}
                 onClick={() => {
                   handleTabClick("like");
-                  setIsModalOpen(false);
                 }}
               >
                 찜
@@ -149,37 +130,19 @@ const MyInfo = () => {
           </InfoNav>
           {activeTab === "article" && (
             <>
-              <ArticleApplyStateTable
-                articleApplyState={apply}
-                handleModalOpen={handleModalOpen}
-                setModalType={setModalType}
-                type={"article"}
-              />
+              <InfoBottomTabTable articleApplyState={apply} type={"article"} />
             </>
           )}
           {activeTab === "like" && null}
           {activeTab === "apply" && (
             <>
-              <ArticleApplyStateTable
-                articleApplyState={article}
-                handleModalOpen={handleModalOpen}
-                setModalType={setModalType}
-                type={"apply"}
-              />
+              <InfoBottomTabTable articleApplyState={article} type={"apply"} />
             </>
           )}
-          {isModalOpen && (
-            <Modal
-              show={isModalOpen}
-              handleClose={handleModalClose}
-              modalType={"info"}
-              additionalInfo={"http://google.com"}
-            />
-          )}
-          <LogoutText>
-            <p onClick={logoutEventClick}>로그아웃</p>
-          </LogoutText>
         </BottomSection>
+        <LogoutText>
+          <p onClick={logoutEventClick}>로그아웃</p>
+        </LogoutText>
       </Section>
     </>
   );

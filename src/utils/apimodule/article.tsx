@@ -175,7 +175,6 @@ const viewMyApplyInfo = async () => {
     const response = await api.get(`/applyinfo`);
     const data = response.data;
 
-    console.log(data);
     if (response.status === 200) {
       return { success: true, data };
     } else {
@@ -196,7 +195,6 @@ const viewMyArticleInfo = async () => {
     const response = await api.get(`/articleinfo`);
     const data = response.data;
 
-    console.log(data);
     if (response.status === 200) {
       return { success: true, data };
     } else {

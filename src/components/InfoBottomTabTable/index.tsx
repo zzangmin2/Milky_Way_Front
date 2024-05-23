@@ -6,20 +6,16 @@ import ArticleInfoCard from "../ArticleInfoCard";
 import { ArticleApplySelector } from "../../utils/recoil/atom";
 import { ArticleArticleSelector } from "../../utils/recoil/atom";
 import { useRecoilValue } from "recoil";
+import { ArticleCardPageCount } from "./styles";
+import Modal from "../Modal";
 
-interface ArticleApplyStateTableProps {
+interface BottomTableProps {
   articleApplyState: any[];
-  handleModalOpen: (additionalInfo: string) => void;
-  setModalType: (type: string) => void;
+
   type: string;
 }
 
-const ArticleApplyStateTable: React.FC<ArticleApplyStateTableProps> = ({
-  articleApplyState,
-  handleModalOpen,
-  setModalType,
-  type,
-}) => {
+const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
   const articleCard: any[] = useRecoilValue(ArticleArticleSelector);
   const applyGrid: any = useRecoilValue(ArticleApplySelector);
   const [page, setPage] = useState(1);
@@ -28,8 +24,11 @@ const ArticleApplyStateTable: React.FC<ArticleApplyStateTableProps> = ({
   const endIndex = startIndex + itemsPerPage;
   const visibleCards = articleCard.slice(startIndex, endIndex);
   console.log(applyGrid);
-
   console.log(visibleCards);
+
+  /** 모달 오픈, 오픈채팅방 링크 넘기기 등 */
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [additionalInfo, setAdditionalInfo] = useState<string>("");
 
   const renderArticleCards = (cards: any[]) => {
     return cards.map((card, index) => (
@@ -59,52 +58,17 @@ const ArticleApplyStateTable: React.FC<ArticleApplyStateTableProps> = ({
     setPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
+  const handleModalOpen = (additionalInfo: string) => {
+    setIsModalOpen(true);
+    setAdditionalInfo(additionalInfo);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
-      {type === "apply" && (
-        <>
-          <InfoProjectList>
-            <div>등록한 스터디 / 프로젝트</div>
-            <div>
-              <p>Tips!</p>
-              <p>
-                내가 등록한 스터디/프로젝트를 볼 수 있습니다. 페이지를 넘겨 나의
-                등록카드를 확인해보세요!
-              </p>
-            </div>
-          </InfoProjectList>
-          <section style={{ marginTop: "50px", flex: "1" }}>
-            <ArticleInfoCardWrap
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                flex: "1",
-                marginBottom: "90px",
-              }}
-            >
-              {visibleCards.length > 0 ? (
-                renderArticleCards(visibleCards)
-              ) : (
-                <div>데이터가 없습니다.</div>
-              )}
-              <div>
-                <button onClick={handlePrevPage} disabled={page === 1}>
-                  이전
-                </button>
-                <button
-                  onClick={handleNextPage}
-                  disabled={
-                    page === Math.ceil(articleCard.length / itemsPerPage)
-                  }
-                >
-                  다음
-                </button>
-              </div>
-            </ArticleInfoCardWrap>{" "}
-          </section>
-        </>
-      )}
       {type === "article" && (
         <>
           <InfoProjectList>
@@ -128,18 +92,31 @@ const ArticleApplyStateTable: React.FC<ArticleApplyStateTableProps> = ({
                 </div>
                 {applyGrid.length > 0 ? (
                   applyGrid.map(
-                    (_apply: any, idx: React.Key | null | undefined) => (
+                    (apply: any, idx: React.Key | null | undefined) => (
                       <div className="tableRow" key={idx}>
-                        <div className="tableCell"></div>
-                        <div className="tableCell">date</div>
                         <div className="tableCell">
-                          <p
-                            onClick={() => {
-                              handleModalOpen("userList");
-                              setModalType("userList");
-                            }}
-                          >
-                            모집중
+                          {apply.applyArticle.title}
+                        </div>
+                        <div className="tableCell">
+                          {apply.applyDate.slice(0, -9)}
+                        </div>
+                        <div className="tableCell">
+                          <p>
+                            {apply.applyResult === "선정" ? (
+                              <p
+                                onClick={() => {
+                                  handleModalOpen("");
+                                  setAdditionalInfo(apply.conInfo);
+                                }}
+                                style={{
+                                  color: "#133488",
+                                }}
+                              >
+                                {apply.applyResult}
+                              </p>
+                            ) : (
+                              <>{apply.applyResult}</>
+                            )}
                           </p>
                         </div>
                       </div>
@@ -150,6 +127,51 @@ const ArticleApplyStateTable: React.FC<ArticleApplyStateTableProps> = ({
                 )}
               </div>
             </ArticleApplyStateTableWrap>
+          </section>
+        </>
+      )}
+      {type === "apply" && (
+        <>
+          <InfoProjectList>
+            <div>등록한 스터디 / 프로젝트</div>
+            <div>
+              <p>Tips!</p>
+              <p>
+                내가 등록한 스터디/프로젝트를 볼 수 있습니다. 페이지를 넘겨 나의
+                등록카드를 확인해보세요!
+              </p>
+            </div>
+          </InfoProjectList>
+          <section style={{ marginTop: "50px", flex: "1" }}>
+            <ArticleInfoCardWrap
+              style={{
+                display: "flex",
+                height: "auto",
+                flexDirection: "column",
+                alignItems: "center",
+                marginBottom: "90px",
+              }}
+            >
+              {visibleCards.length > 0 ? (
+                renderArticleCards(visibleCards)
+              ) : (
+                <div>데이터가 없습니다.</div>
+              )}
+              <ArticleCardPageCount>
+                <button onClick={handlePrevPage} disabled={page === 1}>
+                  이전
+                </button>
+                <button
+                  onClick={handleNextPage}
+                  disabled={
+                    page === Math.ceil(articleCard.length / itemsPerPage)
+                  }
+                >
+                  다음
+                </button>
+                <p>{page}</p>
+              </ArticleCardPageCount>
+            </ArticleInfoCardWrap>
           </section>
         </>
       )}
@@ -166,16 +188,24 @@ const ArticleApplyStateTable: React.FC<ArticleApplyStateTableProps> = ({
             </div>
           </InfoProjectList>
           <ArticleInfoCardWrap>
-            {articleCard.length > 0 ? (
+            {articleCard.length > 0 ? ( // 찜 리코일 값 만들어서 데이터받기
               renderArticleCards(articleCard)
             ) : (
-              <div>좋아요한 항목이 없습니다.</div>
+              <div>찜한 항목이 없습니다.</div>
             )}
           </ArticleInfoCardWrap>
         </>
+      )}
+      {isModalOpen && (
+        <Modal
+          show={isModalOpen}
+          handleClose={handleModalClose}
+          modalType={"info"}
+          additionalInfo={additionalInfo}
+        />
       )}
     </>
   );
 };
 
-export default ArticleApplyStateTable;
+export default InfoBottomTabTable;

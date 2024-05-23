@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const Section = styled.div`
   margin: 0 30px;
   display: flex;
-  overflow-y: scroll;
+  overflow-y: auto;
+  height: 100%;
   flex-direction: column;
   &::-webkit-scrollbar {
     display: none;
@@ -14,9 +15,9 @@ export const TopSection = styled.section`
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: space-beween;
+  align-items: space-between;
   min-height: 500px;
-  margin-bottom: -90px;
+  margin-bottom: -110px;
 `;
 
 export const InfoTitle = styled.div`
@@ -38,7 +39,7 @@ export const InfoTitle = styled.div`
 `;
 export const InfoContent = styled.div`
   display: flex;
-  height: 80px;
+  height: 70px;
   flex-direction: row;
   margin: 0 10px 10px 0;
   border-bottom: 1px solid #f1f1f1;
@@ -126,12 +127,12 @@ export const ArticleInfoCardWrap = styled.section`
   }
 `;
 
-export const LogoutText = styled.section`
+export const LogoutText = styled.div`
   text-align: right;
   flex: 1;
   color: gray;
+  width: 100%;
   display: flex;
   justify-content: flex-end;
-  align-self: felx-end;
   align-items: flex-end;
 `;

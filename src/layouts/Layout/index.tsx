@@ -41,6 +41,8 @@ const Layout: FC<Props> = ({ type }) => {
       page = "list";
     } else if (location.pathname === "/home") {
       page = "home";
+    } else if (location.pathname === "/home/myinfo") {
+      page = "myinfo";
     }
     console.log("페이지" + page);
     if (page) {
