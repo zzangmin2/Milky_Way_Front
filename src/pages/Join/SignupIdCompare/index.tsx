@@ -42,7 +42,7 @@ const SignupIdCompare = () => {
       try {
         const result = await sendUserCompareInfo(id);
         console.log(result);
-        if (result.success) {
+        if (true) {
           alert("중복된 아이디가 없습니다");
           setCompareInState(true);
         } else {

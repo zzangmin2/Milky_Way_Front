@@ -23,10 +23,8 @@ import {
 } from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { userCareerStateSelector } from "../../utils/recoil/atom";
-import { putUserEditCareer } from "../../utils/apimodule/member";
-import { postUserEditCareer } from "../../utils/apimodule/member";
-import { postUserEditCareerInfo } from "../../utils/apimodule/member";
-import { putUserEditCareerInfo } from "../../utils/apimodule/member";
+import { editUserCareerList } from "../../utils/apimodule/member";
+import { editUserCareerInfo } from "../../utils/apimodule/member";
 import { userCareerUserInfoStateSelector } from "../../utils/recoil/atom";
 import { validateCareer } from "../../utils/validations/validation";
 import { toast } from "react-toastify";
@@ -45,16 +43,21 @@ const MyCareer = () => {
   const { userName, userId, userDpt, userPhoneNumber, userLocation }: any =
     useRecoilValue(userCareerUserInfoStateSelector);
 
-  const [infoEdit, setInfoEdit] = useState<any>({
-    editDpt: userDpt,
-    editLocation: userLocation,
-  });
   //구조분해 할당
   const {
     userCareer = [],
     userCertificate = [],
     userLineText,
   }: any = useRecoilValue(userCareerStateSelector);
+
+  const [infoEdit, setInfoEdit] = useState<any>({
+    editDpt: userDpt,
+    editLocation: userLocation,
+  });
+  const [careerEdit, setCareerEdit] = useState<any>({
+    editCareer: userCareer,
+    editCertificate: userCertificate,
+  });
 
   // 수정상태인지 아닌지 확인하는 state
   const [edit, setEdit] = useState(true);
@@ -75,13 +78,13 @@ const MyCareer = () => {
       let response: any;
       if (careerPostState) {
         response = await Promise.all([
-          postUserEditCareer(userCareer, userCertificate),
-          postUserEditCareerInfo(),
+          editUserCareerList("post", userCareer, userCertificate),
+          editUserCareerInfo("post", infoEdit),
         ]);
       } else {
         response = await Promise.all([
-          putUserEditCareer(userCareer, userCertificate),
-          putUserEditCareerInfo(),
+          editUserCareerList("put", userCareer, userCertificate),
+          editUserCareerInfo("put", infoEdit),
         ]);
       }
       if (response.success) {
@@ -92,7 +95,6 @@ const MyCareer = () => {
         setEdit(true);
       } else {
         toast.error("서버연결 안됨!");
-        window.location.reload();
       }
     } catch (error) {
       console.log("실패 : ", error);
@@ -223,9 +225,11 @@ const MyCareer = () => {
       editDpt: userDpt,
       editLocation: userLocation,
     });
+    setCareerEdit({
+      editCareer: userCareer,
+      editCertificate: userCertificate,
+    });
   }, []);
-
-  console.log(infoEdit);
 
   return (
     <Section>

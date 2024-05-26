@@ -45,19 +45,21 @@ const MyInfo = () => {
 
   /** 로그아웃 */
   const logoutEventClick = async () => {
-    try {
-      const result: any = await logout();
-      if (result.success) {
-        localStorage.removeItem("ACCESS_TOKEN");
-        localStorage.removeItem("REFRESH_TOKEN");
-        localStorage.removeItem("memberName");
-        alert("로그아웃 되었습니다.");
-        navigate("/users/login");
-      } else {
-        alert("로그아웃 실패 (client)");
+    if (confirm("로그아웃 하시겠습니까?")) {
+      try {
+        const result: any = await logout();
+        if (result.success) {
+          localStorage.removeItem("ACCESS_TOKEN");
+          localStorage.removeItem("REFRESH_TOKEN");
+          localStorage.removeItem("memberName");
+          alert("로그아웃 되었습니다.");
+          navigate("/users/login");
+        } else {
+          alert("로그아웃 실패 (client)");
+        }
+      } catch (error) {
+        toast.error("로그아웃 실패...");
       }
-    } catch (error) {
-      toast.error("로그아웃 실패...");
     }
   };
 
