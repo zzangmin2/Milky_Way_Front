@@ -132,6 +132,8 @@ const sendUserEditInfo = async (
       memberEmail: editEmail,
       memberPhoneNum: editNumber,
     });
+
+    console.log(response);
     if (response.status === 200) {
       return { success: true };
     } else {

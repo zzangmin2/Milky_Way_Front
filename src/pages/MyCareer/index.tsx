@@ -17,7 +17,10 @@ import {
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useState, useEffect } from "react";
-import { viewMyCareer } from "../../utils/apimodule/article";
+import {
+  viewMyCareerInfo,
+  viewMyCareerList,
+} from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { userCareerStateSelector } from "../../utils/recoil/atom";
 import { putUserEditCareer } from "../../utils/apimodule/member";
@@ -101,39 +104,40 @@ const MyCareer = () => {
    */
   const userCareerData = async () => {
     try {
-      const data = await viewMyCareer();
-      const member: any = data.data.basicInfos[0].member;
-      const career: any = data.data.careers;
+      const [careerInfo, careerList] = await Promise.all([
+        viewMyCareerInfo(),
+        viewMyCareerList(),
+      ]);
+
+      const member = careerInfo.data.basicInfos[0].member;
+      const career = careerList.data.careers;
+
       console.log(member);
-      console.log(data.data);
+      console.log(careerInfo);
 
       careerValue({
         userCareer: career.careers || [],
         userCertificate: career.certifications || [],
       });
+
       userInfoValue({
-        // userName: member.memberName,
-        // userId: member.memberId,
-        // userPhoneNumber: member.memberPhoneNum,
-        // userDpt: member.memberDpt,
-        // userLocation: member.memberLocation,
-        // userUni: member.memberUniversity,
-        userName: "김태겸",
-        userId: "1",
-        userPhoneNumber: "010",
-        userDpt: "컴퓨터정보학부",
-        userLocation: "안양시",
-        userUni: "대학교",
+        userName: member.memberName,
+        userId: member.memberId,
+        userPhoneNumber: member.memberPhoneNum,
+        userDpt: member.memberDpt,
+        userLocation: member.memberLocation,
+        userUni: member.memberUniversity,
       });
+
+      if (
+        career.careers.length > 0 &&
+        career.certifications.length > 0 &&
+        Object.keys(member).length > 0
+      ) {
+        setCareerPostState(true);
+      }
     } catch (error) {
       console.error("error", error);
-    }
-    if (
-      userCareer.length > 0 &&
-      userCertificate.length > 0 &&
-      userInfoValue.length > 0
-    ) {
-      setCareerPostState(true);
     }
   };
 

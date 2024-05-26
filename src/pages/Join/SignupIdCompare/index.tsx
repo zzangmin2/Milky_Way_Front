@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "../../../components/Button";
 import {
   BottomSection,
@@ -9,24 +9,17 @@ import {
   ProgressBar,
 } from "../styles";
 import { useNavigate } from "react-router-dom";
-// import { sendUserCompareInfo } from "../../../utils/apimodule/member";
+
 import {
-  userCompareState,
   compareSuccesses,
   userCompareValues,
-  loadingStateAtom,
 } from "../../../utils/recoil/atom";
-import {
-  useSetRecoilState,
-  useRecoilValue,
-  useRecoilValueLoadable,
-} from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import SignupInput from "../../../components/SignupInput";
 import { emailSuccesses } from "../../../utils/recoil/atom";
 import ErrorPage from "../../RoutePage/ErrorPage";
 import { sendUserCompareInfo } from "../../../utils/apimodule/member";
 import { toast } from "react-toastify";
-import { loadingStateSelector } from "../../../utils/recoil/atom";
 
 const SignupIdCompare = () => {
   const emailSuccessIn = useRecoilValue(emailSuccesses);
@@ -37,9 +30,8 @@ const SignupIdCompare = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const compareSuccessIn = useSetRecoilState(compareSuccesses);
-  const loadingState = useRecoilValue(loadingStateSelector);
+
   const [compareInState, setCompareInState] = useState(false);
-  const loginex: RegExp = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/;
 
   const navigate = useNavigate();
 

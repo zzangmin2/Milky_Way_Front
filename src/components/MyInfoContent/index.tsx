@@ -4,6 +4,7 @@ import { sendUserEditInfo } from "../../utils/apimodule/member";
 import { useRecoilValue } from "recoil";
 import { userInfoStateSelector } from "../../utils/recoil/atom";
 import { UserInfo } from "../../typings/db";
+import { toast } from "react-toastify";
 
 const MyInfoContent = () => {
   const [edit, setEdit] = useState<boolean>(false);
@@ -25,12 +26,12 @@ const MyInfoContent = () => {
         editUser.editNumber
       );
 
-      if (response.data.success) {
-        alert("수정완료");
+      if (response.success) {
+        toast.success("수정완료");
         window.location.reload();
       }
     } catch (error) {
-      alert("수정실패");
+      toast.error("수정실패");
       console.error("error", error);
     }
   };

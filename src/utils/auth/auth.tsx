@@ -1,5 +1,4 @@
 import api from "../api/axiosInstance";
-import { useNavigate } from "react-router-dom";
 
 /**
  * 로그인 axios
@@ -17,7 +16,7 @@ export const loginedIn = async (loginId: string, password: string) => {
     });
 
     if (response.status === 200) {
-      console.log(response.data);
+      console.log(response);
 
       const access_token = response.data.accessToken;
       const refresh_token: any = response.data.refreshToken;
@@ -39,25 +38,15 @@ export const loginedIn = async (loginId: string, password: string) => {
 
 /**
  * 로컬스토리지에 저장된 access_token삭제 및 백에 로그아웃 요청
- * @param access_token
  * @description 추가 구성 필요 -> 리다이렉트 ?
  */
 
 export const logout = async () => {
-  const navigate = useNavigate();
   try {
-    const ACCESS_TOKEN = localStorage.getItem("ACCESS_TOKEN");
-    const response = await api.post("/logout", {
-      headers: {
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-      },
-    });
+    const response = await api.post("/logout");
+    console.log(response);
     if (response.status === 200) {
-      localStorage.removeItem("ACCESS_TOKEN");
-      localStorage.removeItem("REFRESH_TOKEN");
-      localStorage.removeItem("memberName");
-
-      navigate("/users/login");
+      return { success: true };
     } else {
       return { success: false, error: "로그아웃 실패" };
     }

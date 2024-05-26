@@ -207,12 +207,32 @@ const viewMyArticleInfo = async () => {
 };
 
 /**
- * 이력서 정보 불러오기
+ * 이력서 기본 정보 조회
  * @returns success, data
  */
-const viewMyCareer = async () => {
+const viewMyCareerInfo = async () => {
   try {
-    const response = await api.get(`/myResume`);
+    const response = await api.get(`/myResume/basicInfo`);
+    const data = response.data;
+
+    if (response.data) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
+ * 이력서 기본 정보 조회
+ * @returns success, data
+ */
+const viewMyCareerList = async () => {
+  try {
+    const response = await api.get(`/myResume/careerAndCertification`);
     const data = response.data;
 
     if (response.data) {
@@ -235,7 +255,8 @@ export {
   viewArticleApplyUserList,
   viewArticleList,
   viewMyInfo,
-  viewMyCareer,
+  viewMyCareerInfo,
   viewMyArticleInfo,
   viewMyApplyInfo,
+  viewMyCareerList,
 };
