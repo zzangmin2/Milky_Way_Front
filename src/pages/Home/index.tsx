@@ -40,18 +40,16 @@ const Home = () => {
           <HomeContentContainer>
             <div
               className="ContentButton"
-              onClick={() => navigate("/articleregister")}
+              onClick={() => navigate("/home/articlelist")}
             >
-              <div
-                className="ContentButtonIcon"
-                onClick={() => navigate("/home/articlelist")}
-              >
-                🧐
-              </div>
+              <div className="ContentButtonIcon">🧐</div>
               <p>나에게 맞는</p>
               스터디/프로젝트 <br /> 찾아보기
             </div>
-            <div className="ContentButton">
+            <div
+              className="ContentButton"
+              onClick={() => navigate("/articleregister")}
+            >
               <div className="ContentButtonIcon">✏️</div>
               <p>내가 직접</p>
               스터디/프로젝트
@@ -63,6 +61,11 @@ const Home = () => {
               className="homeBanner"
               src="/images/homeBanner.png"
               alt="밀키웨이에 대해 더 자세히 알아보세요"
+              onClick={() =>
+                window.open(
+                  "https://lush-megaraptor-085.notion.site/milkyway-fe9c98cb00c24930b54a0b4a414ca6be?pvs=4"
+                )
+              }
             />
           </HomeContentContainer>
 
