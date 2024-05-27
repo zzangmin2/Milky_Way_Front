@@ -1,5 +1,8 @@
 import { useRecoilState } from "recoil";
-import { articleDetailModalClickState } from "../../utils/recoil/atom";
+import {
+  ArticleCurrentState,
+  articleDetailModalClickState,
+} from "../../utils/recoil/atom";
 import { ArticleDetailModal } from "./styles";
 import { useEffect } from "react";
 import {
@@ -25,7 +28,9 @@ const ArticleDetailMenuModal = () => {
         const result = await editCurrentArticle(parseInt(articleId));
         if (result.success) {
           toast.success("수정 완료!");
-          navigate(`/home/articlelist`);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         } else {
           toast.error("수정 실패");
           throw new Error("수정 실패");
@@ -34,6 +39,8 @@ const ArticleDetailMenuModal = () => {
     } catch (error: any) {
       console.log(`실패: ${error.message}`);
     }
+
+    setArticleDetailModalState(false);
   };
 
   // article 삭제 눌렀을 때
@@ -54,6 +61,8 @@ const ArticleDetailMenuModal = () => {
     } catch (error: any) {
       console.log(`실패: ${error.message}`);
     }
+
+    setArticleDetailModalState(false);
   };
 
   return (

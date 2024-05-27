@@ -92,7 +92,7 @@ export const ArticleInfoSummaryWrap = styled.div`
     font-size: 0.85rem;
     line-height: 0.85rem;
   }
-  > div.articleInfoSummary > div.articleRecruiter > p:nth-child(1)::after {
+  /* > div.articleInfoSummary > div.articleRecruiter > p:nth-child(1)::after {
     display: inline-block;
     content: "";
     width: 1px;
@@ -100,7 +100,7 @@ export const ArticleInfoSummaryWrap = styled.div`
     background-color: black;
     margin-left: 5px;
     margin-right: 5px;
-  }
+  } */
   > div.articleInfoSummary > div.articleState > div {
     margin-right: 16px;
   }

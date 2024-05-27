@@ -173,7 +173,7 @@ export const userCareerStateSelector = selector<UserCareerState>({
 });
 
 /**
- * 이력서 내에 유저 정보atom
+ * 이력서 내에 유저 정보 atom
  */
 export const userCareerUserInfoState = atom<UserCareerInfo>({
   key: "userCareerUserInfostate",
@@ -232,8 +232,8 @@ export const ArticleCardCurrentState = atom({
   key: "articleCurrentState",
   default: {
     articleId: 0,
-    articleMemberId: "",
-    //articleMemberName 필요
+    articleMemberNo: 0,
+    articleMemberName: "",
     articleType: "",
     articleRecruitmentState: true,
     articleTitle: "",
