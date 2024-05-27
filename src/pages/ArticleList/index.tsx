@@ -92,7 +92,6 @@ const ArticleList = () => {
       }
     } catch (error: any) {
       console.log(`다시 시도해주세요: ${error.message}`);
-      window.location.reload();
     } finally {
       setLoading(false);
     }

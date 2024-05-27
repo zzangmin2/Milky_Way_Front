@@ -73,10 +73,10 @@ const ArticleInfoCard: FC<Props> = ({
         <StudyInfoWrap>
           <h4>{articleTitle}</h4>
           {cardType === "main" ? (
-            <p>
+            <div>
               {articleContent}
               <div />
-            </p>
+            </div>
           ) : (
             ""
           )}
