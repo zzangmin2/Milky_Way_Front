@@ -111,10 +111,8 @@ const sendUserInfo = async (
 };
 
 /**
- * mypage에서 유저 이메일/닉네임/이름/커리어카드/전화번호 수정
+ * mypage에서 유저 이메일/이름/전화번호 수정
  * @param name
- * @param nickName
- * @param careerCard
  * @param userEmail
  * @param phoneNumber
  * @type {string | number} 이름 / 학과 / 전화번호
@@ -132,6 +130,59 @@ const sendUserEditInfo = async (
       memberEmail: editEmail,
       memberPhoneNum: editNumber,
     });
+
+    const access_token = response.data.accessToken;
+    const refresh_Token = response.data.refreshToken;
+    const memberName = response.data.memberName;
+    console.log(response);
+
+    if (response.status === 200) {
+      localStorage.removeItem("ACCESS_TOKEN");
+      localStorage.removeItem("REFRESH_TOKEN");
+      localStorage.removeItem("memberName");
+
+      localStorage.setItem("ACCESS_TOKEN", access_token);
+      localStorage.setItem("REFRESH_TOKEN", refresh_Token);
+      localStorage.setItem("memberName", memberName);
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
+ * 이력서에서 유저 경력, 자격증 수정
+ * @param {string} method 'put' 또는 'post'
+ * @param {any} userCareer 유저의 커리어 정보
+ * @param {any} userCertificate 유저의 자격증 정보
+ */
+const editUserCareerList = async (
+  method: string,
+  userCareer: any,
+  userCertificate: any
+) => {
+  try {
+    let response;
+    if (method === "post") {
+      response = await api.post(
+        `/member/update/profile`,
+        userCareer,
+        userCertificate
+      );
+    } else if (method === "put") {
+      response = await api.put(
+        `/member/modify/profile`,
+        userCareer,
+        userCertificate
+      );
+    } else {
+      throw new Error();
+    }
+
     if (response.status === 200) {
       return { success: true };
     } else {
@@ -144,58 +195,43 @@ const sendUserEditInfo = async (
 };
 
 /**
- * mypage에서 유저 이메일/닉네임/이름/커리어카드/전화번호 수정
- * @param userName
- * @param userCareer
- * @param userCertificate
- * @param userLineText
- * @type {string | number} 이름 / 학과 / 전화번호
- * @returns {Promise<{ success: boolean, error?: string }>}
+ * 이력서에서 유저정보 수정
+ * @param {string} method 'put' 또는 'post'
+ * @param {any} infoEdit
  */
-const putUserEditCareer = async (userCareer: any, userCertificate: any) => {
+const editUserCareerInfo = async (
+  method: string,
+  userName: string,
+  userId: any,
+  userDpt: string,
+  userPhoneNumber: number,
+  userLocation: any,
+  userLineText: string
+) => {
   try {
-    const response = await api.put(`/member/modify/profile`, {
-      // careers: careerData.userCareer.map((career: any) => ({
-      //   carName: career.careerCompany,
-      //   carStartDay: career.careerFirstDate,
-      //   carEndDay: career.careerLastDate,
-      // })),
-      carName: userCareer.carName,
-      carStartDay: userCareer.carStartDay,
-      carEndDay: userCareer.carEndDay,
-      certName: userCertificate.certName,
-      cerDate: userCertificate.certDate,
-    });
-
-    if (response.status === 200) {
-      return { success: true };
+    let response;
+    if (method === "post") {
+      response = await api.post(`/member/update/info`, {
+        userName,
+        userId,
+        userDpt,
+        userPhoneNumber,
+        userLocation,
+        userLineText,
+      });
+    } else if (method === "put") {
+      response = await api.put(`/member/modify/info`, {
+        userName,
+        userId,
+        userDpt,
+        userPhoneNumber,
+        userLocation,
+        userLineText,
+      });
     } else {
-      return { success: false };
+      throw new Error();
     }
-  } catch (error) {
-    console.error("error:", error);
-    return { success: false, error: "error" };
-  }
-};
 
-const postUserEditCareer = async (userCareer: any, userCertificate: any) => {
-  try {
-    const response = await api.post(`/member/update/profile`, {
-      // careers: careerData.userCareer.map((career: any) => ({
-      //   carName: career.careerCompany,
-      //   carStartDay: career.careerFirstDate,
-      //   carEndDay: career.careerLastDate,
-      // })),
-      carName: userCareer.carName,
-      carStartDay: userCareer.carStartDay,
-      carEndDay: userCareer.carEndDay,
-      certName: userCertificate.certName,
-      cerDate: userCertificate.certDate,
-    });
-
-    console.log(response);
-
-    console.log(response.data);
     if (response.status === 200) {
       return { success: true };
     } else {
@@ -203,32 +239,7 @@ const postUserEditCareer = async (userCareer: any, userCertificate: any) => {
     }
   } catch (error) {
     console.log(`${error}`);
-  }
-};
-
-const postUserEditCareerInfo = async () => {
-  try {
-    const response = await api.post(`/member/update/info`, {});
-    if (response.status === 200) {
-      return { success: true };
-    } else {
-      return { success: false };
-    }
-  } catch (error) {
-    console.log(`${error}`);
-  }
-};
-
-const putUserEditCareerInfo = async () => {
-  try {
-    const response = await api.put(`/member/modify/info`, {});
-    if (response.status === 200) {
-      return { success: true };
-    } else {
-      return { success: false };
-    }
-  } catch (error) {
-    console.log(`${error}`);
+    return { success: false };
   }
 };
 
@@ -238,8 +249,6 @@ export {
   sendUserInfo,
   // sendEmailVerify,
   sendUserEditInfo,
-  putUserEditCareer,
-  postUserEditCareer,
-  postUserEditCareerInfo,
-  putUserEditCareerInfo,
+  editUserCareerList,
+  editUserCareerInfo,
 };
