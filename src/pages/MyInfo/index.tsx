@@ -24,8 +24,11 @@ import { logout } from "../../utils/auth/auth";
 import { toast } from "react-toastify";
 import MyInfoContent from "../../components/MyInfoContent";
 import InfoBottomTabTable from "../../components/InfoBottomTabTable";
+import { useNavigate } from "react-router-dom";
 
 const MyInfo = () => {
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState<string>("article");
 
   /** 유저 데이터 정보 */
@@ -42,15 +45,21 @@ const MyInfo = () => {
 
   /** 로그아웃 */
   const logoutEventClick = async () => {
-    try {
-      const result: any = await logout();
-      if (result.success) {
-        alert("로그아웃 되었습니다.");
-      } else {
-        alert("로그아웃 실패 (client)");
+    if (confirm("로그아웃 하시겠습니까?")) {
+      try {
+        const result: any = await logout();
+        if (result.success) {
+          localStorage.removeItem("ACCESS_TOKEN");
+          localStorage.removeItem("REFRESH_TOKEN");
+          localStorage.removeItem("memberName");
+          alert("로그아웃 되었습니다.");
+          navigate("/users/login");
+        } else {
+          alert("로그아웃 실패 (client)");
+        }
+      } catch (error) {
+        toast.error("로그아웃 실패...");
       }
-    } catch (error) {
-      toast.error("로그아웃 실패...");
     }
   };
 
@@ -73,6 +82,7 @@ const MyInfo = () => {
         userNumber: member.memberPhoneNum,
       });
     } catch (error) {
+      toast.error("데이터를 불러오는 중에 오류가 발생했습니다.");
       console.error("error", error);
     }
   };

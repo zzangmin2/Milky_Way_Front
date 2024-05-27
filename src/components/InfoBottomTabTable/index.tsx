@@ -18,8 +18,6 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const visibleCards = articleCard.slice(startIndex, endIndex);
-  console.log(applyGrid);
-  console.log(visibleCards);
 
   /** 모달 오픈, 오픈채팅방 링크 넘기기 등 */
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -32,7 +30,7 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
         navigateRoute={`/articledetail/${card.cardArticle_no}`}
         articleMentorNeeded={card.cardFindMentor}
         articleStartDay={card.cardStartDay.slice(0, -9)}
-        articleLikes={card.cafdLikes}
+        articleLikes={card.cardLikes}
         articleRecruitmentState={card.cardRecruit}
         articleTitle={card.cardTitle}
         articleType={card.cardArticleType}
@@ -164,7 +162,6 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
                 >
                   다음
                 </button>
-                <p>{page}</p>
               </ArticleCardPageCount>
             </ArticleInfoCardWrap>
           </section>

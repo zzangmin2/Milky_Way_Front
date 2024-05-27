@@ -1,5 +1,9 @@
 import { lazy, useEffect } from "react";
-import { createBrowserRouter, useNavigate } from "react-router-dom";
+import {
+  createBrowserRouter,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import Loading from "../pages/RoutePage/Loading";
 import SignupEmail from "../pages/Join/SignupEmail";
 import SignupIdCompare from "../pages/Join/SignupIdCompare";
@@ -18,19 +22,23 @@ const ArticleRegisterPage = lazy(() => import("../pages/ArticleRegister"));
 
 const CheckAuth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const accessToken = localStorage.getItem("ACCESS_TOKEN");
-    if (accessToken && window.location.pathname === "/") {
-      navigate("/home");
-    } else if (!accessToken && window.location.pathname === "/") {
-      navigate("/users/login");
+
+    if (
+      location.pathname === "/users/login" ||
+      location.pathname === "/users/signupemail"
+    ) {
+      if (accessToken) {
+        navigate("/home");
+      }
     }
-  }, [navigate]);
+  }, [location, navigate]);
 
   return <>{children}</>;
 };
-
 const router = createBrowserRouter([
   {
     path: "/",

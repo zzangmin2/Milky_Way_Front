@@ -1,47 +1,37 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TopSection, InfoTitle, InfoContent } from "../../pages/MyInfo/style";
 import { sendUserEditInfo } from "../../utils/apimodule/member";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { userInfoStateSelector } from "../../utils/recoil/atom";
-import { UserInfo } from "../../typings/db";
+import { toast } from "react-toastify";
 
 const MyInfoContent = () => {
   const [edit, setEdit] = useState<boolean>(false);
+
+  const [userInfoState, setUserInfoState] = useRecoilState(
+    userInfoStateSelector
+  );
+
   const { userName, userNumber, userEmail } = useRecoilValue(
     userInfoStateSelector
   );
 
-  const [editUser, setEditUser] = useState<UserInfo>({
-    editName: userName,
-    editEmail: userEmail,
-    editNumber: userNumber,
-  });
-
   const sendClickEdit = async () => {
     try {
       const response: any = await sendUserEditInfo(
-        editUser.editName,
-        editUser.editEmail,
-        editUser.editNumber
+        userName,
+        userNumber,
+        userEmail
       );
 
-      if (response.data.success) {
-        alert("수정완료");
-        window.location.reload();
+      if (response.success) {
+        toast.success("내정보 수정이 성공하였습니다.");
       }
     } catch (error) {
-      alert("수정실패");
+      toast.error("수정실패");
       console.error("error", error);
     }
   };
-
-  useEffect(() => {
-    setEditUser({
-      editName: userName,
-      editEmail: userEmail,
-      editNumber: userNumber,
-    });
-  }, [userName, userEmail, userNumber]);
 
   return (
     <>
@@ -74,11 +64,11 @@ const MyInfoContent = () => {
               <input
                 type="text"
                 placeholder={userEmail}
-                value={editUser.editEmail || ""}
+                value={userInfoState.userEmail || ""}
                 onChange={(e) => {
-                  setEditUser({
-                    ...editUser,
-                    editEmail: e.target.value,
+                  setUserInfoState({
+                    ...userInfoState,
+                    userEmail: e.target.value,
                   });
                 }}
               />
@@ -94,11 +84,11 @@ const MyInfoContent = () => {
               <input
                 type="text"
                 placeholder={userName}
-                value={editUser.editName || ""}
+                value={userInfoState.userName || ""}
                 onChange={(e) => {
-                  setEditUser({
-                    ...editUser,
-                    editName: e.target.value,
+                  setUserInfoState({
+                    ...userInfoState,
+                    userName: e.target.value,
                   });
                 }}
               />
@@ -114,10 +104,10 @@ const MyInfoContent = () => {
               <input
                 type="text"
                 placeholder={userNumber}
-                value={editUser.editNumber || ""}
+                value={userInfoState.userNumber || ""}
                 onChange={(e) => {
-                  setEditUser({
-                    ...editUser,
+                  setUserInfoState({
+                    ...userInfoState,
                     editNumber: e.target.value,
                   });
                 }}

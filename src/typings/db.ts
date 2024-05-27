@@ -45,3 +45,22 @@ export interface ArticleCard {
     status: string;
   }[];
 }
+
+export interface BottomTableProps {
+  articleApplyState: any[];
+  type: string;
+}
+
+export interface UserInfo {
+  editName?: any;
+  editEmail?: any;
+  editNumber?: any;
+}
+
+export interface ModalProps {
+  show: boolean;
+  handleClose: () => void;
+  children?: React.ReactNode;
+  modalType: any; // 추가한 type
+  additionalInfo?: any; // 추가
+}

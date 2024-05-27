@@ -17,6 +17,7 @@ interface UserCareerState {
 }
 
 interface UserCareerInfo {
+  userLineText: string;
   userDpt?: string;
   userLocation?: string;
 }
@@ -180,6 +181,7 @@ export const userCareerUserInfoState = atom<UserCareerInfo>({
   default: {
     userDpt: "",
     userLocation: "",
+    userLineText: "",
   },
 });
 

@@ -1,12 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BottomSection, TopSection } from "./styles";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 import { loginedIn } from "../../utils/auth/auth";
-import { loadingStateAtom } from "../../utils/recoil/atom";
 import { toast } from "react-toastify";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { loadingStateSelector } from "../../utils/recoil/atom";
 
 const LogIn = () => {
