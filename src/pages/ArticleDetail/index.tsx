@@ -36,7 +36,8 @@ import { ArticleApplyState } from "../../typings/db";
 
 const ArticleDetail = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [loading, setLoading] = useRecoilState(loadingStateAtom);
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   const openModalMemberCareer = () => {
@@ -81,7 +82,8 @@ const ArticleDetail = () => {
         if (result) {
           const newResult = {
             articleId: result.article_no,
-            articleMemberId: result.member.memberId,
+            articleMemberNo: result.member.applyMemberNo,
+            articleMemberName: result.member.applyMemberName,
             articleType: result.articleType,
             articleTitle: result.title,
             articleContent: result.content,
@@ -90,39 +92,20 @@ const ArticleDetail = () => {
             articleApplyNow: result.applyNow,
             articleStartDay: result.startDay,
             articleEndDay: result.endDay,
-            articleRecruitmentState: result.recurit,
+            articleRecruitmentState: result.recruit,
             articleMentorNeeded: result.findMentor,
             articleMentorTag: result.metorTag,
-            articleApplyState: [
-              {
-                id: 1,
-                applicantName: "김복이",
-                applicationDate: "2024-01-22",
-                status: "선정",
-              },
-              {
-                id: 2,
-                applicantName: "김마니",
-                applicationDate: "2024-01-29",
-                status: "신청",
-              },
-              {
-                id: 3,
-                applicantName: "김정민",
-                applicationDate: "2024-01-25",
-                status: "반려",
-              },
-            ],
           };
           console.log(newResult);
           setArticleCurrentState(newResult);
+          setLoading(false);
         } else {
           throw result;
         }
       }
     } catch (error: any) {
       console.log(`다시 시도해주세요: ${error.message}`);
-      setLoading(true);
+      setLoading(false);
       toast.error("정보를 불러오는 중에\n 오류가 발생했습니다", {
         onClose: () => navigate(-1),
       });
@@ -134,6 +117,8 @@ const ArticleDetail = () => {
     try {
       if (articleCurrentState && articleCurrentState.articleRecruitmentState) {
         await sendArticleApplyUser(articleCurrentState.articleId);
+        toast.success("지원 성공!");
+        await articleApplyUserList();
       } else {
         toast.error("모집이 완료된 게시물입니다.");
       }
@@ -202,8 +187,7 @@ const ArticleDetail = () => {
                   <div className="articleInfoSummary">
                     <h3>{articleCurrentState.articleTitle}</h3>
                     <div className="articleRecruiter">
-                      <p>컴퓨터정보학부</p>
-                      <p>{articleCurrentState.articleMemberId}</p>
+                      <p>{articleCurrentState.articleMemberName}</p>
                     </div>
                     <div className="articleState">
                       <div>
@@ -248,11 +232,15 @@ const ArticleDetail = () => {
               {articleDetailIntroOrQnaState === "intro" ? (
                 <>
                   <ArticleIntrowrap>
-                    {articleCurrentState.articleMentorTag.length >= 1 && (
-                      <p className="mentorTagTitle">우리에게 필요한 멘토는?</p>
-                    )}
+                    {articleCurrentState.articleMentorTag &&
+                      articleCurrentState.articleMentorTag.length >= 1 && (
+                        <p className="mentorTagTitle">
+                          우리에게 필요한 멘토는?
+                        </p>
+                      )}
                     <div className="mentorTagWrapper">
-                      {articleCurrentState.articleMentorTag.length >= 1 &&
+                      {articleCurrentState.articleMentorTag &&
+                        articleCurrentState.articleMentorTag.length >= 1 &&
                         articleCurrentState.articleMentorTag
                           .split("#")
                           .filter((tag) => tag !== "")
