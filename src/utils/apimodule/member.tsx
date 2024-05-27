@@ -111,10 +111,8 @@ const sendUserInfo = async (
 };
 
 /**
- * mypage에서 유저 이메일/닉네임/이름/커리어카드/전화번호 수정
+ * mypage에서 유저 이메일/이름/전화번호 수정
  * @param name
- * @param nickName
- * @param careerCard
  * @param userEmail
  * @param phoneNumber
  * @type {string | number} 이름 / 학과 / 전화번호
@@ -133,8 +131,19 @@ const sendUserEditInfo = async (
       memberPhoneNum: editNumber,
     });
 
+    const access_token = response.data.accessToken;
+    const refresh_Token = response.data.refreshToken;
+    const memberName = response.data.memberName;
     console.log(response);
+
     if (response.status === 200) {
+      localStorage.removeItem("ACCESS_TOKEN");
+      localStorage.removeItem("REFRESH_TOKEN");
+      localStorage.removeItem("memberName");
+
+      localStorage.setItem("ACCESS_TOKEN", access_token);
+      localStorage.setItem("REFRESH_TOKEN", refresh_Token);
+      localStorage.setItem("memberName", memberName);
       return { success: true };
     } else {
       return { success: false };
@@ -190,13 +199,35 @@ const editUserCareerList = async (
  * @param {string} method 'put' 또는 'post'
  * @param {any} infoEdit
  */
-const editUserCareerInfo = async (method: string, infoEdit: any) => {
+const editUserCareerInfo = async (
+  method: string,
+  userName: string,
+  userId: any,
+  userDpt: string,
+  userPhoneNumber: number,
+  userLocation: any,
+  userLineText: string
+) => {
   try {
     let response;
     if (method === "post") {
-      response = await api.post(`/member/update/info`, infoEdit);
+      response = await api.post(`/member/update/info`, {
+        userName,
+        userId,
+        userDpt,
+        userPhoneNumber,
+        userLocation,
+        userLineText,
+      });
     } else if (method === "put") {
-      response = await api.put(`/member/modify/info`, infoEdit);
+      response = await api.put(`/member/modify/info`, {
+        userName,
+        userId,
+        userDpt,
+        userPhoneNumber,
+        userLocation,
+        userLineText,
+      });
     } else {
       throw new Error();
     }

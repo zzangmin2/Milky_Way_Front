@@ -16,12 +16,12 @@ import {
 } from "./style";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Key } from "react";
 import {
   viewMyCareerInfo,
   viewMyCareerList,
 } from "../../utils/apimodule/article";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { userCareerStateSelector } from "../../utils/recoil/atom";
 import { editUserCareerList } from "../../utils/apimodule/member";
 import { editUserCareerInfo } from "../../utils/apimodule/member";
@@ -30,80 +30,75 @@ import { validateCareer } from "../../utils/validations/validation";
 import { toast } from "react-toastify";
 
 const MyCareer = () => {
-  // 커리어 상태값 리코일아톰사용 careervalue = recoil set사용 / careerdata = recoil value사용
-  const careerValue: any = useSetRecoilState(userCareerStateSelector);
-  const userInfoValue: any = useSetRecoilState(userCareerUserInfoStateSelector);
-
-  /**
-   * 최초 데이터 받아올때 career가 빈 값인지 아닌지를 가리키는 state
-   */
+  const setCareerValue = useSetRecoilState(userCareerStateSelector);
+  const [userInfoValue, setUserInfoValue] = useRecoilState<any>(
+    userCareerUserInfoStateSelector
+  );
   const [careerPostState, setCareerPostState] = useState(false);
-
-  //구조분해 할당
-  const { userName, userId, userDpt, userPhoneNumber, userLocation }: any =
-    useRecoilValue(userCareerUserInfoStateSelector);
-
-  //구조분해 할당
   const {
-    userCareer = [],
-    userCertificate = [],
+    userName,
+    userId,
+    userDpt,
+    userPhoneNumber,
+    userLocation,
     userLineText,
-  }: any = useRecoilValue(userCareerStateSelector);
-
-  const [infoEdit, setInfoEdit] = useState<any>({
-    editDpt: userDpt,
-    editLocation: userLocation,
-  });
-  const [careerEdit, setCareerEdit] = useState<any>({
-    editCareer: userCareer,
-    editCertificate: userCertificate,
-  });
-
-  // 수정상태인지 아닌지 확인하는 state
+  } = useRecoilValue<any>(userCareerUserInfoStateSelector);
+  const { userCareer, userCertificate } = useRecoilValue(
+    userCareerStateSelector
+  );
   const [edit, setEdit] = useState(true);
+
   const clickEdit = () => {
     setEdit(false);
   };
 
-  /**
-   * 유효성 검사 후에 수정된 이력서 데이터 article api module을 거쳐서 백엔드로 전송
-   * @returns
-   */
   const sendCareerEdit = async () => {
-    console.log(infoEdit);
     try {
       if (!validateCareer(userCareer, userCertificate)) {
         return;
       }
-      let response: any;
+      let response;
+
       if (careerPostState) {
         response = await Promise.all([
           editUserCareerList("post", userCareer, userCertificate),
-          editUserCareerInfo("post", infoEdit),
+          editUserCareerInfo(
+            "post",
+            userName,
+            userId,
+            userDpt,
+            userPhoneNumber,
+            userLocation,
+            userLineText
+          ),
         ]);
       } else {
         response = await Promise.all([
           editUserCareerList("put", userCareer, userCertificate),
-          editUserCareerInfo("put", infoEdit),
+          editUserCareerInfo(
+            "put",
+            userName,
+            userId,
+            userDpt,
+            userPhoneNumber,
+            userLocation,
+            userLineText
+          ),
         ]);
       }
-      if (response.success) {
-        window.location.reload();
-        console.log(careerValue);
-        toast.error("이력서 수정이 완료되었습니다!");
-
+      if (response[0].success && response[1].success) {
+        toast.success("이력서 수정이 완료되었습니다!");
         setEdit(true);
+        window.location.reload();
       } else {
         toast.error("서버연결 안됨!");
       }
     } catch (error) {
       console.log("실패 : ", error);
+      toast.error("이력서 수정에 실패했습니다!");
     }
   };
 
-  /**
-   * 초기 유저데이터 담아와 usesetrecoil인 careervalue에 값 넣기
-   */
   const userCareerData = async () => {
     try {
       const [careerInfo, careerList] = await Promise.all([
@@ -114,21 +109,18 @@ const MyCareer = () => {
       const member = careerInfo.data.basicInfos[0].member;
       const career = careerList.data.careers;
 
-      console.log(member);
-      console.log(careerInfo);
-
-      careerValue({
+      setCareerValue({
         userCareer: career.careers || [],
         userCertificate: career.certifications || [],
       });
 
-      userInfoValue({
+      setUserInfoValue({
         userName: member.memberName,
         userId: member.memberId,
         userPhoneNumber: member.memberPhoneNum,
         userDpt: member.memberDpt,
         userLocation: member.memberLocation,
-        userUni: member.memberUniversity,
+        userLineText: member.memberLineText,
       });
 
       if (
@@ -143,59 +135,37 @@ const MyCareer = () => {
     }
   };
 
-  console.log(userName);
-
-  /**
-   * 경력 추가버튼시 추가 input창 활성화
-   */
   const addCareerInput = () => {
-    try {
-      careerValue((prev: { userCareer: any }) => ({
-        ...prev,
-        userCareer: [
-          ...prev.userCareer,
-          {
-            id: prev.userCareer.length + 1,
-            carName: "",
-            carStartDay: "",
-            carEndDay: "",
-          },
-        ],
-      }));
-    } catch (error: any) {
-      toast.error("경력 추가 실패");
-      throw error;
-    }
+    setCareerValue((prev) => ({
+      ...prev,
+      userCareer: [
+        ...prev.userCareer,
+        {
+          id: Date.now(),
+          carName: "",
+          carStartDay: "",
+          carEndDay: "",
+        },
+      ],
+    }));
   };
 
-  /**
-   * 자격증 추가버튼시 추가 certificate창 활성화
-   */
   const addCertificateInput = () => {
-    try {
-      careerValue((prev: { userCertificate: any[] }) => ({
-        ...prev,
-        userCertificate: [
-          ...prev.userCertificate,
-          {
-            id: prev.userCertificate.length + 1,
-            certName: "",
-            certDate: "",
-          },
-        ],
-      }));
-    } catch (errror) {
-      toast.error("자격증 추가 실패!");
-      throw errror;
-    }
+    setCareerValue((prev) => ({
+      ...prev,
+      userCertificate: [
+        ...prev.userCertificate,
+        {
+          id: Date.now(),
+          certName: "",
+          certDate: "",
+        },
+      ],
+    }));
   };
 
-  /**
-   * id에 맞는 certificate지움
-   * @param certificateId
-   */
   const deleteCertificate = (certificateId: any) => {
-    careerValue((prev: any) => ({
+    setCareerValue((prev) => ({
       ...prev,
       userCertificate: prev.userCertificate.filter(
         (certificate: any) => certificate.id !== certificateId
@@ -203,12 +173,8 @@ const MyCareer = () => {
     }));
   };
 
-  /**
-   * id에 맞는 career지움
-   * @param careerId
-   */
   const deleteCareer = (careerId: any) => {
-    careerValue((prev: any) => ({
+    setCareerValue((prev) => ({
       ...prev,
       userCareer: prev.userCareer.filter(
         (career: any) => career.id !== careerId
@@ -216,19 +182,8 @@ const MyCareer = () => {
     }));
   };
 
-  /**
-   * 페이지가 마운트될때 유저데이터 불러옴
-   */
   useEffect(() => {
     userCareerData();
-    setInfoEdit({
-      editDpt: userDpt,
-      editLocation: userLocation,
-    });
-    setCareerEdit({
-      editCareer: userCareer,
-      editCertificate: userCertificate,
-    });
   }, []);
 
   return (
@@ -276,33 +231,51 @@ const MyCareer = () => {
                   : "등록된 전화번호가 없습니다."}
               </div>
               {userDpt ? (
-                <input placeholder={userDpt} />
+                <input
+                  placeholder={userDpt}
+                  value={userInfoValue.userDpt}
+                  onChange={(e) => {
+                    setUserInfoValue({
+                      ...userInfoValue,
+                      userDpt: e.target.value,
+                    });
+                  }}
+                />
               ) : (
                 <>
                   <input
                     type="text"
-                    placeholder={userDpt || "학과를 입력해주세요"}
-                    value={infoEdit.editDpt}
+                    placeholder="학과를 입력해주세요"
+                    value={userInfoValue.userDpt}
                     onChange={(e) => {
-                      setInfoEdit({
-                        ...setInfoEdit,
-                        editDpt: e.target.value,
+                      setUserInfoValue({
+                        ...userInfoValue,
+                        userDpt: e.target.value,
                       });
                     }}
                   />
                 </>
               )}
               {userLocation ? (
-                <input placeholder={userLocation} />
+                <input
+                  placeholder={userLocation}
+                  value={userInfoValue.userLocation}
+                  onChange={(e) => {
+                    setUserInfoValue({
+                      ...userInfoValue,
+                      userLocation: e.target.value,
+                    });
+                  }}
+                />
               ) : (
                 <>
                   <input
-                    placeholder={userLocation || "지역을 입력해주세요"}
-                    value={infoEdit.editLocation}
+                    placeholder="지역을 입력해주세요"
+                    value={userInfoValue.userLocation}
                     onChange={(e) => {
-                      setInfoEdit({
-                        ...setInfoEdit,
-                        editLocation: e.target.value,
+                      setUserInfoValue({
+                        ...userInfoValue,
+                        userLocation: e.target.value,
                       });
                     }}
                   />
@@ -345,7 +318,7 @@ const MyCareer = () => {
                     placeholder="회사명"
                     value={career.carName}
                     onChange={(e) =>
-                      careerValue((prev: any) => ({
+                      setCareerValue((prev) => ({
                         ...prev,
                         userCareer: prev.userCareer.map((item: any) =>
                           item.id === career.id
@@ -362,7 +335,7 @@ const MyCareer = () => {
                     type="date"
                     value={career.carStartDay}
                     onChange={(e) =>
-                      careerValue((prev: any) => ({
+                      setCareerValue((prev) => ({
                         ...prev,
                         userCareer: prev.userCareer.map((item: any) =>
                           item.id === career.id
@@ -376,7 +349,7 @@ const MyCareer = () => {
                     type="date"
                     value={career.carEndDay}
                     onChange={(e) =>
-                      careerValue((prev: any) => ({
+                      setCareerValue((prev) => ({
                         ...prev,
                         userCareer: prev.userCareer.map((item: any) =>
                           item.id === career.id
@@ -410,8 +383,8 @@ const MyCareer = () => {
               {userCertificate.length > 0 ? (
                 userCertificate.map((certificate: any) => (
                   <InfoContentText key={certificate.id}>
-                    <div>{certificate.certificateName}</div>
-                    <div>{certificate.certificateDate}</div>
+                    <div>{certificate.certName}</div>
+                    <div>{certificate.certDate}</div>
                   </InfoContentText>
                 ))
               ) : (
@@ -429,13 +402,13 @@ const MyCareer = () => {
                   <input
                     type="text"
                     placeholder="자격증 이름"
-                    value={certificate.certificateName}
+                    value={certificate.certName}
                     onChange={(e) =>
-                      careerValue((prev: any) => ({
+                      setCareerValue((prev) => ({
                         ...prev,
                         userCertificate: prev.userCertificate.map((item: any) =>
                           item.id === certificate.id
-                            ? { ...item, certificateName: e.target.value }
+                            ? { ...item, certName: e.target.value }
                             : item
                         ),
                       }))
@@ -444,13 +417,13 @@ const MyCareer = () => {
 
                   <input
                     type="date"
-                    value={certificate.certificateDate}
+                    value={certificate.certDate}
                     onChange={(e) =>
-                      careerValue((prev: any) => ({
+                      setCareerValue((prev) => ({
                         ...prev,
                         userCertificate: prev.userCertificate.map((item: any) =>
                           item.id === certificate.id
-                            ? { ...item, certificateDate: e.target.value }
+                            ? { ...item, certDate: e.target.value }
                             : item
                         ),
                       }))
@@ -487,10 +460,10 @@ const MyCareer = () => {
               <InfoContentLineText>
                 <Input
                   placeholder="한줄소개를 입력하세요"
-                  value={userLineText}
+                  value={userInfoValue.userLineText}
                   setValue={(newValue) =>
-                    careerValue((prev: any) => ({
-                      ...prev,
+                    setUserInfoValue((prevInfoEdit: any) => ({
+                      ...prevInfoEdit,
                       userLineText: newValue,
                     }))
                   }
