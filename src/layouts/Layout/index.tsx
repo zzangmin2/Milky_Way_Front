@@ -10,8 +10,9 @@ import {
   faEllipsisVertical,
 } from "@fortawesome/free-solid-svg-icons";
 import { FC, useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
+  ArticleDetailAuthorState,
   articleDetailModalClickState,
   navState,
 } from "../../utils/recoil/atom";
@@ -48,6 +49,9 @@ const Layout: FC<Props> = ({ type }) => {
     }
   }, [location.pathname]);
 
+  //현재 로그인 된 사용자가 작성한 게시물인지 판별 상태
+  const articleDetailAuthorState = useRecoilValue(ArticleDetailAuthorState);
+
   return (
     <>
       <NavigationLayout>
@@ -60,7 +64,7 @@ const Layout: FC<Props> = ({ type }) => {
           )}
 
           {/* 게시물 상세 페이지인 경우 -> 메뉴 버튼 / 나머지 -> 마이페이지 버튼*/}
-          {type === "articleDetail" ? (
+          {type === "articleDetail" && articleDetailAuthorState ? (
             <FontAwesomeIcon
               icon={faEllipsisVertical}
               onClick={() =>

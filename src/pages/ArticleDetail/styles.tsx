@@ -188,10 +188,12 @@ export const ArticleApplyStateWrap = styled.section`
   margin-bottom: 100px;
   width: 100%;
 `;
+
 export const ArticleApplyStateTableWrap = styled.div`
   display: grid;
   width: 100%;
-  grid-template-rows: repeat(4, 1fr);
+  height: 100%;
+  /* grid-template-rows: repeat(4, 1fr); */
   font-size: 0.9rem;
 
   div.tableRow {
@@ -211,8 +213,9 @@ export const ArticleApplyStateTableWrap = styled.div`
     text-align: center;
   }
 
-  div.noApplicantMessage {
+  div.applicantMessage {
     text-align: center;
+    margin: 0 auto;
     padding: 20px;
   }
 `;

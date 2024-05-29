@@ -17,8 +17,8 @@ import { useRecoilState } from "recoil";
 import {
   ArticleApplyUserListState,
   ArticleCurrentState,
+  ArticleDetailAuthorState,
   ArticleDetailIntroOrQnaTabState,
-  loadingStateAtom,
 } from "../../utils/recoil/atom";
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { useNavigate, useParams } from "react-router-dom";
@@ -37,16 +37,19 @@ import { ArticleApplyState } from "../../typings/db";
 const ArticleDetail = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-
   const navigate = useNavigate();
 
-  const openModalMemberCareer = () => {
-    setModalOpen(true);
+  // const openModalMemberCareer = () => {
+  //   setModalOpen(true);
+  // };
+
+  const handleModalState = () => {
+    setModalOpen(!modalOpen);
   };
 
-  const handleModalClose = () => {
-    setModalOpen(false);
-  };
+  //현재 로그인 된 사용자가 작성한 게시물인지 판별 상태
+  const [articleDetailAuthorState, setArticleDetailAuthorState] =
+    useRecoilState(ArticleDetailAuthorState);
 
   // 현재 페이지에서 보여주고 있는 article 데이터
   const [articleCurrentState, setArticleCurrentState] =
@@ -67,6 +70,7 @@ const ArticleDetail = () => {
     loadCurrentArticle();
   }, []);
 
+  // 지원 리스트 상태 변경 될 때마다 새로 불러옴
   useEffect(() => {
     if (articleCurrentState && articleCurrentState.articleId) {
       articleApplyUserList();
@@ -78,12 +82,12 @@ const ArticleDetail = () => {
     try {
       if (articleId) {
         const result = await viewCurrentArticle(parseInt(articleId));
-        console.log(result);
+
         if (result) {
           const newResult = {
             articleId: result.article_no,
-            articleMemberNo: result.member.applyMemberNo,
-            articleMemberName: result.member.applyMemberName,
+            articleMemberNo: result.member.memberNo,
+            articleMemberName: result.member.memberName,
             articleType: result.articleType,
             articleTitle: result.title,
             articleContent: result.content,
@@ -94,10 +98,12 @@ const ArticleDetail = () => {
             articleEndDay: result.endDay,
             articleRecruitmentState: result.recruit,
             articleMentorNeeded: result.findMentor,
-            articleMentorTag: result.metorTag,
+            articleMentorTag: result.mentorTag,
+            isAuthor: result.isAuthor,
           };
           console.log(newResult);
           setArticleCurrentState(newResult);
+          setArticleDetailAuthorState(newResult.isAuthor);
           setLoading(false);
         } else {
           throw result;
@@ -144,6 +150,7 @@ const ArticleDetail = () => {
       toast.error("오류가 발생했습니다. 다시 시도해주세요");
     }
   };
+
   // 소개 / QnA 탭 클릭 함수
   const handleTabClick = (tab: string) => {
     setArticleDetailIntroOrQnaState(tab);
@@ -233,46 +240,53 @@ const ArticleDetail = () => {
                 <>
                   <ArticleIntrowrap>
                     {articleCurrentState.articleMentorTag &&
-                      articleCurrentState.articleMentorTag.length >= 1 && (
-                        <p className="mentorTagTitle">
-                          우리에게 필요한 멘토는?
-                        </p>
-                      )}
+                    articleCurrentState.articleMentorTag.length >= 1 ? (
+                      <p className="mentorTagTitle">우리에게 필요한 멘토는?</p>
+                    ) : (
+                      <></>
+                    )}
                     <div className="mentorTagWrapper">
                       {articleCurrentState.articleMentorTag &&
-                        articleCurrentState.articleMentorTag.length >= 1 &&
+                      articleCurrentState.articleMentorTag.length >= 1 ? (
                         articleCurrentState.articleMentorTag
                           .split("#")
-                          .filter((tag) => tag !== "")
-                          .map((tag, idx) => {
+                          .filter((tag: any) => tag !== "")
+                          .map((tag: any, idx: any) => {
                             return (
                               <p className="mentorTag" key={idx}>
                                 #{tag}
                               </p>
                             );
-                          })}
+                          })
+                      ) : (
+                        <></>
+                      )}
                     </div>
                     <p>{articleCurrentState.articleContent}</p>
                   </ArticleIntrowrap>
-                  <div className="buttonWrap">
-                    <Button
-                      text={
-                        articleCurrentState.articleRecruitmentState
-                          ? `${
-                              articleCurrentState.articleType === "study"
-                                ? "스터디"
-                                : "프로젝트"
-                            } 신청하기`
-                          : "모집이 완료된 게시물입니다. "
-                      }
-                      buttonState={
-                        articleCurrentState.articleRecruitmentState
-                          ? ""
-                          : "inactive"
-                      }
-                      onClick={articleApplyUser}
-                    />
-                  </div>
+                  {!articleDetailAuthorState ? (
+                    <div className="buttonWrap">
+                      <Button
+                        text={
+                          articleCurrentState.articleRecruitmentState
+                            ? `${
+                                articleCurrentState.articleType === "study"
+                                  ? "스터디"
+                                  : "프로젝트"
+                              } 신청하기`
+                            : "모집이 완료된 게시물입니다. "
+                        }
+                        buttonState={
+                          articleCurrentState.articleRecruitmentState
+                            ? ""
+                            : "inactive"
+                        }
+                        onClick={articleApplyUser}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )}
                   <section style={{ marginBottom: "100px" }}>
                     <h3>스터디 신청현황</h3>
                     <ArticleApplyStateTableWrap>
@@ -282,34 +296,43 @@ const ArticleDetail = () => {
                         <div className="tableCell">신청일</div>
                         <div className="tableCell">상태</div>
                       </div>
-                      {articleApplyUserListState.length >= 1 ? (
+                      {articleDetailAuthorState &&
+                      articleApplyUserListState.length >= 1 ? (
                         articleApplyUserListState.map(
-                          (applicant: ArticleApplyState, idx) => {
+                          (applicant: any, idx: any) => {
                             return (
                               <div className="tableRow" key={idx}>
+                                <div className="tableCell">{applicant.id}</div>
                                 <div className="tableCell">
-                                  {applicant.applyNo}
+                                  {applicant.applicantName}
                                 </div>
                                 <div className="tableCell">
-                                  {applicant.memberName}
-                                </div>
-                                <div className="tableCell">
-                                  {getTimeAgo(applicant.applyDate)}
+                                  {applicant.applicationDate}
                                 </div>
                                 <div
                                   className="tableCell"
-                                  onClick={openModalMemberCareer}
+                                  onClick={handleModalState}
                                 >
-                                  {applicant.applyResult}
+                                  {applicant.status}
                                 </div>
                               </div>
                             );
                           }
                         )
+                      ) : articleDetailAuthorState ? (
+                        <div className="applicantMessage">
+                          <p>아직 없네요..</p>
+                        </div>
                       ) : (
                         <>
-                          <div className="noApplicantMessage">
-                            아직 없네요 ..
+                          <div className="applicantMessage">
+                            스터디 / 프로젝트 신청현황은
+                            <br /> 게시물 작성자와 신청자만 확인할 수 있습니다.
+                            <br /> <br />
+                            <b>
+                              본 스터디 / 프로젝트와 함께하는 팀원이 궁금하다면
+                              <br /> 지금 바로 신청하세요 !
+                            </b>
                           </div>
                         </>
                       )}
@@ -326,7 +349,7 @@ const ArticleDetail = () => {
               {modalOpen && (
                 <MemberListModal
                   show={modalOpen}
-                  handleClose={handleModalClose}
+                  handleClose={handleModalState}
                 />
               )}
             </ArticleDetailWrap>
