@@ -27,6 +27,7 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
   /** 모달 오픈, 오픈채팅방 링크 넘기기 등 */
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [additionalInfo, setAdditionalInfo] = useState<string>("");
+  const [conMethod, setConMethod] = useState<string>("");
 
   const renderArticleCards = (cards: any[]) => {
     return cards.map((card, index) => (
@@ -56,15 +57,19 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
     setPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  const handleModalOpen = (additionalInfo: string) => {
+  const handleModalOpen = (additionalInfo: string, conMethod: string) => {
     setIsModalOpen(true);
     setAdditionalInfo(additionalInfo);
+    setConMethod(conMethod);
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
+    setAdditionalInfo("");
+    setConMethod("");
   };
 
+  console.log(additionalInfo);
   return (
     <>
       {type === "article" && (
@@ -103,8 +108,9 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
                             {apply.applyResult === "선정" ? (
                               <p
                                 onClick={() => {
-                                  handleModalOpen("");
-                                  setAdditionalInfo(apply.conInfo);
+                                  handleModalOpen("010-2992-5679", "전화번호");
+                                  // setAdditionalInfo("http://www.naver.com");
+                                  // setConMethod(apply.conMethod);
                                 }}
                                 style={{
                                   color: "#133488",
@@ -218,6 +224,15 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
           </section>
         </>
       )}
+      {isModalOpen ? (
+        <Modal
+          show={isModalOpen}
+          handleClose={handleModalClose}
+          conMethod={conMethod}
+          additionalInfo={additionalInfo}
+          modalType={"info"}
+        />
+      ) : null}
     </>
   );
 };

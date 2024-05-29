@@ -6,6 +6,7 @@ const Modal: React.FC<ModalProps> = ({
   show,
   handleClose,
   modalType,
+  conMethod,
   additionalInfo,
 }) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
@@ -16,6 +17,7 @@ const Modal: React.FC<ModalProps> = ({
     }
   };
 
+  console.log(conMethod);
   return (
     <ModalWrapper className={showHideClassName}>
       <ModalContent className="modal-main">
@@ -29,19 +31,44 @@ const Modal: React.FC<ModalProps> = ({
                 팀장에게 연락해주세요
               </p>
             </div>
+            {conMethod === "카카오톡오픈채팅" ? (
+              <div>
+                <p>카카오톡 오픈채팅</p>
+              </div>
+            ) : (
+              <div>
+                <p>팀장 전화번호</p>
+              </div>
+            )}
+
             <div>
-              <p>카카오톡 오픈채팅</p>
-            </div>
-            <div>
-              {additionalInfo ? (
-                <LinkButton onClick={handleLinkClick}>
-                  오픈채팅방 접속하기
-                </LinkButton>
-              ) : (
+              {conMethod === "카카오톡오픈채팅" && (
                 <>
-                  <LinkButton style={{ backgroundColor: "gray" }}>
-                    등록된 링크가 없어요 ㅠ
-                  </LinkButton>
+                  {additionalInfo ? (
+                    <LinkButton onClick={handleLinkClick}>
+                      오픈채팅방 접속하기
+                    </LinkButton>
+                  ) : (
+                    <LinkButton style={{ backgroundColor: "gray" }}>
+                      등록된 링크가 없어요 ㅠ
+                    </LinkButton>
+                  )}
+                </>
+              )}
+
+              {conMethod === "전화번호" && (
+                <>
+                  {additionalInfo ? (
+                    <div style={{ marginBottom: "20px", fontWeight: "bold" }}>
+                      {additionalInfo}
+                    </div>
+                  ) : (
+                    // <LinkButton style={{ backgroundColor: "gray" }}>
+                    <p style={{ color: "gray", marginBottom: "40px" }}>
+                      등록된 전화번호가 없어요 ㅠ
+                    </p>
+                    // </LinkButton>
+                  )}
                 </>
               )}
             </div>
