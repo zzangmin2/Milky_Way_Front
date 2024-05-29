@@ -57,45 +57,31 @@ const MyCareer = () => {
   };
 
   const sendCareerEdit = async () => {
-    console.log(userInfoValue);
-    console.log(userCareer, userCertificate);
+    console.log(userCareer);
+
+    const dataCareerForSend = JSON.stringify(userCareer);
+    const dataCertificateForSend = JSON.stringify(userCareer);
+
     try {
       if (!validateCareer(userCareer, userCertificate)) {
         return;
       }
       let response;
 
-      if (careerPostState) {
+      if (!careerPostState) {
         response = await Promise.all([
-          editUserCareerList("post", userCareer, userCertificate),
-          editUserCareerInfo(
-            "post",
-            userName,
-            userId,
-            userDpt,
-            userPhoneNumber,
-            userLocation,
-            userLineText
-          ),
+          editUserCareerList("post", dataCareerForSend, dataCertificateForSend),
+          editUserCareerInfo("post", userName, userId, userDpt),
         ]);
       } else {
         response = await Promise.all([
-          editUserCareerList("put", userCareer, userCertificate),
-          editUserCareerInfo(
-            "put",
-            userName,
-            userId,
-            userDpt,
-            userPhoneNumber,
-            userLocation,
-            userLineText
-          ),
+          editUserCareerList("put", dataCareerForSend, dataCertificateForSend),
+          editUserCareerInfo("put", userName, userId, userDpt),
         ]);
       }
       if (response[0].success && response[1].success) {
         toast.success("이력서 수정이 완료되었습니다!");
         setEdit(true);
-        window.location.reload();
       } else {
         toast.error("서버연결 안됨!");
       }

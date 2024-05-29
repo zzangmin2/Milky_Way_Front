@@ -12,12 +12,14 @@ import {
   viewMyApplyInfo,
   viewMyInfo,
   viewMyArticleInfo,
+  viewMyDibsInfo,
 } from "../../utils/apimodule/article";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import {
   ArticleArticleSelector,
   userInfoStateSelector,
   ArticleApplySelector,
+  ArticleDibsStateSelector,
 } from "../../utils/recoil/atom";
 
 import { logout } from "../../utils/auth/auth";
@@ -39,6 +41,9 @@ const MyInfo = () => {
 
   /** 신청한 정보 */
   const [article, setArticle] = useRecoilState<any>(ArticleArticleSelector);
+
+  /** 찜카드 정보 */
+  const [dibs, setDibs] = useRecoilState<any>(ArticleDibsStateSelector);
 
   /** BottomSection 참조 */
   const bottomSection = useRef<HTMLDivElement>(null);
@@ -66,15 +71,21 @@ const MyInfo = () => {
   /** 유저 정보 불러옴 */
   const userInfoData = async () => {
     try {
-      const response: any = await viewMyInfo();
-      const articleData: any = await viewMyArticleInfo();
-      const applyData: any = await viewMyApplyInfo();
+      const [response, articleData, applyData, dibsData] = await Promise.all([
+        viewMyInfo(),
+        viewMyArticleInfo(),
+        viewMyApplyInfo(),
+        viewMyDibsInfo(),
+      ]);
+
       const member = response.data;
       const article = articleData.data;
       const apply = applyData.data;
+      const dibs = dibsData.data;
 
       setApply(apply);
       setArticle(article);
+      setDibs(dibs);
 
       infoValue({
         userName: member.memberName,
@@ -139,15 +150,13 @@ const MyInfo = () => {
             </ul>
           </InfoNav>
           {activeTab === "article" && (
-            <>
-              <InfoBottomTabTable articleApplyState={apply} type={"article"} />
-            </>
+            <InfoBottomTabTable articleApplyState={apply} type={"article"} />
           )}
-          {activeTab === "like" && null}
+          {activeTab === "like" && (
+            <InfoBottomTabTable articleApplyState={article} type={"like"} />
+          )}
           {activeTab === "apply" && (
-            <>
-              <InfoBottomTabTable articleApplyState={article} type={"apply"} />
-            </>
+            <InfoBottomTabTable articleApplyState={article} type={"apply"} />
           )}
         </BottomSection>
         <LogoutText>

@@ -225,6 +225,26 @@ export const userInfoStateSelector = selector<any>({
   },
 });
 
+/**
+ * 마이페이지 찜리스트 조회
+ */
+export const ArticleDibsState = atom<any>({
+  key: "ArticleDibsState",
+  default: {},
+});
+
+export const ArticleDibsStateSelector = selector<any>({
+  key: "userInfoDibsStateSelector",
+  get: ({ get }) => {
+    const ArticleDibsStateValue = get(ArticleDibsState);
+    return ArticleDibsStateValue;
+  },
+
+  set: ({ set }, newValue: any) => {
+    set(ArticleDibsState, newValue);
+  },
+});
+
 //스터디 게시물
 
 /**

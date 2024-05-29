@@ -3,8 +3,12 @@ import { ArticleApplyStateTableWrap } from "./styles";
 import { InfoProjectList } from "../../pages/MyInfo/style";
 import { ArticleInfoCardWrap } from "../../pages/MyInfo/style";
 import ArticleInfoCard from "../ArticleInfoCard";
-import { ArticleApplySelector } from "../../utils/recoil/atom";
-import { ArticleArticleSelector } from "../../utils/recoil/atom";
+import {
+  ArticleApplySelector,
+  ArticleArticleSelector,
+  ArticleDibsStateSelector,
+} from "../../utils/recoil/atom";
+
 import { useRecoilValue } from "recoil";
 import { ArticleCardPageCount } from "./styles";
 import Modal from "../Modal";
@@ -12,6 +16,7 @@ import { BottomTableProps } from "../../typings/db";
 
 const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
   const articleCard: any[] = useRecoilValue(ArticleArticleSelector);
+  const dibsCard: any[] = useRecoilValue(ArticleDibsStateSelector);
   const applyGrid: any = useRecoilValue(ArticleApplySelector);
   const [page, setPage] = useState(1);
   const itemsPerPage = 3;
@@ -179,22 +184,39 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
               </p>
             </div>
           </InfoProjectList>
-          <ArticleInfoCardWrap>
-            {articleCard.length > 0 ? ( // 찜 리코일 값 만들어서 데이터받기
-              renderArticleCards(articleCard)
-            ) : (
-              <div>찜한 항목이 없습니다.</div>
-            )}
-          </ArticleInfoCardWrap>
+          <section style={{ marginTop: "50px", flex: "1" }}>
+            <ArticleInfoCardWrap
+              style={{
+                display: "flex",
+                height: "auto",
+                flexDirection: "column",
+                alignItems: "center",
+                marginBottom: "90px",
+              }}
+            >
+              {dibsCard.length > 0 ? (
+                <>
+                  {renderArticleCards(visibleCards)}
+                  <ArticleCardPageCount>
+                    <button onClick={handlePrevPage} disabled={page === 1}>
+                      이전
+                    </button>
+                    <button
+                      onClick={handleNextPage}
+                      disabled={
+                        page === Math.ceil(dibsCard.length / itemsPerPage)
+                      }
+                    >
+                      다음
+                    </button>
+                  </ArticleCardPageCount>
+                </>
+              ) : (
+                <div>찜한 항목이 없습니다.</div>
+              )}
+            </ArticleInfoCardWrap>
+          </section>
         </>
-      )}
-      {isModalOpen && (
-        <Modal
-          show={isModalOpen}
-          handleClose={handleModalClose}
-          modalType={"info"}
-          additionalInfo={additionalInfo}
-        />
       )}
     </>
   );

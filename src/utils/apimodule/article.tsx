@@ -175,6 +175,8 @@ const viewMyApplyInfo = async () => {
     const response = await api.get(`/applyinfo`);
     const data = response.data;
 
+    console.log(response);
+
     if (response.status === 200) {
       return { success: true, data };
     } else {
@@ -193,6 +195,26 @@ const viewMyApplyInfo = async () => {
 const viewMyArticleInfo = async () => {
   try {
     const response = await api.get(`/articleinfo`);
+    const data = response.data;
+
+    if (response.status === 200) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
+ * 마이페이지에서 내가 찜한 정보 불러오기
+ * @returns @success @data
+ */
+const viewMyDibsInfo = async () => {
+  try {
+    const response = await api.get(`/dibsinfo`);
     const data = response.data;
 
     if (response.status === 200) {
@@ -259,4 +281,5 @@ export {
   viewMyArticleInfo,
   viewMyApplyInfo,
   viewMyCareerList,
+  viewMyDibsInfo,
 };
