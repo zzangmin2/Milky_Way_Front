@@ -327,6 +327,7 @@ const ArticleDetail = () => {
                 <MemberListModal
                   show={modalOpen}
                   handleClose={handleModalClose}
+                  modalType={undefined}
                 />
               )}
             </ArticleDetailWrap>

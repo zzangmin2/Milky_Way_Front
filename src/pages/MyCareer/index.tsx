@@ -16,7 +16,7 @@ import {
 } from "./style";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { useState, useEffect, Key } from "react";
+import { useState, useEffect } from "react";
 import {
   viewMyCareerInfo,
   viewMyCareerList,
@@ -31,10 +31,13 @@ import { toast } from "react-toastify";
 
 const MyCareer = () => {
   const setCareerValue = useSetRecoilState(userCareerStateSelector);
+
   const [userInfoValue, setUserInfoValue] = useRecoilState<any>(
     userCareerUserInfoStateSelector
   );
+
   const [careerPostState, setCareerPostState] = useState(false);
+
   const {
     userName,
     userId,
@@ -43,16 +46,19 @@ const MyCareer = () => {
     userLocation,
     userLineText,
   } = useRecoilValue<any>(userCareerUserInfoStateSelector);
+
   const { userCareer, userCertificate } = useRecoilValue(
     userCareerStateSelector
   );
   const [edit, setEdit] = useState(true);
 
-  const clickEdit = () => {
+  const clickEdit: any = () => {
     setEdit(false);
   };
 
   const sendCareerEdit = async () => {
+    console.log(userInfoValue);
+    console.log(userCareer, userCertificate);
     try {
       if (!validateCareer(userCareer, userCertificate)) {
         return;
@@ -141,7 +147,7 @@ const MyCareer = () => {
       userCareer: [
         ...prev.userCareer,
         {
-          id: Date.now(),
+          id: prev.userCareer.length + 1,
           carName: "",
           carStartDay: "",
           carEndDay: "",
@@ -156,7 +162,7 @@ const MyCareer = () => {
       userCertificate: [
         ...prev.userCertificate,
         {
-          id: Date.now(),
+          id: prev.userCertificate.length + 1,
           certName: "",
           certDate: "",
         },
@@ -230,57 +236,30 @@ const MyCareer = () => {
                   ? userPhoneNumber
                   : "등록된 전화번호가 없습니다."}
               </div>
-              {userDpt ? (
-                <input
-                  placeholder={userDpt}
-                  value={userInfoValue.userDpt}
-                  onChange={(e) => {
-                    setUserInfoValue({
-                      ...userInfoValue,
-                      userDpt: e.target.value,
-                    });
-                  }}
-                />
-              ) : (
-                <>
-                  <input
-                    type="text"
-                    placeholder="학과를 입력해주세요"
-                    value={userInfoValue.userDpt}
-                    onChange={(e) => {
-                      setUserInfoValue({
-                        ...userInfoValue,
-                        userDpt: e.target.value,
-                      });
-                    }}
-                  />
-                </>
-              )}
-              {userLocation ? (
-                <input
-                  placeholder={userLocation}
-                  value={userInfoValue.userLocation}
-                  onChange={(e) => {
-                    setUserInfoValue({
-                      ...userInfoValue,
-                      userLocation: e.target.value,
-                    });
-                  }}
-                />
-              ) : (
-                <>
-                  <input
-                    placeholder="지역을 입력해주세요"
-                    value={userInfoValue.userLocation}
-                    onChange={(e) => {
-                      setUserInfoValue({
-                        ...userInfoValue,
-                        userLocation: e.target.value,
-                      });
-                    }}
-                  />
-                </>
-              )}
+              <input
+                type="text"
+                placeholder={userDpt ? userDpt : "학과를 입력해주세요"}
+                value={userInfoValue.userDpt}
+                onChange={(e) =>
+                  setUserInfoValue({
+                    ...userInfoValue,
+                    userDpt: e.target.value,
+                  })
+                }
+              />
+              <input
+                type="text"
+                placeholder={
+                  userLocation ? userLocation : "지역을 입력해주세요"
+                }
+                value={userInfoValue.userLocation}
+                onChange={(e) =>
+                  setUserInfoValue({
+                    ...userInfoValue,
+                    userLocation: e.target.value,
+                  })
+                }
+              />
             </MyInfoContentEdit>
           </>
         )}

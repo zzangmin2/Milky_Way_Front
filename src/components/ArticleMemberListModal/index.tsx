@@ -28,15 +28,6 @@ import {
   viewMyCareerList,
 } from "../../utils/apimodule/article";
 
-<<<<<<< HEAD
-const MemberListModal: React.FC<ModalProps> = ({
-  show,
-  handleClose,
-  // children,
-  // memberId,
-}) => {
-  const careerValue = useSetRecoilState(userCareerState);
-=======
 const MemberListModal: React.FC<ModalProps> = ({ show, handleClose }) => {
   const careerValue: any = useSetRecoilState(userCareerStateSelector);
   const userInfoValue: any = useSetRecoilState(userCareerUserInfoStateSelector);
@@ -45,7 +36,6 @@ const MemberListModal: React.FC<ModalProps> = ({ show, handleClose }) => {
   const { certificate }: any = useRecoilValue(userCareerStateSelector);
 
   //구조분해 할당
->>>>>>> 98f425c37825a0342eea3c6ddf924fdf674b64b3
   const {
     userName,
     userId,
