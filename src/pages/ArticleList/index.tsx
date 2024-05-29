@@ -7,6 +7,7 @@ import {
   ArticleListWrap,
   ArticleProjectTypeNavWrap,
   ArticleListContainer,
+  ArticleListEmptyInfo,
 } from "./styles";
 import ArticleInfoCard from "../../components/ArticleInfoCard";
 import { viewArticleList } from "../../utils/apimodule/article";
@@ -25,6 +26,8 @@ import { Article } from "../../typings/db";
 import { toast } from "react-toastify";
 import SkeletonArticleDetail from "../../utils/skeleton/SkeletonArticleDetail";
 import SkeletonArticleList from "../../utils/skeleton/SkeletonArticleList";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
 
 const ArticleList = () => {
   // article 전체 리스트
@@ -85,6 +88,7 @@ const ArticleList = () => {
           articleApply: item.apply,
           articleApplyNow: item.applyNow,
           articleType: item.articleType,
+          articleRegDate: item.regDate,
         }));
         setArticleListState(transformedData);
         console.log(transformedData);
@@ -197,13 +201,16 @@ const ArticleList = () => {
                         articleLikes={article.articleLikes}
                         articleEndDay={article.articleEndDay}
                         // articleStartDay -> 아직 api에서 전달 x
-                        articleStartDay={article.articleStartDay}
+                        articleStartDay={article.articleRegDate}
                       />
                     );
                   }
                 )
               ) : (
-                <div>게시물이 없습니다...</div>
+                <ArticleListEmptyInfo>
+                  <FontAwesomeIcon icon={faFaceSadTear} />
+                  <div>게시물이 없습니다...</div>
+                </ArticleListEmptyInfo>
               )}
             </ArticleInfoCardWrap>
           )}

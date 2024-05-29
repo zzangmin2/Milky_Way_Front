@@ -107,3 +107,22 @@ export const ArticleInfoCardWrap = styled.section`
     margin-bottom: 10px;
   }
 `;
+
+export const ArticleListEmptyInfo = styled.div`
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+
+  > svg {
+    color: #ccc;
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  > div {
+    color: #ccc;
+  }
+`;
