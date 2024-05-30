@@ -232,7 +232,7 @@ export const ArticleCurrentState = atom({
     articleRecruitmentState: true,
     articleTitle: "",
     articleContent: "",
-    articleLikes: "",
+    articleLikes: 0,
     articleApply: 0,
     articleApplyNow: 0,
     articleStartDay: "",
@@ -399,4 +399,13 @@ export const ArticleDetailIntroOrQnaTabState = atom({
 export const ArticleApplyUserListState = atom({
   key: "articleApplyUserListState",
   default: [],
+});
+
+/**
+ * <atom> 현재 로그인 된 사용자의 해당 게시물 찜 상태
+ */
+
+export const ArticleLikeState = atom({
+  key: "articleLikeState",
+  default: false,
 });

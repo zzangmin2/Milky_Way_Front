@@ -2,12 +2,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MentoTag from "../../components/MentoTag";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import {
+  ArticleApplyStateContainer,
   ArticleApplyStateTableWrap,
   ArticleDetailPageNavWrap,
   ArticleDetailWrap,
   ArticleInfoStateWrap,
   ArticleInfoSummaryWrap,
   ArticleIntrowrap,
+  ArticleLikeWrap,
   TopSection,
 } from "./styles";
 import Button from "../../components/Button";
@@ -19,11 +21,13 @@ import {
   ArticleCurrentState,
   ArticleDetailAuthorState,
   ArticleDetailIntroOrQnaTabState,
+  ArticleLikeState,
 } from "../../utils/recoil/atom";
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   sendArticleApplyUser,
+  sendArticleLike,
   viewArticleApplyUserList,
   viewCurrentArticle,
 } from "../../utils/apimodule/article";
@@ -47,9 +51,13 @@ const ArticleDetail = () => {
     setModalOpen(!modalOpen);
   };
 
-  //현재 로그인 된 사용자가 작성한 게시물인지 판별 상태
+  //현재 로그인 된 사용자가 작성한 게시물인지 판별 상태 -> boolean
   const [articleDetailAuthorState, setArticleDetailAuthorState] =
     useRecoilState(ArticleDetailAuthorState);
+
+  //현재 로그인 된 사용자의 해당 게시물 찜 상태 -> boolean
+  const [articleLikeState, setArticleLikeState] =
+    useRecoilState(ArticleLikeState);
 
   // 현재 페이지에서 보여주고 있는 article 데이터
   const [articleCurrentState, setArticleCurrentState] =
@@ -151,6 +159,30 @@ const ArticleDetail = () => {
     }
   };
 
+  //게시물 찜꽁 함수
+  const handleArticleLike = async () => {
+    try {
+      setArticleCurrentState((prev) => ({
+        ...prev,
+        articleLikes: prev.articleLikes + 1,
+      }));
+      const result = await sendArticleLike();
+      setArticleLikeState(true);
+
+      if (result.error === 409) {
+        setArticleCurrentState((prev) => ({
+          ...prev,
+          articleLikes: prev.articleLikes - 1,
+        }));
+        setArticleLikeState(false);
+        toast.error("이미 찜한 게시물입니다!");
+      }
+    } catch (error: any) {
+      console.log(`다시 시도해주세요: ${error.message}`);
+      toast.error("오류가 발생했습니다. 다시 시도해주세요");
+    }
+  };
+
   // 소개 / QnA 탭 클릭 함수
   const handleTabClick = (tab: string) => {
     setArticleDetailIntroOrQnaState(tab);
@@ -175,10 +207,13 @@ const ArticleDetail = () => {
                     )}
                     <div>{articleCurrentState.articleEndDay} 까지</div>
                   </div>
-                  <div className="articleLike">
-                    <FontAwesomeIcon icon={faStar} />
+                  <ArticleLikeWrap $articleLike={articleLikeState}>
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      onClick={handleArticleLike}
+                    />
                     <p>{articleCurrentState.articleLikes}</p>
-                  </div>
+                  </ArticleLikeWrap>
                 </ArticleInfoStateWrap>
                 <ArticleInfoSummaryWrap>
                   <div>
@@ -287,8 +322,18 @@ const ArticleDetail = () => {
                   ) : (
                     ""
                   )}
-                  <section style={{ marginBottom: "100px" }}>
+                  <ArticleApplyStateContainer>
                     <h3>스터디 신청현황</h3>
+                    {articleDetailAuthorState && (
+                      <div className="articleAuthorMessage">
+                        <div> * 잠깐!</div>
+                        <div>
+                          신청 상태를 클릭하여 신청자의 이력서를 확인하고,{" "}
+                          <br /> 스터디/프로젝트 합류 여부를 선택해주세요
+                        </div>
+                      </div>
+                    )}
+
                     <ArticleApplyStateTableWrap>
                       <div className="tableRow tableRowTop">
                         <div className="tableCell">번호</div>
@@ -296,24 +341,27 @@ const ArticleDetail = () => {
                         <div className="tableCell">신청일</div>
                         <div className="tableCell">상태</div>
                       </div>
+
                       {articleDetailAuthorState &&
                       articleApplyUserListState.length >= 1 ? (
                         articleApplyUserListState.map(
                           (applicant: any, idx: any) => {
                             return (
                               <div className="tableRow" key={idx}>
-                                <div className="tableCell">{applicant.id}</div>
                                 <div className="tableCell">
-                                  {applicant.applicantName}
+                                  {applicant.applyNo}
                                 </div>
                                 <div className="tableCell">
-                                  {applicant.applicationDate}
+                                  {applicant.memberName}
+                                </div>
+                                <div className="tableCell">
+                                  {getTimeAgo(applicant.applyDate)}
                                 </div>
                                 <div
-                                  className="tableCell"
+                                  className="tableCell tableCellButton"
                                   onClick={handleModalState}
                                 >
-                                  {applicant.status}
+                                  {applicant.applyResult}
                                 </div>
                               </div>
                             );
@@ -337,7 +385,7 @@ const ArticleDetail = () => {
                         </>
                       )}
                     </ArticleApplyStateTableWrap>
-                  </section>
+                  </ArticleApplyStateContainer>
                 </>
               ) : (
                 <div>

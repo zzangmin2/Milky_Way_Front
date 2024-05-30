@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const ArticleDetailWrap = styled.section`
   width: 100%;
@@ -57,17 +57,17 @@ export const ArticleInfoStateWrap = styled.div`
     font-size: 0.75rem;
     line-height: 0.75rem;
   }
+`;
 
-  > div.articleLike {
+export const ArticleLikeWrap = styled.div<{ $articleLike: boolean }>`
+  > svg {
     cursor: pointer;
-  }
-  > div.articleLike > svg {
     font-size: 0.75rem;
-    color: #d1d1d1;
+    color: ${(props) => (props.$articleLike ? "#ff9078" : "#d1d1d1")};
     margin-right: 5px;
   }
 
-  > div.articleLike > p {
+  > p {
     font-size: 0.75rem;
     margin: 0;
   }
@@ -184,9 +184,26 @@ export const ArticleIntrowrap = styled.div`
   }
 `;
 
-export const ArticleApplyStateWrap = styled.section`
+export const ArticleApplyStateContainer = styled.section`
   margin-bottom: 100px;
   width: 100%;
+
+  div.articleAuthorMessage {
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  div.articleAuthorMessage > div:nth-child(1) {
+    color: #133488;
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+
+  div.articleAuthorMessage > div:nth-child(2) {
+    font-size: 0.8rem;
+  }
 `;
 
 export const ArticleApplyStateTableWrap = styled.div`
@@ -211,6 +228,11 @@ export const ArticleApplyStateTableWrap = styled.div`
   div.tableCell {
     padding: 5px;
     text-align: center;
+  }
+
+  div.tableCellButton {
+    cursor: pointer;
+    text-decoration: underline;
   }
 
   div.applicantMessage {
