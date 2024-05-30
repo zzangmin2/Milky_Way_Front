@@ -13,7 +13,6 @@ import { Article } from "../../typings/db";
  * @param articleContent
 
  */
-
 const sendNewArticle = async (newArticleData: Article) => {
   const {
     articleType,
@@ -54,6 +53,11 @@ const sendNewArticle = async (newArticleData: Article) => {
   }
 };
 
+/**
+ * 게시물 상세 조회하기
+ * @param articleId
+ * @returns
+ */
 const viewCurrentArticle = async (articleId: number) => {
   try {
     const response = await api.get(`/posts/${articleId}`);
@@ -68,6 +72,11 @@ const viewCurrentArticle = async (articleId: number) => {
   }
 };
 
+/**
+ * 게시물 수정하기
+ * @param articleId
+ * @returns
+ */
 const editCurrentArticle = async (articleId: number) => {
   try {
     const response = await api.put(`/posts/done/${articleId}`, {
@@ -82,10 +91,14 @@ const editCurrentArticle = async (articleId: number) => {
   }
 };
 
+/**
+ * 게시물 삭제하기
+ * @param articleId
+ * @returns
+ */
 const deleteCurrentArticle = async (articleId: number) => {
   try {
     const response = await api.delete(`/posts/${articleId}`);
-    console.log("Success:", response.data);
 
     return { success: true };
   } catch (error) {
@@ -95,9 +108,24 @@ const deleteCurrentArticle = async (articleId: number) => {
 };
 
 /**
+ * 게시물 찜꽁!
+ * @returns
+ */
+const sendArticleLike = async () => {
+  try {
+    await api.post(`posts/likes/1`);
+
+    return { success: true };
+  } catch (error: any) {
+    console.error("error:", error);
+    return { success: false, error: error.response.status };
+  }
+};
+
+/**
  * 게시물 지원하기 (헤더에 토큰 심어서 보냄)
  * @param articleId
- * @returns
+ * @returns sucess
  */
 const sendArticleApplyUser = async (articleId: number) => {
   try {
@@ -131,6 +159,10 @@ const viewArticleApplyUserList = async (articleId: number) => {
   }
 };
 
+/**
+ * 게시물 리스트
+ * @returns
+ */
 const viewArticleList = async () => {
   try {
     const response = await api.get("/posts/list");
@@ -269,6 +301,7 @@ const viewMyCareerList = async () => {
 
 export {
   sendNewArticle,
+  sendArticleLike,
   viewCurrentArticle,
   editCurrentArticle,
   deleteCurrentArticle,

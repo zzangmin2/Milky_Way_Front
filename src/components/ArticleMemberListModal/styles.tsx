@@ -10,7 +10,7 @@ export const ModalWrapper = styled.div`
   background-color: white;
   padding: 5px 10px 5px 10px;
   border-radius: 10px;
-  box-shadow: 0px 3px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   @media (max-width: 1200px) {
     max-width: 300px;
   }
