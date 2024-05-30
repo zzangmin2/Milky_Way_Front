@@ -158,7 +158,6 @@ export const userCareerState = atom<UserCareerState>({
   default: {
     userCareer: [],
     userCertificate: [],
-    userLineText: "",
   },
 });
 

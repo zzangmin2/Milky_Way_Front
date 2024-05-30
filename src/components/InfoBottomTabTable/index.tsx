@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ArticleApplyStateTableWrap } from "./styles";
-import { InfoProjectList } from "../../pages/MyInfo/style";
-import { ArticleInfoCardWrap } from "../../pages/MyInfo/style";
+import { InfoProjectList } from "../../pages/MyInfo/styles";
+import { ArticleInfoCardWrap } from "../../pages/MyInfo/styles";
 import ArticleInfoCard from "../ArticleInfoCard";
 import {
   ArticleApplySelector,
@@ -24,7 +24,6 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
   const endIndex = startIndex + itemsPerPage;
   const visibleCards = articleCard.slice(startIndex, endIndex);
 
-  /** 모달 오픈, 오픈채팅방 링크 넘기기 등 */
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [additionalInfo, setAdditionalInfo] = useState<string>("");
   const [conMethod, setConMethod] = useState<string>("");
@@ -57,10 +56,14 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
     setPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  const handleModalOpen = (additionalInfo: string, conMethod: string) => {
+  const handleModalOpen = (info: string, method: string) => {
+    if (info && info.startsWith("http")) {
+      setAdditionalInfo(info);
+    } else {
+      setAdditionalInfo(`http://${info}`);
+    }
+    setConMethod(method);
     setIsModalOpen(true);
-    setAdditionalInfo(additionalInfo);
-    setConMethod(conMethod);
   };
 
   const handleModalClose = () => {
@@ -69,7 +72,6 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
     setConMethod("");
   };
 
-  console.log(additionalInfo);
   return (
     <>
       {type === "article" && (
@@ -106,18 +108,20 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
                         <div className="tableCell">
                           <p>
                             {apply.applyResult === "선정" ? (
-                              <p
+                              <span
                                 onClick={() => {
-                                  handleModalOpen("010-2992-5679", "전화번호");
-                                  // setAdditionalInfo("http://www.naver.com");
-                                  // setConMethod(apply.conMethod);
+                                  handleModalOpen(
+                                    apply.conInfo,
+                                    apply.conMethod
+                                  );
                                 }}
                                 style={{
-                                  color: "#133488",
+                                  fontWeight: "bold",
+                                  cursor: "pointer",
                                 }}
                               >
                                 {apply.applyResult}
-                              </p>
+                              </span>
                             ) : (
                               <>{apply.applyResult}</>
                             )}
@@ -224,7 +228,7 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
           </section>
         </>
       )}
-      {isModalOpen ? (
+      {isModalOpen && (
         <Modal
           show={isModalOpen}
           handleClose={handleModalClose}
@@ -232,7 +236,7 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
           additionalInfo={additionalInfo}
           modalType={"info"}
         />
-      ) : null}
+      )}
     </>
   );
 };

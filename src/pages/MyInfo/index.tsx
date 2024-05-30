@@ -6,7 +6,7 @@ import {
   InfoTitle,
   InfoNav,
   LogoutText,
-} from "./style";
+} from "./styles";
 
 import {
   viewMyApplyInfo,
@@ -150,13 +150,13 @@ const MyInfo = () => {
             </ul>
           </InfoNav>
           {activeTab === "article" && (
-            <InfoBottomTabTable articleApplyState={apply} type={"article"} />
+            <InfoBottomTabTable articleApplyState={article} type={"article"} />
           )}
           {activeTab === "like" && (
-            <InfoBottomTabTable articleApplyState={article} type={"like"} />
+            <InfoBottomTabTable articleApplyState={dibs} type={"like"} />
           )}
           {activeTab === "apply" && (
-            <InfoBottomTabTable articleApplyState={article} type={"apply"} />
+            <InfoBottomTabTable articleApplyState={apply} type={"apply"} />
           )}
         </BottomSection>
         <LogoutText>

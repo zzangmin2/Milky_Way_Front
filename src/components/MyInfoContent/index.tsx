@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TopSection, InfoTitle, InfoContent } from "../../pages/MyInfo/style";
+import { TopSection, InfoTitle, InfoContent } from "./styles";
 import { sendUserEditInfo } from "../../utils/apimodule/member";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userInfoStateSelector } from "../../utils/recoil/atom";

@@ -63,11 +63,9 @@ const Modal: React.FC<ModalProps> = ({
                       {additionalInfo}
                     </div>
                   ) : (
-                    // <LinkButton style={{ backgroundColor: "gray" }}>
                     <p style={{ color: "gray", marginBottom: "40px" }}>
                       등록된 전화번호가 없어요 ㅠ
                     </p>
-                    // </LinkButton>
                   )}
                 </>
               )}

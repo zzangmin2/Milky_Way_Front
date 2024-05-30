@@ -31,6 +31,7 @@ import { toast } from "react-toastify";
 
 const MyCareer = () => {
   const setCareerValue = useSetRecoilState(userCareerStateSelector);
+  const careerStateValueTest = useRecoilValue(userCareerStateSelector);
 
   const [userInfoValue, setUserInfoValue] = useRecoilState<any>(
     userCareerUserInfoStateSelector
@@ -57,10 +58,10 @@ const MyCareer = () => {
   };
 
   const sendCareerEdit = async () => {
-    console.log(userCareer);
-
-    const dataCareerForSend = JSON.stringify(userCareer);
-    const dataCertificateForSend = JSON.stringify(userCareer);
+    const sendCareerData = {
+      careerDtoList: userCareer,
+      certificateDtoList: userCertificate,
+    };
 
     try {
       if (!validateCareer(userCareer, userCertificate)) {
@@ -70,12 +71,12 @@ const MyCareer = () => {
 
       if (!careerPostState) {
         response = await Promise.all([
-          editUserCareerList("post", dataCareerForSend, dataCertificateForSend),
+          editUserCareerList("post", sendCareerData),
           editUserCareerInfo("post", userName, userId, userDpt),
         ]);
       } else {
         response = await Promise.all([
-          editUserCareerList("put", dataCareerForSend, dataCertificateForSend),
+          editUserCareerList("put", sendCareerData),
           editUserCareerInfo("put", userName, userId, userDpt),
         ]);
       }
@@ -99,11 +100,12 @@ const MyCareer = () => {
       ]);
 
       const member = careerInfo.data.basicInfos[0].member;
-      const career = careerList.data.careers;
+      const career = careerList.data.careerDtoList;
+      const ceritificate = careerList.data.certificateDtoList;
 
       setCareerValue({
-        userCareer: career.careers || [],
-        userCertificate: career.certifications || [],
+        userCareer: career || [],
+        userCertificate: ceritificate || [],
       });
 
       setUserInfoValue({
@@ -126,6 +128,8 @@ const MyCareer = () => {
       console.error("error", error);
     }
   };
+
+  console.log(careerStateValueTest);
 
   const addCareerInput = () => {
     setCareerValue((prev) => ({
@@ -299,7 +303,12 @@ const MyCareer = () => {
                   <input
                     type="date"
                     value={career.carStartDay}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const endDate = e.target.value;
+                      if (endDate < career.carStartDay) {
+                        toast.error("종료일은 시작일보다 이후로 설정해주세요.");
+                        return;
+                      }
                       setCareerValue((prev) => ({
                         ...prev,
                         userCareer: prev.userCareer.map((item: any) =>
@@ -307,13 +316,18 @@ const MyCareer = () => {
                             ? { ...item, carStartDay: e.target.value }
                             : item
                         ),
-                      }))
-                    }
+                      }));
+                    }}
                   />
                   <input
                     type="date"
                     value={career.carEndDay}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const endDate = e.target.value;
+                      if (endDate < career.carStartDay) {
+                        toast.error("종료일은 시작일보다 이후로 설정해주세요.");
+                        return;
+                      }
                       setCareerValue((prev) => ({
                         ...prev,
                         userCareer: prev.userCareer.map((item: any) =>
@@ -321,8 +335,8 @@ const MyCareer = () => {
                             ? { ...item, carEndDay: e.target.value }
                             : item
                         ),
-                      }))
-                    }
+                      }));
+                    }}
                   />
                   <p
                     onClick={() => {

@@ -1,3 +1,4 @@
+import { send } from "process";
 import api from "../api/axiosInstance";
 
 /**
@@ -158,25 +159,13 @@ const sendUserEditInfo = async (
  * 이력서에서 유저 경력, 자격증 수정
  * @param {string} method 'put' 또는 'post'
  */
-const editUserCareerList = async (
-  method: string,
-  dataCareerForSend: any,
-  dataCertificateForSend: any
-) => {
+const editUserCareerList = async (method: string, sendCareerData: any) => {
   try {
     let response;
     if (method === "post") {
-      response = await api.post(
-        `/member/update/profile`,
-        dataCareerForSend,
-        dataCertificateForSend
-      );
+      response = await api.post(`/member/update/profile`, sendCareerData);
     } else if (method === "put") {
-      response = await api.put(
-        `/member/modify/profile`,
-        dataCareerForSend,
-        dataCertificateForSend
-      );
+      response = await api.put(`/member/modify/profile`, sendCareerData);
     } else {
       throw new Error();
     }
@@ -208,7 +197,6 @@ const editUserCareerInfo = async (
     if (method === "post") {
       response = await api.post(`/member/update/info`, {
         studentMajor: userDpt,
-
         studentLocate: userLocation,
         studentOneLineShow: userLineText,
       });
