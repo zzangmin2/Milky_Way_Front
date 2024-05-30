@@ -14,7 +14,7 @@ export interface Article {
   articleRecruitmentState: boolean;
   articleContactMethod: string;
   articleContactInfo: string;
-  regDate?: string;
+  articleRegDate: string;
 }
 
 export interface ArticleApplyState {

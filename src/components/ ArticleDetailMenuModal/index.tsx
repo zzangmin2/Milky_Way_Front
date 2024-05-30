@@ -28,6 +28,7 @@ const ArticleDetailMenuModal = () => {
         const result = await editCurrentArticle(parseInt(articleId));
         if (result.success) {
           toast.success("수정 완료!");
+
           setTimeout(() => {
             window.location.reload();
           }, 2000);

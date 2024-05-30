@@ -16,9 +16,12 @@ import {
 import { MyInfoCareer, FirstInfoContentTitle } from "./styles";
 import Button from "../Button";
 import { viewMyCareer } from "../../utils/apimodule/article";
-import { userCareerState } from "../../utils/recoil/atom";
+import {
+  userCareerState,
+  userCareerStateSelector,
+  userCareerUserInfoStateSelector,
+} from "../../utils/recoil/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-
 interface ModalProps {
   show: boolean;
   handleClose: () => void;
@@ -26,13 +29,14 @@ interface ModalProps {
   memberId?: any;
 }
 
-const MemberListModal: React.FC<ModalProps> = ({
-  show,
-  handleClose,
-  children,
-  memberId,
-}) => {
-  const careerValue = useSetRecoilState(userCareerState);
+const MemberListModal: React.FC<ModalProps> = ({ show, handleClose }) => {
+  const careerValue: any = useSetRecoilState(userCareerStateSelector);
+  const userInfoValue: any = useSetRecoilState(userCareerUserInfoStateSelector);
+
+  const { career }: any = useRecoilValue(userCareerStateSelector);
+  const { certificate }: any = useRecoilValue(userCareerStateSelector);
+
+  //구조분해 할당
   const {
     userCareer = [],
     userCertificate = [],
