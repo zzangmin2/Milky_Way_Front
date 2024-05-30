@@ -32,7 +32,7 @@ const SignupInput: FC<Props> = ({
   return (
     <StyledInputContainer>
       <StyledInput
-        type={type}
+        type={type === "password" ? "password" : type}
         placeholder={placeholder}
         onChange={handleChange}
         value={value}

@@ -10,15 +10,10 @@ import {
   EmailText,
 } from "../styles";
 import { useEffect, useState } from "react";
-// import { sendEmailUserInfo } from "../../../utils/apimodule/member";
+
 import { useNavigate } from "react-router-dom";
-import {
-  emailSuccesses,
-  userCompareState,
-  userCompareValues,
-} from "../../../utils/recoil/atom";
+import { emailSuccesses, userCompareValues } from "../../../utils/recoil/atom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-// import { sendEmailVerify } from "../../../utils/apimodule/member";
 
 const SignupEmail = () => {
   const [email, setEmail] = useState("");
@@ -26,7 +21,7 @@ const SignupEmail = () => {
   const [emailSendon, setEmailSendon] = useState<boolean | undefined>(false);
   const [verifyEmail, setVerifyEmail] = useState<string>("");
   const userCompare = useSetRecoilState(userCompareValues);
-  const compareValue = useRecoilValue(userCompareValues);
+  // const compareValue = useRecoilValue(userCompareValues);
 
   const emailSuccessIn = useSetRecoilState(emailSuccesses);
   // 라우터 프로텍트 위한 아톰
@@ -66,6 +61,8 @@ const SignupEmail = () => {
   //   }
   // };
 
+  const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
   useEffect(() => {
     const defaultUserCompareState = {
       email: "",
@@ -83,14 +80,18 @@ const SignupEmail = () => {
   };
 
   const stateUserInfo = (): Promise<void | undefined> => {
-    emailSuccessIn(true);
     return new Promise((resolve, reject) => {
-      try {
-        userCompare(newValue);
-        navigate("/users/signupcompare");
-        resolve();
-      } catch (error) {
-        reject(error);
+      if (emailRegex.test(email)) {
+        try {
+          userCompare(newValue);
+          navigate("/users/signupcompare");
+          emailSuccessIn(true);
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      } else {
+        alert("이메일 형식에 맞게 입력해주세요");
       }
     });
   };
@@ -147,7 +148,7 @@ const SignupEmail = () => {
           </div>
         </TopSection>
         <BottomSection>
-          {!emailInState ? ( // 이메일 인증이 원래 활성화 되었을때에 위치
+          {email.trim() ? (
             <Button text={"다음"} color={"#133488"} onClick={stateUserInfo} />
           ) : (
             <Button text={"다음"} color={"#a8a8a8"} />

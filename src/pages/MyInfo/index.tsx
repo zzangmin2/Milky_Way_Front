@@ -1,121 +1,140 @@
+import { useState, useEffect, useRef } from "react";
 import {
   BottomSection,
   Section,
   TopSection,
   InfoTitle,
   InfoNav,
-  InfoProjectList,
-  ArticleInfoCardWrap,
   LogoutText,
-} from "./style";
-import { useState, useEffect } from "react";
-import ArticleInfoCard from "../../components/ArticleInfoCard";
-import Modal from "../../components/Modal";
-import { viewMyInfo } from "../../utils/apimodule/article";
-import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import { userInfoState } from "../../utils/recoil/atom";
-import ArticleApplyStateTable from "../../components/ArticleApplyStateTable";
+} from "./styles";
 
-import { ArticleCurrentState } from "../../utils/recoil/atom";
+import {
+  viewMyApplyInfo,
+  viewMyInfo,
+  viewMyArticleInfo,
+  viewMyDibsInfo,
+} from "../../utils/apimodule/article";
+import { useSetRecoilState, useRecoilState } from "recoil";
+import {
+  ArticleArticleSelector,
+  userInfoStateSelector,
+  ArticleApplySelector,
+  ArticleDibsStateSelector,
+} from "../../utils/recoil/atom";
+
 import { logout } from "../../utils/auth/auth";
 import { toast } from "react-toastify";
-
 import MyInfoContent from "../../components/MyInfoContent";
+import InfoBottomTabTable from "../../components/InfoBottomTabTable";
+import { useNavigate } from "react-router-dom";
 
 const MyInfo = () => {
-  const [activeTab, setActiveTab] = useState<string>("all");
-  const [articleCurrentState, setArticleCurrentState] =
-    useRecoilState(ArticleCurrentState);
+  const navigate = useNavigate();
 
-  const infoValue = useSetRecoilState(userInfoState);
-  const { userName, userEmail, userNumber } = useRecoilValue(userInfoState);
+  const [activeTab, setActiveTab] = useState<string>("article");
 
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [additionalInfo, setAdditionalInfo] = useState<string>("");
-  const [modalType, setModalType] = useState<string>("");
+  /** 유저 데이터 정보 */
+  const infoValue = useSetRecoilState(userInfoStateSelector);
 
-  /**
-   * 로그아웃
-   */
+  /** 등록한 정보 */
+  const [apply, setApply] = useRecoilState<any>(ArticleApplySelector);
+
+  /** 신청한 정보 */
+  const [article, setArticle] = useRecoilState<any>(ArticleArticleSelector);
+
+  /** 찜카드 정보 */
+  const [dibs, setDibs] = useRecoilState<any>(ArticleDibsStateSelector);
+
+  /** BottomSection 참조 */
+  const bottomSection = useRef<HTMLDivElement>(null);
+
+  /** 로그아웃 */
   const logoutEventClick = async () => {
-    try {
-      const result = await logout();
-    } catch (error) {
-      toast.error("로그아웃 실패...");
+    if (confirm("로그아웃 하시겠습니까?")) {
+      try {
+        const result: any = await logout();
+        if (result.success) {
+          localStorage.removeItem("ACCESS_TOKEN");
+          localStorage.removeItem("REFRESH_TOKEN");
+          localStorage.removeItem("memberName");
+          alert("로그아웃 되었습니다.");
+          navigate("/users/login");
+        } else {
+          alert("로그아웃 실패 (client)");
+        }
+      } catch (error) {
+        toast.error("로그아웃 실패...");
+      }
     }
   };
 
-  /**
-   * 유저정보불러옴
-   */
+  /** 유저 정보 불러옴 */
   const userInfoData = async () => {
     try {
-      const data: any = await viewMyInfo();
-      const result = data.data;
-      console.log(result);
-      // infoValue({
-      //   userName: result.userName,
-      //   userEmail: result.userEmail,
-      //   userNumber: result.userNumber,
-      // });
+      const [response, articleData, applyData, dibsData] = await Promise.all([
+        viewMyInfo(),
+        viewMyArticleInfo(),
+        viewMyApplyInfo(),
+        viewMyDibsInfo(),
+      ]);
 
-      console.log(infoValue);
+      const member = response.data;
+      const article = articleData.data;
+      const apply = applyData.data;
+      const dibs = dibsData.data;
+
+      setApply(apply);
+      setArticle(article);
+      setDibs(dibs);
+
+      infoValue({
+        userName: member.memberName,
+        userEmail: member.memberEmail,
+        userNumber: member.memberPhoneNum,
+      });
     } catch (error) {
+      toast.error("데이터를 불러오는 중에 오류가 발생했습니다.");
       console.error("error", error);
     }
   };
 
-  /**
-   * 마운트시에 유저정보불러오고 setEditUser초기화
-   */
+  /** 마운트 시에 유저 정보 불러오고 setEditUser 초기화 */
   useEffect(() => {
     userInfoData();
   }, []);
 
-  /**
-   * articlelist상태 탭바
-   * @param tab
+  /** articlelist 상태 탭 바
+   * react_scroll 애니메이션 추가
    */
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
-  };
-
-  const handleModalOpen = (additionalInfo: string) => {
-    setIsModalOpen(true);
-    setAdditionalInfo(additionalInfo);
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
+    if (bottomSection.current) {
+      bottomSection.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
     <>
       <Section>
         <TopSection>
-          <MyInfoContent
-            userName={userName}
-            userNumber={userNumber}
-            userEmail={userEmail}
-          ></MyInfoContent>
+          <MyInfoContent></MyInfoContent>
         </TopSection>
-        <BottomSection>
+        <BottomSection ref={bottomSection}>
           <InfoTitle>
             <div>스터디/프로젝트 관리</div>
           </InfoTitle>
           <InfoNav>
             <ul>
               <li
-                className={activeTab === "all" ? "activeTab" : ""}
-                onClick={() => handleTabClick("all")}
+                className={activeTab === "article" ? "activeTab" : ""}
+                onClick={() => handleTabClick("article")}
               >
                 신청
               </li>
               <li
-                className={activeTab === "create" ? "activeTab" : ""}
+                className={activeTab === "apply" ? "activeTab" : ""}
                 onClick={() => {
-                  handleTabClick("create");
-                  setIsModalOpen(false);
+                  handleTabClick("apply");
                 }}
               >
                 등록
@@ -124,123 +143,25 @@ const MyInfo = () => {
                 className={activeTab === "like" ? "activeTab" : ""}
                 onClick={() => {
                   handleTabClick("like");
-                  setIsModalOpen(false);
                 }}
               >
                 찜
               </li>
             </ul>
           </InfoNav>
-          {activeTab === "all" && (
-            <>
-              <InfoProjectList>
-                <div>현재 내가 신청한 스터디 / 프로젝트 </div>
-                <div>
-                  <p>Tips!</p>
-                  <p>
-                    스터디나 프로젝트가 선정되어 있을 때, "선정" 버튼을 누르면
-                    해당 스터디나 프로젝트의 오픈 채팅방으로 이동하여 팀원들과
-                    소통을 시작할 수 있습니다.
-                  </p>
-                </div>
-              </InfoProjectList>
-              <section style={{ marginTop: "50px" }}>
-                <ArticleApplyStateTable
-                  articleApplyState={articleCurrentState.articleApplyState}
-                  handleModalOpen={handleModalOpen}
-                  setModalType={setModalType}
-                />
-              </section>
-            </>
+          {activeTab === "article" && (
+            <InfoBottomTabTable articleApplyState={article} type={"article"} />
           )}
           {activeTab === "like" && (
-            <>
-              <ArticleInfoCardWrap>
-                <ArticleInfoCard
-                  navigateRoute="/articledetail/1"
-                  articleType={""}
-                  articleMentorNeeded={false}
-                  articleTitle={""}
-                  articleCurrentApply={0}
-                  articleApply={0}
-                  articleLikes={0}
-                  articleEndDay={""}
-                  articleRecruitmentState={false}
-                  articleStartDay={""}
-                />
-                <ArticleInfoCard
-                  navigateRoute="/articledetail/1"
-                  articleType={""}
-                  articleMentorNeeded={false}
-                  articleTitle={""}
-                  articleCurrentApply={0}
-                  articleApply={0}
-                  articleLikes={0}
-                  articleEndDay={""}
-                  articleRecruitmentState={false}
-                  articleStartDay={""}
-                />
-              </ArticleInfoCardWrap>
-            </>
+            <InfoBottomTabTable articleApplyState={dibs} type={"like"} />
           )}
-          {activeTab === "create" && (
-            <>
-              <InfoProjectList>
-                <div> 등록한 스터디 / 프로젝트 </div>
-                <div>
-                  <p>Tips!</p>
-                  <p>
-                    상태가 모집중일때, "모집중" 을 클릭하면 신청한 사람들의
-                    리스트를 보여줍니다.
-                  </p>
-                </div>
-              </InfoProjectList>
-              <section style={{ marginTop: "50px" }}>
-                <ArticleApplyStateTable
-                  articleApplyState={articleCurrentState.articleApplyState}
-                  handleModalOpen={handleModalOpen}
-                  setModalType={setModalType}
-                />
-
-                <ArticleInfoCardWrap style={{ marginTop: "-50px" }}>
-                  <ArticleInfoCard
-                    navigateRoute="/articledetail/1"
-                    articleType={""}
-                    articleMentorNeeded={false}
-                    articleTitle={""}
-                    articleCurrentApply={0}
-                    articleApply={0}
-                    articleLikes={0}
-                    articleEndDay={""}
-                    articleRecruitmentState={false}
-                    articleStartDay={""}
-                  />
-                  <ArticleInfoCard
-                    navigateRoute="/articledetail/1"
-                    articleType={""}
-                    articleMentorNeeded={false}
-                    articleTitle={""}
-                    articleCurrentApply={0}
-                    articleApply={0}
-                    articleLikes={0}
-                    articleEndDay={""}
-                    articleRecruitmentState={false}
-                    articleStartDay={""}
-                  />
-                </ArticleInfoCardWrap>
-              </section>
-            </>
-          )}
-          {isModalOpen && (
-            <Modal
-              show={isModalOpen}
-              handleClose={handleModalClose}
-              modalType={modalType}
-              additionalInfo={additionalInfo}
-            />
+          {activeTab === "apply" && (
+            <InfoBottomTabTable articleApplyState={apply} type={"apply"} />
           )}
         </BottomSection>
-        <LogoutText onClick={logoutEventClick}>로그아웃</LogoutText>
+        <LogoutText>
+          <p onClick={logoutEventClick}>로그아웃</p>
+        </LogoutText>
       </Section>
     </>
   );

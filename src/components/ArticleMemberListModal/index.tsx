@@ -1,6 +1,7 @@
 // 복잡해보여서 따로 만들었는데 이게 . 더복잡한듯, 굳이 컴포넌트 이렇게 따로 구성해야할까??
 
 import React from "react";
+import { useState } from "react";
 import {
   ModalWrapper,
   ModalContent,
@@ -15,19 +16,17 @@ import {
 } from "./styles";
 import { MyInfoCareer, FirstInfoContentTitle } from "./styles";
 import Button from "../Button";
-import { viewMyCareer } from "../../utils/apimodule/article";
-import {
-  userCareerState,
-  userCareerStateSelector,
-  userCareerUserInfoStateSelector,
-} from "../../utils/recoil/atom";
+
 import { useRecoilValue, useSetRecoilState } from "recoil";
-interface ModalProps {
-  show: boolean;
-  handleClose: () => void;
-  children?: React.ReactNode;
-  memberId?: any;
-}
+import { ModalProps } from "../../typings/db";
+import {
+  userCareerUserInfoStateSelector,
+  userCareerStateSelector,
+} from "../../utils/recoil/atom";
+import {
+  viewMyCareerInfo,
+  viewMyCareerList,
+} from "../../utils/apimodule/article";
 
 const MemberListModal: React.FC<ModalProps> = ({ show, handleClose }) => {
   const careerValue: any = useSetRecoilState(userCareerStateSelector);
@@ -38,20 +37,39 @@ const MemberListModal: React.FC<ModalProps> = ({ show, handleClose }) => {
 
   //구조분해 할당
   const {
-    userCareer = [],
-    userCertificate = [],
     userName,
+    userId,
+    userDpt,
+    userPhoneNumber,
+    userLocation,
     userLineText,
-  } = useRecoilValue(userCareerState);
-  const userInfoData = async () => {
+  }: any = useRecoilValue(userCareerUserInfoStateSelector);
+
+  const userCareerData = async () => {
     try {
-      const data = await viewMyCareer();
-      const result = data.data;
+      const [careerInfo, careerList] = await Promise.all([
+        viewMyCareerInfo(),
+        viewMyCareerList(),
+      ]);
+
+      const member = careerInfo.data.basicInfos[0].member;
+      const career = careerList.data.careers;
+
+      console.log(member);
+      console.log(careerInfo);
+
       careerValue({
-        userName: result.userName,
-        userCareer: result.userCareer,
-        userCertificate: result.userCertificate,
-        userLineText: result.userLineText,
+        userCareer: career.careers || [],
+        userCertificate: career.certifications || [],
+      });
+
+      userInfoValue({
+        userName: member.memberName,
+        userId: member.memberId,
+        userPhoneNumber: member.memberPhoneNum,
+        userDpt: member.memberDpt,
+        userLocation: member.memberLocation,
+        userUni: member.memberUniversity,
       });
     } catch (error) {
       console.error("error", error);
@@ -60,7 +78,7 @@ const MemberListModal: React.FC<ModalProps> = ({ show, handleClose }) => {
 
   React.useEffect(() => {
     if (show) {
-      userInfoData();
+      userCareerData();
     }
   }, [show]);
 
@@ -72,18 +90,20 @@ const MemberListModal: React.FC<ModalProps> = ({ show, handleClose }) => {
         <CloseButton onClick={handleClose}>X</CloseButton>
 
         <MyInfoContent>
-          <FirstInfoContentTitle>{userName} @ktg5679</FirstInfoContentTitle>
-          <div>대림대학교</div>
-          <div>010-2992-5679</div>
-          <div>컴퓨터정보학부</div>
-          <div>안양시 만안구 안양1동</div>
+          <FirstInfoContentTitle>
+            {userName} @{userId}
+          </FirstInfoContentTitle>
+
+          <div>{userPhoneNumber}</div>
+          <div>{userDpt}</div>
+          <div>{userLocation}</div>
         </MyInfoContent>
         <MyInfoCareer>
           <InfoContentTitle>
             <p>경력</p>
           </InfoContentTitle>
-          {userCareer.length > 0 ? (
-            userCareer.map((career: any) => (
+          {career.length > 0 ? (
+            career.map((career: any) => (
               <InfoContentText key={career.id}>
                 <div>{career.careerCompany}</div>
                 <div>
@@ -102,8 +122,8 @@ const MemberListModal: React.FC<ModalProps> = ({ show, handleClose }) => {
           <InfoContentTitle>
             <p>자격증</p>
           </InfoContentTitle>
-          {userCertificate.length > 0 ? (
-            userCertificate.map((certificate: any) => (
+          {certificate.length > 0 ? (
+            certificate.map((certificate: any) => (
               <InfoContentText key={certificate.id}>
                 <div>{certificate.certificateName}</div>
                 <div>{certificate.certificateDate}</div>

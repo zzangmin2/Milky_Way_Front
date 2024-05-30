@@ -1,6 +1,5 @@
-import { useSetRecoilState } from "recoil";
 import api from "../api/axiosInstance";
-import { ArticleCurrentState, isLoggedInUserName } from "../recoil/atom";
+
 import { Article } from "../../typings/db";
 
 /**
@@ -185,10 +184,9 @@ const viewArticleList = async () => {
  */
 const viewMyInfo = async () => {
   try {
-    // const memberIds = localStorage.getItem("memberNo");
-    const response = await api.post(`/info`);
-    const data = response.data[0];
-    console.log(data);
+    const response = await api.get(`/info`);
+    const data = response.data;
+
     if (response.status === 200) {
       return { success: true, data };
     } else {
@@ -201,14 +199,94 @@ const viewMyInfo = async () => {
 };
 
 /**
- * 이력서 정보 불러오기
+ * 마이페이지에서 내가 등록한 게시글정보 가져오기
+ * @returns @success @data
+ */
+const viewMyApplyInfo = async () => {
+  try {
+    const response = await api.get(`/applyinfo`);
+    const data = response.data;
+
+    if (response.status === 200) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
+ * 마이페이지에서 내가 등록한 게시글정보 가져오기
+ * @returns @success @data
+ */
+const viewMyArticleInfo = async () => {
+  try {
+    const response = await api.get(`/articleinfo`);
+    const data = response.data;
+
+    if (response.status === 200) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
+ * 마이페이지에서 내가 찜한 정보 불러오기
+ * @returns @success @data
+ */
+const viewMyDibsInfo = async () => {
+  try {
+    const response = await api.get(`/dibsinfo`);
+    const data = response.data;
+
+    if (response.status === 200) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
+ * 이력서 기본 정보 조회
  * @returns success, data
  */
-const viewMyCareer = async () => {
+const viewMyCareerInfo = async () => {
   try {
-    const response = await api.get(`/myResume`);
-    const data = response.data[0];
-    console.log(response.data);
+    const response = await api.get(`/myResume/basicInfo`);
+    const data = response.data;
+
+    if (response.data) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
+ * 이력서 기본 정보 조회
+ * @returns success, data
+ */
+const viewMyCareerList = async () => {
+  try {
+    const response = await api.get(`/myResume/careerAndCertification`);
+    const data = response.data;
+    console.log(data);
 
     if (response.data) {
       return { success: true, data };
@@ -231,5 +309,9 @@ export {
   viewArticleApplyUserList,
   viewArticleList,
   viewMyInfo,
-  viewMyCareer,
+  viewMyCareerInfo,
+  viewMyArticleInfo,
+  viewMyApplyInfo,
+  viewMyCareerList,
+  viewMyDibsInfo,
 };

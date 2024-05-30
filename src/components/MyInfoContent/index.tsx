@@ -1,51 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { TopSection, InfoTitle, InfoContent } from "../../pages/MyInfo/style";
+import { useState } from "react";
+import { TopSection, InfoTitle, InfoContent } from "./styles";
 import { sendUserEditInfo } from "../../utils/apimodule/member";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userInfoStateSelector } from "../../utils/recoil/atom";
+import { toast } from "react-toastify";
 
-interface UserInfo {
-  userName?: any;
-  userEmail?: any;
-  userNumber?: any;
-}
-
-interface MyInfoContentProps {
-  userName: any;
-  userEmail: any;
-  userNumber: any;
-}
-
-const MyInfoContent: React.FC<MyInfoContentProps> = ({
-  userName,
-  userEmail,
-  userNumber,
-}) => {
+const MyInfoContent = () => {
   const [edit, setEdit] = useState<boolean>(false);
 
-  const [editUser, setEditUser] = useState<UserInfo>({
-    userName: "",
-    userEmail: "",
-    userNumber: "",
-  });
+  const [userInfoState, setUserInfoState] = useRecoilState(
+    userInfoStateSelector
+  );
+
+  const { userName, userNumber, userEmail } = useRecoilValue(
+    userInfoStateSelector
+  );
 
   const sendClickEdit = async () => {
     try {
       const response: any = await sendUserEditInfo(
-        editUser.userName,
-        editUser.userEmail,
-        editUser.userNumber
+        userName,
+        userNumber,
+        userEmail
       );
-      if (response.data.success) {
-        alert("수정완료");
+
+      if (response.success) {
+        toast.success("내정보 수정이 성공하였습니다.");
       }
     } catch (error) {
-      alert("수정실패");
+      toast.error("수정실패");
       console.error("error", error);
     }
   };
 
-  useEffect(() => {
-    setEditUser({});
-  }, []);
   return (
     <>
       <TopSection>
@@ -61,38 +48,32 @@ const MyInfoContent: React.FC<MyInfoContentProps> = ({
               수정완료
             </p>
           ) : (
-            <>
-              <p
-                onClick={() => {
-                  setEdit(true);
-                }}
-              >
-                수정하기
-              </p>
-            </>
+            <p
+              onClick={() => {
+                setEdit(true);
+              }}
+            >
+              수정하기
+            </p>
           )}
         </InfoTitle>
         <InfoContent>
           <div>이메일</div>
           <div>
             {edit ? (
-              <>
-                <input
-                  type="text"
-                  placeholder={"이메일을 입력하세요"}
-                  value={editUser.userEmail}
-                  onChange={(e) => {
-                    setEditUser({
-                      ...editUser,
-                      userEmail: e.target.value,
-                    });
-                  }}
-                />
-              </>
+              <input
+                type="text"
+                placeholder={userEmail}
+                value={userInfoState.userEmail || ""}
+                onChange={(e) => {
+                  setUserInfoState({
+                    ...userInfoState,
+                    userEmail: e.target.value,
+                  });
+                }}
+              />
             ) : (
-              <>
-                <p>{userEmail}</p>
-              </>
+              <p>{userEmail}</p>
             )}
           </div>
         </InfoContent>
@@ -100,23 +81,19 @@ const MyInfoContent: React.FC<MyInfoContentProps> = ({
           <div>이름</div>
           <div>
             {edit ? (
-              <>
-                <input
-                  type="text"
-                  placeholder={"이름을 입력해주세요"}
-                  value={editUser.userName}
-                  onChange={(e) => {
-                    setEditUser({
-                      ...editUser,
-                      userName: e.target.value,
-                    });
-                  }}
-                ></input>
-              </>
+              <input
+                type="text"
+                placeholder={userName}
+                value={userInfoState.userName || ""}
+                onChange={(e) => {
+                  setUserInfoState({
+                    ...userInfoState,
+                    userName: e.target.value,
+                  });
+                }}
+              />
             ) : (
-              <>
-                <p>{userName}</p>
-              </>
+              <p>{userName}</p>
             )}
           </div>
         </InfoContent>
@@ -124,23 +101,19 @@ const MyInfoContent: React.FC<MyInfoContentProps> = ({
           <div>전화번호</div>
           <div>
             {edit ? (
-              <>
-                <input
-                  type="text"
-                  placeholder={"전화번호를 입력해주세요"}
-                  value={editUser.userNumber}
-                  onChange={(e) => {
-                    setEditUser({
-                      ...editUser,
-                      userNumber: e.target.value,
-                    });
-                  }}
-                ></input>
-              </>
+              <input
+                type="text"
+                placeholder={userNumber}
+                value={userInfoState.userNumber || ""}
+                onChange={(e) => {
+                  setUserInfoState({
+                    ...userInfoState,
+                    editNumber: e.target.value,
+                  });
+                }}
+              />
             ) : (
-              <>
-                <p>{userNumber}</p>
-              </>
+              <p>{userNumber}</p>
             )}
           </div>
         </InfoContent>

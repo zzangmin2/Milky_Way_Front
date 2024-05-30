@@ -1,6 +1,5 @@
 import { atom, selector } from "recoil";
 import { Article } from "../../typings/db";
-import { recoilPersist } from "recoil-persist";
 
 interface UserCompareState {
   email?: string;
@@ -18,14 +17,10 @@ interface UserCareerState {
 }
 
 interface UserCareerInfo {
+  userLineText: string;
   userDpt?: string;
   userLocation?: string;
 }
-
-const { persistAtom } = recoilPersist({
-  key: "localstrage",
-  storage: localStorage,
-});
 
 interface UserCareerInfo {
   userDpt?: string;
@@ -74,22 +69,22 @@ export const compareSuccesses = atom<boolean>({
  * sendLogin 성공시 recoil persist로 로컬스토리지에 로그인 유저네임 저장
  * @type {string}
  */
-export const isLoggedInUserName = atom<string>({
-  key: "isLoggedInUserName",
-  default: "",
-  effects_UNSTABLE: [persistAtom],
-});
+// export const isLoggedInUserName = atom<string>({
+//   key: "",
+//   default: "",
+//   effects_UNSTABLE: [persistAtom],
+// });
 
-export const isLoggedInUserNameSelector = selector<string>({
-  key: "isLoggedInUserNameSelector",
-  get: ({ get }) => {
-    const userName = get(isLoggedInUserName);
-    return userName;
-  },
-  set: ({ set }, newValue: any) => {
-    set(userCompareState, newValue);
-  },
-});
+// export const isLoggedInUserNameSelector = selector<string>({
+//   key: "isLoggedInUserNameSelector",
+//   get: ({ get }) => {
+//     const userName = get(isLoggedInUserName);
+//     return userName;
+//   },
+//   set: ({ set }, newValue: any) => {
+//     set(userCompareState, newValue);
+//   },
+// });
 /**
  * 회원가입 state, 필요한지 따져봐야함k
  * @type {boolean}
@@ -163,7 +158,6 @@ export const userCareerState = atom<UserCareerState>({
   default: {
     userCareer: [],
     userCertificate: [],
-    userLineText: "",
   },
 });
 
@@ -186,6 +180,7 @@ export const userCareerUserInfoState = atom<UserCareerInfo>({
   default: {
     userDpt: "",
     userLocation: "",
+    userLineText: "",
   },
 });
 
@@ -217,12 +212,44 @@ export const userInfoState = atom<any>({
   },
 });
 
+export const userInfoStateSelector = selector<any>({
+  key: "userInfoStateSelector",
+  get: ({ get }) => {
+    const userInfoUserInfoState = get(userInfoState);
+    return userInfoUserInfoState;
+  },
+
+  set: ({ set }, newValue: any) => {
+    set(userInfoState, newValue);
+  },
+});
+
+/**
+ * 마이페이지 찜리스트 조회
+ */
+export const ArticleDibsState = atom<any>({
+  key: "ArticleDibsState",
+  default: {},
+});
+
+export const ArticleDibsStateSelector = selector<any>({
+  key: "userInfoDibsStateSelector",
+  get: ({ get }) => {
+    const ArticleDibsStateValue = get(ArticleDibsState);
+    return ArticleDibsStateValue;
+  },
+
+  set: ({ set }, newValue: any) => {
+    set(ArticleDibsState, newValue);
+  },
+});
+
 //스터디 게시물
 
 /**
  * <atom> article 상세 조회
  */
-export const ArticleCurrentState = atom({
+export const ArticleCardCurrentState = atom({
   key: "articleCurrentState",
   default: {
     articleId: 0,
@@ -243,12 +270,65 @@ export const ArticleCurrentState = atom({
   },
 });
 
+export const ArticleCurrentState = atom<any>({
+  key: "ArticleCurrentState",
+  default: "",
+});
+
+export const ArticleCardStateSelector = selector({
+  key: "ArticleCurrentStateSelector",
+  get: ({ get }) => {
+    return get(ArticleCardCurrentState);
+  },
+  set: ({ set }, newValue: any) => {
+    set(ArticleCardCurrentState, newValue);
+  },
+});
+
 /**
  * <atom> article 리스트 조회
  */
 export const ArticleListTypeState = atom({
   key: "articleListTypeState",
   default: [],
+});
+
+/**
+ *  마이페이지에서 내가 "등록"한 프로젝트 보여주기
+ */
+
+export const ArticleApplyAtom = atom<any>({
+  key: "ArticleApplyAtom",
+  default: "",
+});
+
+export const ArticleApplySelector = selector({
+  key: "ArticleApplySelector",
+  get: ({ get }) => {
+    return get(ArticleApplyAtom);
+  },
+  set: ({ set }, newValue: any) => {
+    set(ArticleApplyAtom, newValue);
+  },
+});
+
+/**
+ *  마이페이지에서 내가 "신청"한 프로젝트 보여주기
+ */
+
+export const ArticleArticleAtom = atom<any>({
+  key: "ArticleArticleAtom",
+  default: "",
+});
+
+export const ArticleArticleSelector = selector({
+  key: "ArticleArticleSelector",
+  get: ({ get }) => {
+    return get(ArticleArticleAtom);
+  },
+  set: ({ set }, newValue: any) => {
+    set(ArticleArticleAtom, newValue);
+  },
 });
 
 /**

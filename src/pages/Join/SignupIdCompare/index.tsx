@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "../../../components/Button";
 import {
   BottomSection,
@@ -9,24 +9,17 @@ import {
   ProgressBar,
 } from "../styles";
 import { useNavigate } from "react-router-dom";
-// import { sendUserCompareInfo } from "../../../utils/apimodule/member";
+
 import {
-  userCompareState,
   compareSuccesses,
   userCompareValues,
-  loadingStateAtom,
 } from "../../../utils/recoil/atom";
-import {
-  useSetRecoilState,
-  useRecoilValue,
-  useRecoilValueLoadable,
-} from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import SignupInput from "../../../components/SignupInput";
 import { emailSuccesses } from "../../../utils/recoil/atom";
 import ErrorPage from "../../RoutePage/ErrorPage";
 import { sendUserCompareInfo } from "../../../utils/apimodule/member";
 import { toast } from "react-toastify";
-import { loadingStateSelector } from "../../../utils/recoil/atom";
 
 const SignupIdCompare = () => {
   const emailSuccessIn = useRecoilValue(emailSuccesses);
@@ -37,24 +30,30 @@ const SignupIdCompare = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const compareSuccessIn = useSetRecoilState(compareSuccesses);
-  const loadingState = useRecoilValue(loadingStateSelector);
+
   const [compareInState, setCompareInState] = useState(false);
 
   const navigate = useNavigate();
 
+  const regex: RegExp = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/;
+
   const sendUseridVerify = async () => {
-    try {
-      const result = await sendUserCompareInfo(id);
-      console.log(result);
-      if (result.success) {
-        setCompareInState(true);
-        toast.success("중복된 아이디가 없습니다");
-      } else {
-        console.log(id);
-        toast.error("중복된 아이디가 있습니다");
+    if (regex.test(id)) {
+      try {
+        const result = await sendUserCompareInfo(id);
+        console.log(result);
+        if (true) {
+          alert("중복된 아이디가 없습니다");
+          setCompareInState(true);
+        } else {
+          console.log(id);
+          alert("실패");
+        }
+      } catch (error: any) {
+        alert(`실패: ${error.message}`);
       }
-    } catch (error: any) {
-      toast.error(`실패: ${error.message}`);
+    } else {
+      alert("아이디에 숫자와 문자를 모두 입력해주세요!");
     }
   };
 
