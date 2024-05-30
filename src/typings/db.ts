@@ -60,7 +60,7 @@ export interface UserInfo {
 export interface ModalProps {
   show: boolean;
   handleClose: () => void;
-  children?: React.ReactNode;
+  conMethod: string;
   modalType: any; // 추가한 type
   additionalInfo?: any; // 추가
 }

@@ -43,7 +43,7 @@ export const loginedIn = async (loginId: string, password: string) => {
 
 export const logout = async () => {
   try {
-    const response = await api.post("/logout");
+    const response = await api.get("/logout");
     console.log(response);
     if (response.status === 200) {
       return { success: true };

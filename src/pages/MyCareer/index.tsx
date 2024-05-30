@@ -16,7 +16,7 @@ import {
 } from "./style";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { useState, useEffect, Key } from "react";
+import { useState, useEffect } from "react";
 import {
   viewMyCareerInfo,
   viewMyCareerList,
@@ -31,10 +31,14 @@ import { toast } from "react-toastify";
 
 const MyCareer = () => {
   const setCareerValue = useSetRecoilState(userCareerStateSelector);
+  const careerStateValueTest = useRecoilValue(userCareerStateSelector);
+
   const [userInfoValue, setUserInfoValue] = useRecoilState<any>(
     userCareerUserInfoStateSelector
   );
+
   const [careerPostState, setCareerPostState] = useState(false);
+
   const {
     userName,
     userId,
@@ -43,53 +47,42 @@ const MyCareer = () => {
     userLocation,
     userLineText,
   } = useRecoilValue<any>(userCareerUserInfoStateSelector);
+
   const { userCareer, userCertificate } = useRecoilValue(
     userCareerStateSelector
   );
   const [edit, setEdit] = useState(true);
 
-  const clickEdit = () => {
+  const clickEdit: any = () => {
     setEdit(false);
   };
 
   const sendCareerEdit = async () => {
+    const sendCareerData = {
+      careerDtoList: userCareer,
+      certificateDtoList: userCertificate,
+    };
+
     try {
       if (!validateCareer(userCareer, userCertificate)) {
         return;
       }
       let response;
 
-      if (careerPostState) {
+      if (!careerPostState) {
         response = await Promise.all([
-          editUserCareerList("post", userCareer, userCertificate),
-          editUserCareerInfo(
-            "post",
-            userName,
-            userId,
-            userDpt,
-            userPhoneNumber,
-            userLocation,
-            userLineText
-          ),
+          editUserCareerList("post", sendCareerData),
+          editUserCareerInfo("post", userName, userId, userDpt),
         ]);
       } else {
         response = await Promise.all([
-          editUserCareerList("put", userCareer, userCertificate),
-          editUserCareerInfo(
-            "put",
-            userName,
-            userId,
-            userDpt,
-            userPhoneNumber,
-            userLocation,
-            userLineText
-          ),
+          editUserCareerList("put", sendCareerData),
+          editUserCareerInfo("put", userName, userId, userDpt),
         ]);
       }
       if (response[0].success && response[1].success) {
         toast.success("이력서 수정이 완료되었습니다!");
         setEdit(true);
-        window.location.reload();
       } else {
         toast.error("서버연결 안됨!");
       }
@@ -107,11 +100,12 @@ const MyCareer = () => {
       ]);
 
       const member = careerInfo.data.basicInfos[0].member;
-      const career = careerList.data.careers;
+      const career = careerList.data.careerDtoList;
+      const ceritificate = careerList.data.certificateDtoList;
 
       setCareerValue({
-        userCareer: career.careers || [],
-        userCertificate: career.certifications || [],
+        userCareer: career || [],
+        userCertificate: ceritificate || [],
       });
 
       setUserInfoValue({
@@ -135,13 +129,15 @@ const MyCareer = () => {
     }
   };
 
+  console.log(careerStateValueTest);
+
   const addCareerInput = () => {
     setCareerValue((prev) => ({
       ...prev,
       userCareer: [
         ...prev.userCareer,
         {
-          id: Date.now(),
+          id: prev.userCareer.length + 1,
           carName: "",
           carStartDay: "",
           carEndDay: "",
@@ -156,7 +152,7 @@ const MyCareer = () => {
       userCertificate: [
         ...prev.userCertificate,
         {
-          id: Date.now(),
+          id: prev.userCertificate.length + 1,
           certName: "",
           certDate: "",
         },
@@ -230,57 +226,30 @@ const MyCareer = () => {
                   ? userPhoneNumber
                   : "등록된 전화번호가 없습니다."}
               </div>
-              {userDpt ? (
-                <input
-                  placeholder={userDpt}
-                  value={userInfoValue.userDpt}
-                  onChange={(e) => {
-                    setUserInfoValue({
-                      ...userInfoValue,
-                      userDpt: e.target.value,
-                    });
-                  }}
-                />
-              ) : (
-                <>
-                  <input
-                    type="text"
-                    placeholder="학과를 입력해주세요"
-                    value={userInfoValue.userDpt}
-                    onChange={(e) => {
-                      setUserInfoValue({
-                        ...userInfoValue,
-                        userDpt: e.target.value,
-                      });
-                    }}
-                  />
-                </>
-              )}
-              {userLocation ? (
-                <input
-                  placeholder={userLocation}
-                  value={userInfoValue.userLocation}
-                  onChange={(e) => {
-                    setUserInfoValue({
-                      ...userInfoValue,
-                      userLocation: e.target.value,
-                    });
-                  }}
-                />
-              ) : (
-                <>
-                  <input
-                    placeholder="지역을 입력해주세요"
-                    value={userInfoValue.userLocation}
-                    onChange={(e) => {
-                      setUserInfoValue({
-                        ...userInfoValue,
-                        userLocation: e.target.value,
-                      });
-                    }}
-                  />
-                </>
-              )}
+              <input
+                type="text"
+                placeholder={userDpt ? userDpt : "학과를 입력해주세요"}
+                value={userInfoValue.userDpt}
+                onChange={(e) =>
+                  setUserInfoValue({
+                    ...userInfoValue,
+                    userDpt: e.target.value,
+                  })
+                }
+              />
+              <input
+                type="text"
+                placeholder={
+                  userLocation ? userLocation : "지역을 입력해주세요"
+                }
+                value={userInfoValue.userLocation}
+                onChange={(e) =>
+                  setUserInfoValue({
+                    ...userInfoValue,
+                    userLocation: e.target.value,
+                  })
+                }
+              />
             </MyInfoContentEdit>
           </>
         )}
@@ -334,7 +303,12 @@ const MyCareer = () => {
                   <input
                     type="date"
                     value={career.carStartDay}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const endDate = e.target.value;
+                      if (endDate < career.carStartDay) {
+                        toast.error("종료일은 시작일보다 이후로 설정해주세요.");
+                        return;
+                      }
                       setCareerValue((prev) => ({
                         ...prev,
                         userCareer: prev.userCareer.map((item: any) =>
@@ -342,13 +316,18 @@ const MyCareer = () => {
                             ? { ...item, carStartDay: e.target.value }
                             : item
                         ),
-                      }))
-                    }
+                      }));
+                    }}
                   />
                   <input
                     type="date"
                     value={career.carEndDay}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const endDate = e.target.value;
+                      if (endDate < career.carStartDay) {
+                        toast.error("종료일은 시작일보다 이후로 설정해주세요.");
+                        return;
+                      }
                       setCareerValue((prev) => ({
                         ...prev,
                         userCareer: prev.userCareer.map((item: any) =>
@@ -356,8 +335,8 @@ const MyCareer = () => {
                             ? { ...item, carEndDay: e.target.value }
                             : item
                         ),
-                      }))
-                    }
+                      }));
+                    }}
                   />
                   <p
                     onClick={() => {

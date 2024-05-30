@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { ArticleApplyStateTableWrap } from "./styles";
-import { InfoProjectList } from "../../pages/MyInfo/style";
-import { ArticleInfoCardWrap } from "../../pages/MyInfo/style";
+import { InfoProjectList } from "../../pages/MyInfo/styles";
+import { ArticleInfoCardWrap } from "../../pages/MyInfo/styles";
 import ArticleInfoCard from "../ArticleInfoCard";
-import { ArticleApplySelector } from "../../utils/recoil/atom";
-import { ArticleArticleSelector } from "../../utils/recoil/atom";
+import {
+  ArticleApplySelector,
+  ArticleArticleSelector,
+  ArticleDibsStateSelector,
+} from "../../utils/recoil/atom";
+
 import { useRecoilValue } from "recoil";
 import { ArticleCardPageCount } from "./styles";
 import Modal from "../Modal";
@@ -12,6 +16,7 @@ import { BottomTableProps } from "../../typings/db";
 
 const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
   const articleCard: any[] = useRecoilValue(ArticleArticleSelector);
+  const dibsCard: any[] = useRecoilValue(ArticleDibsStateSelector);
   const applyGrid: any = useRecoilValue(ArticleApplySelector);
   const [page, setPage] = useState(1);
   const itemsPerPage = 3;
@@ -19,9 +24,9 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
   const endIndex = startIndex + itemsPerPage;
   const visibleCards = articleCard.slice(startIndex, endIndex);
 
-  /** 모달 오픈, 오픈채팅방 링크 넘기기 등 */
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [additionalInfo, setAdditionalInfo] = useState<string>("");
+  const [conMethod, setConMethod] = useState<string>("");
 
   const renderArticleCards = (cards: any[]) => {
     return cards.map((card, index) => (
@@ -51,13 +56,20 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
     setPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
-  const handleModalOpen = (additionalInfo: string) => {
+  const handleModalOpen = (info: string, method: string) => {
+    if (info && info.startsWith("http")) {
+      setAdditionalInfo(info);
+    } else {
+      setAdditionalInfo(`http://${info}`);
+    }
+    setConMethod(method);
     setIsModalOpen(true);
-    setAdditionalInfo(additionalInfo);
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
+    setAdditionalInfo("");
+    setConMethod("");
   };
 
   return (
@@ -96,17 +108,20 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
                         <div className="tableCell">
                           <p>
                             {apply.applyResult === "선정" ? (
-                              <p
+                              <span
                                 onClick={() => {
-                                  handleModalOpen("");
-                                  setAdditionalInfo(apply.conInfo);
+                                  handleModalOpen(
+                                    apply.conInfo,
+                                    apply.conMethod
+                                  );
                                 }}
                                 style={{
-                                  color: "#133488",
+                                  fontWeight: "bold",
+                                  cursor: "pointer",
                                 }}
                               >
                                 {apply.applyResult}
-                              </p>
+                              </span>
                             ) : (
                               <>{apply.applyResult}</>
                             )}
@@ -179,21 +194,47 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
               </p>
             </div>
           </InfoProjectList>
-          <ArticleInfoCardWrap>
-            {articleCard.length > 0 ? ( // 찜 리코일 값 만들어서 데이터받기
-              renderArticleCards(articleCard)
-            ) : (
-              <div>찜한 항목이 없습니다.</div>
-            )}
-          </ArticleInfoCardWrap>
+          <section style={{ marginTop: "50px", flex: "1" }}>
+            <ArticleInfoCardWrap
+              style={{
+                display: "flex",
+                height: "auto",
+                flexDirection: "column",
+                alignItems: "center",
+                marginBottom: "90px",
+              }}
+            >
+              {dibsCard.length > 0 ? (
+                <>
+                  {renderArticleCards(visibleCards)}
+                  <ArticleCardPageCount>
+                    <button onClick={handlePrevPage} disabled={page === 1}>
+                      이전
+                    </button>
+                    <button
+                      onClick={handleNextPage}
+                      disabled={
+                        page === Math.ceil(dibsCard.length / itemsPerPage)
+                      }
+                    >
+                      다음
+                    </button>
+                  </ArticleCardPageCount>
+                </>
+              ) : (
+                <div>찜한 항목이 없습니다.</div>
+              )}
+            </ArticleInfoCardWrap>
+          </section>
         </>
       )}
       {isModalOpen && (
         <Modal
           show={isModalOpen}
           handleClose={handleModalClose}
-          modalType={"info"}
+          conMethod={conMethod}
           additionalInfo={additionalInfo}
+          modalType={"info"}
         />
       )}
     </>

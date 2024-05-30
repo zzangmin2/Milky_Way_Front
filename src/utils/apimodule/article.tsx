@@ -207,6 +207,26 @@ const viewMyArticleInfo = async () => {
 };
 
 /**
+ * 마이페이지에서 내가 찜한 정보 불러오기
+ * @returns @success @data
+ */
+const viewMyDibsInfo = async () => {
+  try {
+    const response = await api.get(`/dibsinfo`);
+    const data = response.data;
+
+    if (response.status === 200) {
+      return { success: true, data };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
  * 이력서 기본 정보 조회
  * @returns success, data
  */
@@ -234,6 +254,7 @@ const viewMyCareerList = async () => {
   try {
     const response = await api.get(`/myResume/careerAndCertification`);
     const data = response.data;
+    console.log(data);
 
     if (response.data) {
       return { success: true, data };
@@ -259,4 +280,5 @@ export {
   viewMyArticleInfo,
   viewMyApplyInfo,
   viewMyCareerList,
+  viewMyDibsInfo,
 };
