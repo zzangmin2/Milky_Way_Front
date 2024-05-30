@@ -254,6 +254,7 @@ const viewMyCareerList = async () => {
   try {
     const response = await api.get(`/myResume/careerAndCertification`);
     const data = response.data;
+
     console.log(data);
 
     if (response.data) {

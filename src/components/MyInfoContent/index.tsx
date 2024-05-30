@@ -20,8 +20,9 @@ const MyInfoContent = () => {
     try {
       const response: any = await sendUserEditInfo(
         userName,
-        userNumber,
-        userEmail
+
+        userEmail,
+        userNumber
       );
 
       if (response.success) {
@@ -108,7 +109,7 @@ const MyInfoContent = () => {
                 onChange={(e) => {
                   setUserInfoState({
                     ...userInfoState,
-                    editNumber: e.target.value,
+                    userNumber: e.target.value,
                   });
                 }}
               />

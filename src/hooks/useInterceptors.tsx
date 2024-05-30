@@ -60,20 +60,28 @@ const useInterceptors = () => {
         if (error.response.status === 401) {
           try {
             const refresh_Token = localStorage.getItem("REFRESH_TOKEN");
-            const response = await api.post("/reissue", {
-              headers: {
-                Authorization: `Bearer ${refresh_Token}`,
-              },
-            });
-            // 새로발급된 억세스토큰을 로컬스토리지에 저장
-            const accessToken = response.data.access_token;
-            localStorage.setItem("ACCESS_TOKEN", accessToken);
+            const response = await api.post(
+              "/reissue",
+              {},
+              {
+                headers: {
+                  Authorization: `Bearer ${refresh_Token}`,
+                },
+              }
+            );
 
-            // 원래 요청 헤더 업데이트
-            error.config.headers["Authorization"] = `Bearer ${accessToken}`;
+            if (response.status === 200) {
+              // 새로발급된 억세스토큰을 로컬스토리지에 저장
+              const accessToken = response.data.access_token;
+              localStorage.setItem("ACCESS_TOKEN", accessToken);
 
-            // 원래 요청 재시도
-            return api.request(error.config);
+              // 원래 요청 헤더 업데이트
+              error.config.headers["Authorization"] = `Bearer ${accessToken}`;
+
+              // 원래 요청 재시도
+              return api.request(error.config);
+            } else {
+            }
           } catch (error) {
             // refresh_token이 없을때 에러처리
             console.error(error);

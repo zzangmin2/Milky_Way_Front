@@ -31,7 +31,6 @@ import { toast } from "react-toastify";
 
 const MyCareer = () => {
   const setCareerValue = useSetRecoilState(userCareerStateSelector);
-  const careerStateValueTest = useRecoilValue(userCareerStateSelector);
 
   const [userInfoValue, setUserInfoValue] = useRecoilState<any>(
     userCareerUserInfoStateSelector
@@ -51,6 +50,7 @@ const MyCareer = () => {
   const { userCareer, userCertificate } = useRecoilValue(
     userCareerStateSelector
   );
+
   const [edit, setEdit] = useState(true);
 
   const clickEdit: any = () => {
@@ -60,7 +60,7 @@ const MyCareer = () => {
   const sendCareerEdit = async () => {
     const sendCareerData = {
       careerDtoList: userCareer,
-      certificateDtoList: userCertificate,
+      certificationDtoList: userCertificate,
     };
 
     try {
@@ -69,15 +69,15 @@ const MyCareer = () => {
       }
       let response;
 
-      if (!careerPostState) {
+      if (careerPostState) {
         response = await Promise.all([
           editUserCareerList("post", sendCareerData),
-          editUserCareerInfo("post", userName, userId, userDpt),
+          editUserCareerInfo("post", userInfoValue),
         ]);
       } else {
         response = await Promise.all([
           editUserCareerList("put", sendCareerData),
-          editUserCareerInfo("put", userName, userId, userDpt),
+          editUserCareerInfo("put", userInfoValue),
         ]);
       }
       if (response[0].success && response[1].success) {
@@ -99,7 +99,7 @@ const MyCareer = () => {
         viewMyCareerList(),
       ]);
 
-      const member = careerInfo.data.basicInfos[0].member;
+      const member = careerInfo.data;
       const career = careerList.data.careerDtoList;
       const ceritificate = careerList.data.certificateDtoList;
 
@@ -112,12 +112,13 @@ const MyCareer = () => {
         userName: member.memberName,
         userId: member.memberId,
         userPhoneNumber: member.memberPhoneNum,
-        userDpt: member.memberDpt,
-        userLocation: member.memberLocation,
-        userLineText: member.memberLineText,
+        userDpt: member.studentMajor,
+        userLocation: member.studentLocate,
+        userLineText: member.studentOneLineShow,
       });
 
       if (
+        userInfoValue.length > 0 &&
         career.careers.length > 0 &&
         career.certifications.length > 0 &&
         Object.keys(member).length > 0
@@ -128,8 +129,6 @@ const MyCareer = () => {
       console.error("error", error);
     }
   };
-
-  console.log(careerStateValueTest);
 
   const addCareerInput = () => {
     setCareerValue((prev) => ({
