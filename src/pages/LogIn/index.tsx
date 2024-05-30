@@ -25,7 +25,7 @@ const LogIn = () => {
         throw result;
       }
     } catch (error: any) {
-      toast.error(`실패: ${error.message}`);
+      toast.error(`아이디와 패스워드를 확인해주세요`);
     }
   };
 

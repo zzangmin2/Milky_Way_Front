@@ -16,11 +16,14 @@ import ErrorPage from "../../RoutePage/ErrorPage";
 import {
   emailSuccesses,
   compareSuccesses,
-  // userCompareState,
   userCompareValues,
   userCompareState,
 } from "../../../utils/recoil/atom";
 import { toast } from "react-toastify";
+import {
+  validatePhoneNumber,
+  validateName,
+} from "../../../utils/validations/validation"; // 유효성 검사 함수 임포트
 
 const SignupInfo = () => {
   const navigate = useNavigate();
@@ -34,13 +37,25 @@ const SignupInfo = () => {
   const verifyValue = useRecoilValue(userCompareState);
 
   const sendUserInfoOnClick = async () => {
+    // 이름 유효성 검사
+    const nameValidation = validateName(name);
+    if (!nameValidation.isValid) {
+      toast.warning(nameValidation.message);
+      return;
+    }
+    // 전화번호 유효성 검사
+    const phoneValidation = validatePhoneNumber(number);
+    if (!phoneValidation.isValid) {
+      toast.warning(phoneValidation.message);
+      return;
+    }
+
     try {
       userCompare(newValue);
-      const { name, dpt, number, id, email, password } = newValue;
-      console.log(newValue);
+      const { name, number, id, email, password } = newValue;
       const result = await sendUserInfo(name, number, id, email, password);
 
-      if (true) {
+      if (result.success) {
         toast.success(`${name}님! 회원가입이 완료되었습니다.`);
         navigate("/users/login");
       } else {
@@ -56,7 +71,6 @@ const SignupInfo = () => {
   const newValue = {
     ...compareValue,
     name: name,
-    dpt: dpt,
     number: number,
   };
 
@@ -84,12 +98,6 @@ const SignupInfo = () => {
                 name="name"
                 placeholder={"이름을 입력해주세요"}
                 setValue={setName}
-              />
-              <SignupInput
-                type="text"
-                name="dpt"
-                placeholder={"소속된 과를 입력 해주세요"}
-                setValue={setDpt}
               />
               <SignupInput
                 type="text"

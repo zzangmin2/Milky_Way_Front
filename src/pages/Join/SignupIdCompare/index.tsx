@@ -20,6 +20,10 @@ import { emailSuccesses } from "../../../utils/recoil/atom";
 import ErrorPage from "../../RoutePage/ErrorPage";
 import { sendUserCompareInfo } from "../../../utils/apimodule/member";
 import { toast } from "react-toastify";
+import {
+  validateSignupCompare,
+  validateSignupId,
+} from "../../../utils/validations/validation";
 
 const SignupIdCompare = () => {
   const emailSuccessIn = useRecoilValue(emailSuccesses);
@@ -35,43 +39,38 @@ const SignupIdCompare = () => {
 
   const navigate = useNavigate();
 
-  const regex: RegExp = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/;
-
   const sendUseridVerify = async () => {
-    if (regex.test(id)) {
-      try {
-        const result = await sendUserCompareInfo(id);
-        console.log(result);
-        if (true) {
-          alert("중복된 아이디가 없습니다");
-          setCompareInState(true);
-        } else {
-          console.log(id);
-          alert("실패");
-        }
-      } catch (error: any) {
-        alert(`실패: ${error.message}`);
+    const { isValid, message } = validateSignupId(id);
+    if (!isValid) {
+      toast.warning(message);
+      return;
+    }
+
+    try {
+      const result = await sendUserCompareInfo(id);
+      console.log(result);
+      if (result.success) {
+        alert("중복된 아이디가 없습니다");
+        setCompareInState(true);
+      } else {
+        console.log(id);
+        alert("존재하는 아이디입니다");
       }
-    } else {
-      alert("아이디에 숫자와 문자를 모두 입력해주세요!");
+    } catch (error: any) {
+      alert(`실패: ${error.message}`);
     }
   };
 
   const stateUserInfo = (): Promise<void | undefined> => {
     return new Promise((resolve, reject) => {
-      if (!id || !password || !confirmPassword) {
-        toast.warning("아이디와 비밀번호를 입력해주세요.");
-
+      const { isValid, message } = validateSignupCompare(
+        id,
+        password,
+        confirmPassword
+      );
+      if (!isValid) {
+        toast.warning(message);
         return;
-      }
-
-      if (password !== confirmPassword) {
-        // toast.error("비밀번호가 일치하지 않습니다.");
-        setPwdValidate(true);
-
-        return;
-      } else {
-        setConfirmPassword: Boolean(true);
       }
 
       try {
