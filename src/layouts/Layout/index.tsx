@@ -12,7 +12,7 @@ import {
 import { FC, useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  ArticleDetailAuthorState,
+  UserArticleInteractionState,
   articleDetailModalClickState,
   navState,
 } from "../../utils/recoil/atom";
@@ -51,8 +51,9 @@ const Layout: FC<Props> = ({ type }) => {
     }
   }, [location.pathname]);
 
-  //현재 로그인 된 사용자가 작성한 게시물인지 판별 상태
-  const articleDetailAuthorState = useRecoilValue(ArticleDetailAuthorState);
+  const userArticleInteractionState = useRecoilValue(
+    UserArticleInteractionState
+  );
 
   return (
     <>
@@ -66,7 +67,7 @@ const Layout: FC<Props> = ({ type }) => {
           )}
 
           {/* 게시물 상세 페이지인 경우 -> 메뉴 버튼 / 나머지 -> 마이페이지 버튼*/}
-          {type === "articleDetail" && articleDetailAuthorState ? (
+          {type === "articleDetail" && userArticleInteractionState.isAuthor ? (
             <FontAwesomeIcon
               icon={faEllipsisVertical}
               onClick={() =>

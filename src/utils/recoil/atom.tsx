@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import { Article } from "../../typings/db";
+import { ArticleCard } from "../../typings/db";
 
 interface UserCompareState {
   email?: string;
@@ -359,11 +359,11 @@ export const filteredArticleListTypeState = selector({
     switch (filter) {
       case "study":
         return list.filter(
-          (article: Article) => article.articleType === "study"
+          (article: ArticleCard) => article.articleType === "study"
         );
       case "project":
         return list.filter(
-          (article: Article) => article.articleType === "project"
+          (article: ArticleCard) => article.articleType === "project"
         );
 
       default:
@@ -396,11 +396,11 @@ export const filteredArticleRecruitmentOptionListState = selector({
         return list;
       case "recruting":
         return list.filter(
-          (article: Article) => article.articleRecruitmentState
+          (article: ArticleCard) => article.articleRecruitmentState
         );
       case "recruitmentCompleted":
         return list.filter(
-          (article: Article) => !article.articleRecruitmentState
+          (article: ArticleCard) => !article.articleRecruitmentState
         );
 
       default:
@@ -430,14 +430,14 @@ export const filteredArticleLatestOrPopularOptionListState = selector({
 
     switch (option) {
       case "latest":
-        return list.slice().sort((a: Article, b: Article) => {
+        return list.slice().sort((a: ArticleCard, b: ArticleCard) => {
           const articleEndDayA = new Date(a.articleEndDay);
           const articleEndDayB = new Date(b.articleEndDay);
           return articleEndDayA.getTime() - articleEndDayB.getTime();
         });
 
       case "popular":
-        return list.slice().sort((a: Article, b: Article) => {
+        return list.slice().sort((a: ArticleCard, b: ArticleCard) => {
           return b.articleLikes - a.articleLikes;
         });
 
@@ -448,13 +448,18 @@ export const filteredArticleLatestOrPopularOptionListState = selector({
 });
 
 /**
- * <atom> 현재 로그인 된 사용자가 작성한 게시물인지 판별 상태
+ * <atom> 게시물 상세 접속 시 사용자 상태 (작성, 좋아요, 지원 여부)
  */
 
-export const ArticleDetailAuthorState = atom({
-  key: " articleDetailAuthorState",
-  default: false,
+export const UserArticleInteractionState = atom({
+  key: "userArticleInteractionState",
+  default: {
+    isAuthor: false,
+    isLike: false,
+    isApplier: false,
+  },
 });
+
 /**
  * <atom> 게시물 상세 상단 메뉴 버튼 클릭 상태 (원 3개 모양의 버튼 클릭 상태)
  */
@@ -482,10 +487,10 @@ export const ArticleApplyUserListState = atom({
 });
 
 /**
- * <atom> 현재 로그인 된 사용자의 해당 게시물 찜 상태
+ * <atom> 현재 지원자 리스트 이력서 모달 상태
  */
 
-export const ArticleLikeState = atom({
-  key: "articleLikeState",
+export const ArticleApplyUserResumeModalState = atom({
+  key: "articleApplyUserResumeModalState",
   default: false,
 });

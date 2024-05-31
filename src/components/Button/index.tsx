@@ -12,6 +12,7 @@ interface Props {
   type?: string;
   border?: string;
   fontColor?: string;
+  disabled: boolean;
 }
 
 const Button: React.FC<Props> = ({
@@ -22,6 +23,7 @@ const Button: React.FC<Props> = ({
   type,
   border,
   fontColor,
+  disabled,
 }) => {
   let buttonColor = buttonState === "inactive" ? "#959595" : "#133488";
 
@@ -36,6 +38,7 @@ const Button: React.FC<Props> = ({
       type={type === "submit" || type === "reset" ? type : "button"}
       border={border}
       fontColor={fontColor}
+      disabled={disabled}
     >
       {text}
     </StyledButton>
