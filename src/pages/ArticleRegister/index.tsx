@@ -30,6 +30,8 @@ const ArticleRegister = () => {
 
   const navigate = useNavigate();
 
+  const today = new Date().toISOString().split("T")[0];
+
   // 멘토 취향 버튼 눌렀을 때 실행 함수
   const handleArticleMentorSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -126,6 +128,7 @@ const ArticleRegister = () => {
             <input
               type="date"
               {...register("articleEndDay", { required: true })}
+              min={today}
             />
           </div>
           {errors.articleEndDay && (
@@ -227,7 +230,6 @@ const ArticleRegister = () => {
                     </button>
                   </div>
                   <div className="mentorTagWrap">
-                    {" "}
                     {articleMentorTagArr.length >= 1 &&
                       articleMentorTagArr.split("#").map((tag, index) => {
                         return <div key={index}>{tag}</div>;

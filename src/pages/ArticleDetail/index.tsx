@@ -2,62 +2,47 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MentoTag from "../../components/MentoTag";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import {
-  ArticleApplyStateContainer,
-  ArticleApplyStateTableWrap,
   ArticleDetailPageNavWrap,
   ArticleDetailWrap,
   ArticleInfoStateWrap,
   ArticleInfoSummaryWrap,
-  ArticleIntrowrap,
   ArticleLikeWrap,
   TopSection,
 } from "./styles";
-import Button from "../../components/Button";
 import { useEffect, useState } from "react";
 import ArticleTag from "../../components/ArticleTag";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   ArticleApplyUserListState,
+  ArticleApplyUserResumeModalState,
   ArticleCurrentState,
-  ArticleDetailAuthorState,
   ArticleDetailIntroOrQnaTabState,
-  ArticleLikeState,
+  UserArticleInteractionState,
 } from "../../utils/recoil/atom";
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  deleteArticleLike,
   sendArticleApplyUser,
   sendArticleLike,
   viewArticleApplyUserList,
   viewCurrentArticle,
 } from "../../utils/apimodule/article";
-import { faFaceSadTear } from "@fortawesome/free-solid-svg-icons";
 import { getTimeAgo } from "../../utils/utils";
 import MemberListModal from "../../components/ArticleMemberListModal";
 import SkeletonArticleDetail from "../../utils/skeleton/SkeletonArticleDetail";
 import { toast } from "react-toastify";
 import { ArticleApplyState } from "../../typings/db";
+import ArticleIntroContainer from "../../components/ArticleIntroContainer";
 
 const ArticleDetail = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+  // const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // const openModalMemberCareer = () => {
-  //   setModalOpen(true);
-  // };
-
-  const handleModalState = () => {
-    setModalOpen(!modalOpen);
-  };
-
-  //현재 로그인 된 사용자가 작성한 게시물인지 판별 상태 -> boolean
-  const [articleDetailAuthorState, setArticleDetailAuthorState] =
-    useRecoilState(ArticleDetailAuthorState);
-
-  //현재 로그인 된 사용자의 해당 게시물 찜 상태 -> boolean
-  const [articleLikeState, setArticleLikeState] =
-    useRecoilState(ArticleLikeState);
+  //게시물 상세 접속 시 사용자 상태 (작성, 좋아요, 지원 여부)
+  const [userArticleInteractionState, setUserArticleInteractionState] =
+    useRecoilState(UserArticleInteractionState);
 
   // 현재 페이지에서 보여주고 있는 article 데이터
   const [articleCurrentState, setArticleCurrentState] =
@@ -68,54 +53,68 @@ const ArticleDetail = () => {
     useRecoilState(ArticleDetailIntroOrQnaTabState);
 
   //현재 게시물 지원자 리스트 상태
-  const [articleApplyUserListState, setArticleApplyUserListState] =
-    useRecoilState(ArticleApplyUserListState);
+  const setArticleApplyUserListState = useSetRecoilState(
+    ArticleApplyUserListState
+  );
+
+  //현재 지원자 리스트 이력서 모달 상태
+  const [articleApplyUserResumeModalState] = useRecoilState(
+    ArticleApplyUserResumeModalState
+  );
+
+  useEffect(() => {
+    console.log(articleApplyUserResumeModalState);
+  }, [articleApplyUserResumeModalState]);
 
   const { articleId } = useParams();
 
   // 마운트 시 해당 article 불러옴
   useEffect(() => {
-    loadCurrentArticle();
+    loadArticleData();
   }, []);
 
-  // 지원 리스트 상태 변경 될 때마다 새로 불러옴
-  useEffect(() => {
-    if (articleCurrentState && articleCurrentState.articleId) {
-      articleApplyUserList();
-    }
-  }, [articleCurrentState]);
-
-  // 해당 article 불러오는 함수
-  const loadCurrentArticle = async () => {
+  const loadArticleData = async () => {
     try {
       if (articleId) {
-        const result = await viewCurrentArticle(parseInt(articleId));
+        const [articleResult, applyUserListResult] = await Promise.all([
+          viewCurrentArticle(parseInt(articleId)),
+          viewArticleApplyUserList(parseInt(articleId)),
+        ]);
 
-        if (result) {
+        if (articleResult) {
           const newResult = {
-            articleId: result.article_no,
-            articleMemberNo: result.member.memberNo,
-            articleMemberName: result.member.memberName,
-            articleType: result.articleType,
-            articleTitle: result.title,
-            articleContent: result.content,
-            articleLikes: result.likes,
-            articleApply: result.apply,
-            articleApplyNow: result.applyNow,
-            articleStartDay: result.startDay,
-            articleEndDay: result.endDay,
-            articleRecruitmentState: result.recruit,
-            articleMentorNeeded: result.findMentor,
-            articleMentorTag: result.mentorTag,
-            isAuthor: result.isAuthor,
+            articleId: articleResult.article_no,
+            articleMemberNo: articleResult.member.memberNo,
+            articleMemberName: articleResult.member.memberName,
+            articleType: articleResult.articleType,
+            articleTitle: articleResult.title,
+            articleContent: articleResult.content,
+            articleLikes: articleResult.likes,
+            articleApply: articleResult.apply,
+            articleApplyNow: articleResult.applyNow,
+            articleStartDay: articleResult.startDay,
+            articleEndDay: articleResult.endDay,
+            articleRecruitmentState: articleResult.recruit,
+            articleMentorNeeded: articleResult.findMentor,
+            articleMentorTag: articleResult.mentorTag,
+            isAuthor: articleResult.isAuthor,
+            isApplier: articleResult.isApplier,
+            isLike: articleResult.isLike,
           };
           console.log(newResult);
           setArticleCurrentState(newResult);
-          setArticleDetailAuthorState(newResult.isAuthor);
+          setUserArticleInteractionState({
+            isAuthor: articleResult.isAuthor,
+            isLike: articleResult.isLike,
+            isApplier: articleResult.isApplier,
+          });
           setLoading(false);
         } else {
-          throw result;
+          throw articleResult;
         }
+
+        console.log(applyUserListResult);
+        setArticleApplyUserListState(applyUserListResult);
       }
     } catch (error: any) {
       console.log(`다시 시도해주세요: ${error.message}`);
@@ -126,56 +125,49 @@ const ArticleDetail = () => {
     }
   };
 
-  //article 지원하기 함수
-  const articleApplyUser = async () => {
-    try {
-      if (articleCurrentState && articleCurrentState.articleRecruitmentState) {
-        await sendArticleApplyUser(articleCurrentState.articleId);
-        toast.success("지원 성공!");
-        await articleApplyUserList();
-      } else {
-        toast.error("모집이 완료된 게시물입니다.");
-      }
-    } catch (error: any) {
-      console.log(`다시 시도해주세요: ${error.message}`);
-      toast.error("오류가 발생했습니다. 다시 시도해주세요");
-    }
-  };
-
-  //article 지원자 리스트 조회 함수
-  const articleApplyUserList = async () => {
-    try {
-      if (articleCurrentState.articleId >= 1) {
-        const result = await viewArticleApplyUserList(
-          articleCurrentState.articleId
-        );
-
-        console.log(result);
-        setArticleApplyUserListState(result);
-      }
-    } catch (error: any) {
-      console.log(`다시 시도해주세요: ${error.message}`);
-      toast.error("오류가 발생했습니다. 다시 시도해주세요");
-    }
-  };
-
   //게시물 찜꽁 함수
   const handleArticleLike = async () => {
     try {
-      setArticleCurrentState((prev) => ({
-        ...prev,
-        articleLikes: prev.articleLikes + 1,
-      }));
-      const result = await sendArticleLike();
-      setArticleLikeState(true);
+      //찜이 안 눌러져있는 상태인 경우 -> 찜등록
+      if (articleId && !userArticleInteractionState.isLike) {
+        const result = await sendArticleLike(parseInt(articleId));
+        setArticleCurrentState((prev: any) => ({
+          ...prev,
+          articleLikes: prev.articleLikes + 1,
+        }));
 
-      if (result.error === 409) {
-        setArticleCurrentState((prev) => ({
+        setUserArticleInteractionState((prev) => ({
+          ...prev,
+          isLike: true,
+        }));
+
+        //중복 등록 방지
+        if (result.error === 409) {
+          setArticleCurrentState((prev: any) => ({
+            ...prev,
+            articleLikes: prev.articleLikes - 1,
+          }));
+          toast.error("이미 찜한 게시물입니다!");
+          return;
+        }
+        return;
+      }
+
+      //찜이 눌러져 있는 경우 -> 찜 취소
+      if (articleId && userArticleInteractionState.isLike) {
+        await deleteArticleLike(parseInt(articleId));
+        setArticleCurrentState((prev: any) => ({
           ...prev,
           articleLikes: prev.articleLikes - 1,
         }));
-        setArticleLikeState(false);
-        toast.error("이미 찜한 게시물입니다!");
+
+        setUserArticleInteractionState((prev) => ({
+          ...prev,
+          isLike: false,
+        }));
+
+        console.log("취소");
+        return;
       }
     } catch (error: any) {
       console.log(`다시 시도해주세요: ${error.message}`);
@@ -207,7 +199,9 @@ const ArticleDetail = () => {
                     )}
                     <div>{articleCurrentState.articleEndDay} 까지</div>
                   </div>
-                  <ArticleLikeWrap $articleLike={articleLikeState}>
+                  <ArticleLikeWrap
+                    $articleLike={userArticleInteractionState.isLike}
+                  >
                     <FontAwesomeIcon
                       icon={faStar}
                       onClick={handleArticleLike}
@@ -272,121 +266,7 @@ const ArticleDetail = () => {
                 </ul>
               </ArticleDetailPageNavWrap>
               {articleDetailIntroOrQnaState === "intro" ? (
-                <>
-                  <ArticleIntrowrap>
-                    {articleCurrentState.articleMentorTag &&
-                    articleCurrentState.articleMentorTag.length >= 1 ? (
-                      <p className="mentorTagTitle">우리에게 필요한 멘토는?</p>
-                    ) : (
-                      <></>
-                    )}
-                    <div className="mentorTagWrapper">
-                      {articleCurrentState.articleMentorTag &&
-                      articleCurrentState.articleMentorTag.length >= 1 ? (
-                        articleCurrentState.articleMentorTag
-                          .split("#")
-                          .filter((tag: any) => tag !== "")
-                          .map((tag: any, idx: any) => {
-                            return (
-                              <p className="mentorTag" key={idx}>
-                                #{tag}
-                              </p>
-                            );
-                          })
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                    <p>{articleCurrentState.articleContent}</p>
-                  </ArticleIntrowrap>
-                  {!articleDetailAuthorState ? (
-                    <div className="buttonWrap">
-                      <Button
-                        text={
-                          articleCurrentState.articleRecruitmentState
-                            ? `${
-                                articleCurrentState.articleType === "study"
-                                  ? "스터디"
-                                  : "프로젝트"
-                              } 신청하기`
-                            : "모집이 완료된 게시물입니다. "
-                        }
-                        buttonState={
-                          articleCurrentState.articleRecruitmentState
-                            ? ""
-                            : "inactive"
-                        }
-                        onClick={articleApplyUser}
-                      />
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  <ArticleApplyStateContainer>
-                    <h3>스터디 신청현황</h3>
-                    {articleDetailAuthorState && (
-                      <div className="articleAuthorMessage">
-                        <div> * 잠깐!</div>
-                        <div>
-                          신청 상태를 클릭하여 신청자의 이력서를 확인하고,{" "}
-                          <br /> 스터디/프로젝트 합류 여부를 선택해주세요
-                        </div>
-                      </div>
-                    )}
-
-                    <ArticleApplyStateTableWrap>
-                      <div className="tableRow tableRowTop">
-                        <div className="tableCell">번호</div>
-                        <div className="tableCell">신청자명</div>
-                        <div className="tableCell">신청일</div>
-                        <div className="tableCell">상태</div>
-                      </div>
-
-                      {articleDetailAuthorState &&
-                      articleApplyUserListState.length >= 1 ? (
-                        articleApplyUserListState.map(
-                          (applicant: any, idx: any) => {
-                            return (
-                              <div className="tableRow" key={idx}>
-                                <div className="tableCell">
-                                  {applicant.applyNo}
-                                </div>
-                                <div className="tableCell">
-                                  {applicant.memberName}
-                                </div>
-                                <div className="tableCell">
-                                  {getTimeAgo(applicant.applyDate)}
-                                </div>
-                                <div
-                                  className="tableCell tableCellButton"
-                                  onClick={handleModalState}
-                                >
-                                  {applicant.applyResult}
-                                </div>
-                              </div>
-                            );
-                          }
-                        )
-                      ) : articleDetailAuthorState ? (
-                        <div className="applicantMessage">
-                          <p>아직 없네요..</p>
-                        </div>
-                      ) : (
-                        <>
-                          <div className="applicantMessage">
-                            스터디 / 프로젝트 신청현황은
-                            <br /> 게시물 작성자와 신청자만 확인할 수 있습니다.
-                            <br /> <br />
-                            <b>
-                              본 스터디 / 프로젝트와 함께하는 팀원이 궁금하다면
-                              <br /> 지금 바로 신청하세요 !
-                            </b>
-                          </div>
-                        </>
-                      )}
-                    </ArticleApplyStateTableWrap>
-                  </ArticleApplyStateContainer>
-                </>
+                <ArticleIntroContainer />
               ) : (
                 <div>
                   Q&A 기능은 열심히 개발 중입니다!
@@ -394,12 +274,7 @@ const ArticleDetail = () => {
                   조금만 기다려주세요!
                 </div>
               )}
-              {modalOpen && (
-                <MemberListModal
-                  show={modalOpen}
-                  handleClose={handleModalState}
-                />
-              )}
+              {articleApplyUserResumeModalState && <MemberListModal />}
             </ArticleDetailWrap>
           )}
         </>
