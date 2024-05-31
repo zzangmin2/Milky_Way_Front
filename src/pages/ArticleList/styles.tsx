@@ -17,10 +17,20 @@ export const ArticleAddButton = styled.button`
   font-size: 2rem;
   padding: 0;
   margin: 0;
-  right: 40%;
+  right: 42%;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
     rgba(0, 0, 0, 0.22) 0px 15px 12px;
 
+  @media (max-width: 1600px) {
+    right: 40%;
+  }
+
+  @media (max-width: 1000px) {
+    right: 34%;
+  }
+  @media (max-width: 850px) {
+    right: 30%;
+  }
   @media (max-width: 575px) {
     right: 20px;
   }
@@ -91,6 +101,8 @@ export const SimpleArticleInfoCard = styled.div`
 export const ArticleInfoCardWrap = styled.section`
   width: 100%;
   height: 58vh;
+  padding-bottom: 40px;
+  box-sizing: border-box;
 
   overflow-y: auto;
 
