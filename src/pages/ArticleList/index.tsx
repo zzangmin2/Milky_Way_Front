@@ -22,7 +22,7 @@ import {
   loadingStateAtom,
 } from "../../utils/recoil/atom";
 import { useNavigate } from "react-router-dom";
-import { Article } from "../../typings/db";
+import { ArticleDetail, ArticleCard } from "../../typings/db";
 import { toast } from "react-toastify";
 import SkeletonArticleDetail from "../../utils/skeleton/SkeletonArticleDetail";
 import SkeletonArticleList from "../../utils/skeleton/SkeletonArticleList";
@@ -78,18 +78,20 @@ const ArticleList = () => {
       console.log(loading);
       const result = await viewArticleList();
       if (result) {
-        const transformedData = result.map((item: any) => ({
-          articleId: item.article_no,
-          articleTitle: item.title,
-          articleMentorNeeded: item.findMentor,
-          articleEndDay: item.endDay,
-          articleLikes: item.likes,
-          articleRecruitmentState: item.recruit,
-          articleApply: item.apply,
-          articleApplyNow: item.applyNow,
-          articleType: item.articleType,
-          articleRegDate: item.regDate,
-        }));
+        const transformedData = result.map(
+          (item: any): ArticleCard => ({
+            articleId: item.article_no,
+            articleTitle: item.title,
+            articleMentorNeeded: item.findMentor,
+            articleEndDay: item.endDay,
+            articleLikes: item.likes,
+            articleRecruitmentState: item.recruit,
+            articleApply: item.apply,
+            articleApplyNow: item.applyNow,
+            articleType: item.articleType,
+            articleRegDate: item.regDate,
+          })
+        );
         setArticleListState(transformedData);
         console.log(transformedData);
         setLoading(true);
@@ -148,6 +150,8 @@ const ArticleList = () => {
             value={recruitmentOptionState}
             onChange={(e) => setRecruitmentOptionState(e.target.value)}
           >
+            {/* value 값 -> 상수로 관리 */}
+            {/* meta데이터. 서버로부터 데이터 받아서 보여줌 */}
             <option value="all">전체</option>
             <option value="recruting">모집 중</option>
             <option value="recruitmentCompleted">모집 완료</option>
@@ -166,9 +170,7 @@ const ArticleList = () => {
               id=""
               value={articleLatestOrPopularOptionState}
               onChange={(e) =>
-                // setArticleLatestOrPopularOptionState(e.target.value)
-                // 찜기능 미완성 -> 인기순 정렬 불가능
-                setArticleLatestOrPopularOptionState("latest")
+                setArticleLatestOrPopularOptionState(e.target.value)
               }
             >
               <option value="latest">최신순</option>
@@ -185,7 +187,7 @@ const ArticleList = () => {
             <ArticleInfoCardWrap>
               {filteredArticleLatestOrPopularOptionList.length >= 1 ? (
                 filteredArticleLatestOrPopularOptionList?.map(
-                  (article: Article, idx: any) => {
+                  (article: ArticleDetail, idx: any) => {
                     return (
                       <ArticleInfoCard
                         key={idx}

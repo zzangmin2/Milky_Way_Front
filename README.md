@@ -1,30 +1,23 @@
-# React + TypeScript + Vite
+# 밀키웨이 ( 프론트엔드 )
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 1. 서비스 개요
 
-Currently, two official plugins are available:
+- 밀키웨이는 전문대학 활성화 및 혁신을 위한 스터디/프로젝트 팀원 매칭 서비스입니다.
+- 프론트엔드 팀원
+  - 김태겸 / https://github.com/tgyeom
+  - 김정민 / https://github.com/zzangmin2
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 2. 주요 기능
 
-## Expanding the ESLint configuration
+- **회원가입 / 로그인**
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **스터디 / 프로젝트 모집 게시물**
 
-- Configure the top-level `parserOptions` property like this:
+- **이력서**
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- **마이페이지**
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### 3. 기술 스택
+
+- React
+- TypeScript

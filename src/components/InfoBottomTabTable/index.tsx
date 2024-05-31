@@ -13,6 +13,7 @@ import { useRecoilValue } from "recoil";
 import { ArticleCardPageCount } from "./styles";
 import Modal from "../Modal";
 import { BottomTableProps } from "../../typings/db";
+import { getTimeAgo } from "../../utils/utils";
 
 const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
   const articleCard: any[] = useRecoilValue(ArticleArticleSelector);
@@ -103,7 +104,7 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
                           {apply.applyArticle.title}
                         </div>
                         <div className="tableCell">
-                          {apply.applyDate.slice(0, -9)}
+                          {getTimeAgo(apply.applyDate)}
                         </div>
                         <div className="tableCell">
                           <p>

@@ -1,7 +1,5 @@
-// 복잡해보여서 따로 만들었는데 이게 . 더복잡한듯, 굳이 컴포넌트 이렇게 따로 구성해야할까??
-
-import React from "react";
-import { useState } from "react";
+import React, { useEffect } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   ModalWrapper,
   ModalContent,
@@ -13,27 +11,33 @@ import {
   MyInfocertificate,
   BottomSection,
   InfoContentText,
+  MyInfoCareer,
+  FirstInfoContentTitle,
 } from "./styles";
-import { MyInfoCareer, FirstInfoContentTitle } from "./styles";
 import Button from "../Button";
-
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { ModalProps } from "../../typings/db";
 import {
   userCareerUserInfoStateSelector,
   userCareerStateSelector,
+  ArticleApplyUserResumeModalState,
 } from "../../utils/recoil/atom";
 import {
   viewMyCareerInfo,
   viewMyCareerList,
 } from "../../utils/apimodule/article";
 
-const MemberListModal: React.FC<ModalProps> = ({ show, handleClose }) => {
-  const careerValue: any = useSetRecoilState(userCareerStateSelector);
-  const userInfoValue: any = useSetRecoilState(userCareerUserInfoStateSelector);
-
+const MemberListModal: React.FC = () => {
+  const setCareerValue = useSetRecoilState(userCareerStateSelector);
+  const setUserInfoValue = useSetRecoilState(userCareerUserInfoStateSelector);
   const { career }: any = useRecoilValue(userCareerStateSelector);
   const { certificate }: any = useRecoilValue(userCareerStateSelector);
+  const [
+    articleApplyUserResumeModalState,
+    setArticleApplyUserResumeModalState,
+  ] = useRecoilState(ArticleApplyUserResumeModalState);
+
+  const handleModalState = () => {
+    setArticleApplyUserResumeModalState(!articleApplyUserResumeModalState);
+  };
 
   //구조분해 할당
   const {
@@ -52,81 +56,73 @@ const MemberListModal: React.FC<ModalProps> = ({ show, handleClose }) => {
         viewMyCareerList(),
       ]);
 
-      const member = careerInfo.data.basicInfos[0].member;
-      const career = careerList.data.careers;
+      const member = careerInfo.data.basicInfos[0]?.member;
+      const careerData = careerList.data?.careers;
 
-      console.log(member);
-      console.log(careerInfo);
+      if (member && careerData) {
+        setCareerValue({
+          userCareer: careerData.careers || [],
+          userCertificate: careerData.certifications || [],
+        });
 
-      careerValue({
-        userCareer: career.careers || [],
-        userCertificate: career.certifications || [],
-      });
-
-      userInfoValue({
-        userName: member.memberName,
-        userId: member.memberId,
-        userPhoneNumber: member.memberPhoneNum,
-        userDpt: member.memberDpt,
-        userLocation: member.memberLocation,
-        userUni: member.memberUniversity,
-      });
+        setUserInfoValue({
+          userName: member.memberName,
+          userId: member.memberId,
+          userPhoneNumber: member.memberPhoneNum,
+          userDpt: member.memberDpt,
+          userLocation: member.memberLocation,
+          userUni: member.memberUniversity,
+        });
+      } else {
+        console.error("Data structure is not as expected");
+      }
     } catch (error) {
-      console.error("error", error);
+      console.error("Error fetching user career data:", error);
     }
   };
 
-  React.useEffect(() => {
-    if (show) {
+  useEffect(() => {
+    if (articleApplyUserResumeModalState) {
       userCareerData();
     }
-  }, [show]);
+  }, [articleApplyUserResumeModalState]);
 
-  if (!show) return null;
+  if (!articleApplyUserResumeModalState) return null;
 
   return (
     <ModalWrapper>
       <ModalContent>
-        <CloseButton onClick={handleClose}>X</CloseButton>
-
+        <CloseButton onClick={handleModalState}>X</CloseButton>
         <MyInfoContent>
           <FirstInfoContentTitle>
             {userName} @{userId}
           </FirstInfoContentTitle>
-
           <div>{userPhoneNumber}</div>
           <div>{userDpt}</div>
           <div>{userLocation}</div>
         </MyInfoContent>
         <MyInfoCareer>
-          <InfoContentTitle>
-            <p>경력</p>
-          </InfoContentTitle>
-          {career.length > 0 ? (
-            career.map((career: any) => (
-              <InfoContentText key={career.id}>
-                <div>{career.careerCompany}</div>
+          <InfoContentTitle>경력</InfoContentTitle>
+          {career && career.length > 0 ? (
+            career.map((careerItem: any) => (
+              <InfoContentText key={careerItem.id}>
+                <div>{careerItem.careerCompany}</div>
                 <div>
-                  {career.careerFirstDate}~{career.careerLastDate}
+                  {careerItem.careerFirstDate}~{careerItem.careerLastDate}
                 </div>
               </InfoContentText>
             ))
           ) : (
-            <InfoContentText>
-              <div>등록된 경력이 없습니다.</div>
-            </InfoContentText>
+            <InfoContentText>등록된 경력이 없습니다.</InfoContentText>
           )}
         </MyInfoCareer>
-
         <MyInfocertificate>
-          <InfoContentTitle>
-            <p>자격증</p>
-          </InfoContentTitle>
-          {certificate.length > 0 ? (
-            certificate.map((certificate: any) => (
-              <InfoContentText key={certificate.id}>
-                <div>{certificate.certificateName}</div>
-                <div>{certificate.certificateDate}</div>
+          <InfoContentTitle>자격증</InfoContentTitle>
+          {certificate && certificate.length > 0 ? (
+            certificate.map((certificateItem: any) => (
+              <InfoContentText key={certificateItem.id}>
+                <div>{certificateItem.certificateName}</div>
+                <div>{certificateItem.certificateDate}</div>
               </InfoContentText>
             ))
           ) : (
@@ -134,30 +130,19 @@ const MemberListModal: React.FC<ModalProps> = ({ show, handleClose }) => {
           )}
         </MyInfocertificate>
         <MyInfoText>
-          <InfoContentTitle>
-            <p>한줄소개</p>
-          </InfoContentTitle>
-
+          <InfoContentTitle>한줄소개</InfoContentTitle>
           <InfoContentLineText>
-            {userLineText ? (
-              <> {userLineText}</>
-            ) : (
-              <>등록된 한줄소개가 없습니다.</>
-            )}
+            {userLineText || "등록된 한줄소개가 없습니다."}
           </InfoContentLineText>
         </MyInfoText>
         <BottomSection>
-          <div>
-            <Button
-              text="거절하기"
-              border="1px solid #133488"
-              color="white"
-              fontColor="#133488"
-            />
-          </div>
-          <div>
-            <Button text="승인하기" />
-          </div>
+          <Button
+            text="거절하기"
+            border="1px solid #133488"
+            color="white"
+            fontColor="#133488"
+          />
+          <Button text="승인하기" />
         </BottomSection>
       </ModalContent>
     </ModalWrapper>
