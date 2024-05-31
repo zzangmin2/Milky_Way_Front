@@ -22,6 +22,7 @@ import {
 import ArticleDetailMenuModal from "../../components/ ArticleDetailMenuModal";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  deleteArticleLike,
   sendArticleApplyUser,
   sendArticleLike,
   viewArticleApplyUserList,
@@ -127,22 +128,46 @@ const ArticleDetail = () => {
   //게시물 찜꽁 함수
   const handleArticleLike = async () => {
     try {
-      setArticleCurrentState((prev: any) => ({
-        ...prev,
-        articleLikes: prev.articleLikes + 1,
-      }));
-      const result = await sendArticleLike();
-      setUserArticleInteractionState((prev) => ({
-        ...prev,
-        isLike: true,
-      }));
+      //찜이 안 눌러져있는 상태인 경우 -> 찜등록
+      if (articleId && !userArticleInteractionState.isLike) {
+        const result = await sendArticleLike(parseInt(articleId));
+        setArticleCurrentState((prev: any) => ({
+          ...prev,
+          articleLikes: prev.articleLikes + 1,
+        }));
 
-      if (result.error === 409) {
+        setUserArticleInteractionState((prev) => ({
+          ...prev,
+          isLike: true,
+        }));
+
+        //중복 등록 방지
+        if (result.error === 409) {
+          setArticleCurrentState((prev: any) => ({
+            ...prev,
+            articleLikes: prev.articleLikes - 1,
+          }));
+          toast.error("이미 찜한 게시물입니다!");
+          return;
+        }
+        return;
+      }
+
+      //찜이 눌러져 있는 경우 -> 찜 취소
+      if (articleId && userArticleInteractionState.isLike) {
+        await deleteArticleLike(parseInt(articleId));
         setArticleCurrentState((prev: any) => ({
           ...prev,
           articleLikes: prev.articleLikes - 1,
         }));
-        toast.error("이미 찜한 게시물입니다!");
+
+        setUserArticleInteractionState((prev) => ({
+          ...prev,
+          isLike: false,
+        }));
+
+        console.log("취소");
+        return;
       }
     } catch (error: any) {
       console.log(`다시 시도해주세요: ${error.message}`);
@@ -250,8 +275,6 @@ const ArticleDetail = () => {
                 </div>
               )}
               {articleApplyUserResumeModalState && <MemberListModal />}
-
-              {/* {articleApplyUserResumeModalState && <>하하하</>} */}
             </ArticleDetailWrap>
           )}
         </>
