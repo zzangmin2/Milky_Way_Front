@@ -1,5 +1,6 @@
 import {
   BottomSection,
+  BottomSectionRadiusBox,
   HomeContentContainer,
   Section,
   TopSection,
@@ -7,10 +8,31 @@ import {
 
 import ArticleInfoCard from "../../components/ArticleInfoCard";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { ArticleDibsStateSelector } from "../../utils/recoil/atom";
+import { useEffect } from "react";
+import { viewMyDibsInfo } from "../../utils/apimodule/article";
+import { ArticleCard } from "../../typings/db";
 
 const Home = () => {
   const userName = localStorage.getItem("memberName");
   const navigate = useNavigate();
+  const [dibs, setDibs] = useRecoilState(ArticleDibsStateSelector);
+
+  useEffect(() => {
+    loadMyDibsInfo();
+  }, []);
+
+  const loadMyDibsInfo = async () => {
+    try {
+      const result = await viewMyDibsInfo();
+      console.log(result.data);
+
+      setDibs(result.data);
+    } catch (error: any) {
+      console.log(`다시 시도해주세요: ${error.message}`);
+    }
+  };
 
   return (
     <>
@@ -26,10 +48,9 @@ const Home = () => {
             alt=""
           />
         </TopSection>
-        {/* <Button
-          text={"스터디 / 프로젝트 등록"}
-          
-        /> */}
+        <BottomSectionRadiusBox>
+          <div />
+        </BottomSectionRadiusBox>
         <BottomSection>
           <HomeContentContainer>
             <div
@@ -66,32 +87,43 @@ const Home = () => {
           <HomeContentContainer>
             <div>
               <div className="ContentTitleContainer">
-                <h3>내가 참여 중인 스터디 /프로젝트</h3>
-                <button onClick={() => navigate("/home/myinfo")}>
-                  전체보기
-                </button>
+                <h3>내가 찜한 스터디 / 프로젝트</h3>
+                {dibs.length >= 1 ? (
+                  <button onClick={() => navigate("/home/myinfo")}>
+                    전체보기
+                  </button>
+                ) : (
+                  <button onClick={() => navigate("/home/articlelist")}>
+                    찜하러 가기
+                  </button>
+                )}
               </div>
 
-              {/* data 없을 때 */}
-              {/* <div>
-              <FontAwesomeIcon icon={faFaceSadTear} />
-              <div>아직 없네요 ..</div>
-              <div>스터디 / 프로젝트 찾으러 가기</div>
-            </div> */}
-              <ArticleInfoCard
-                cardType="main"
-                navigateRoute="/articledetail/1"
-                articleType={""}
-                articleMentorNeeded={false}
-                articleTitle={"esfwsefwrge"}
-                articleContent={"ewfewfewsfefw"}
-                articleCurrentApply={0}
-                articleApply={""}
-                articleLikes={0}
-                articleEndDay={""}
-                articleRecruitmentState={false}
-                articleStartDay={""}
-              />
+              <div className="dibsContainer">
+                {dibs.length >= 1 ? (
+                  dibs.map((data: any, idx: any) => {
+                    return (
+                      <ArticleInfoCard
+                        key={idx}
+                        navigateRoute={`/articledetail/${data.cardArticle_no}`}
+                        articleType={data.cardArticleType}
+                        articleRecruitmentState={data.cardRecruit}
+                        articleMentorNeeded={data.cardFindMentor}
+                        articleTitle={data.cardTitle}
+                        articleApply={data.cardApply}
+                        articleCurrentApply={data.cardApplyNow}
+                        articleLikes={data.cardLikes}
+                        articleEndDay={data.cardEndDay}
+                        articleStartDay={data.cardStartDay}
+                      />
+                    );
+                  })
+                ) : (
+                  <div className="dibsEmptyMessage">
+                    아직 찜한 게시물이 없네요! <br />
+                  </div>
+                )}
+              </div>
             </div>
           </HomeContentContainer>
         </BottomSection>
