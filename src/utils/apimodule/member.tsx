@@ -160,6 +160,7 @@ const sendUserEditInfo = async (
  * @param {string} method 'put' 또는 'post'
  */
 const editUserCareerList = async (method: string, sendCareerData: any) => {
+  console.log(sendCareerData);
   try {
     let response;
     if (method === "post") {
@@ -186,26 +187,21 @@ const editUserCareerList = async (method: string, sendCareerData: any) => {
  * @param {string} method 'put' 또는 'post'
  * @param {any} infoEdit
  */
-const editUserCareerInfo = async (
-  method: string,
-  userDpt: string,
-  userLocation: any,
-  userLineText: string
-) => {
+const editUserCareerInfo = async (method: string, userInfoValue: any) => {
+  console.log(userInfoValue.userLocation);
   try {
     let response;
     if (method === "post") {
       response = await api.post(`/member/update/info`, {
-        studentMajor: userDpt,
-        studentLocate: userLocation,
-        studentOneLineShow: userLineText,
+        studentMajor: userInfoValue.userDpt,
+        studentLocate: userInfoValue.userLocation,
+        studentOneLineShow: userInfoValue.userLineText,
       });
     } else if (method === "put") {
       response = await api.put(`/member/modify/info`, {
-        studentMajor: userDpt,
-
-        studentLocate: userLocation,
-        studentOneLineShow: userLineText,
+        studentMajor: userInfoValue.userDpt,
+        studentLocate: userInfoValue.userLocation,
+        studentOneLineShow: userInfoValue.userLineText,
       });
     } else {
       throw new Error();

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { loadingStateAtom } from "../utils/recoil/atom";
 import api from "../utils/api/axiosInstance";
-
+import refreshApi from "../utils/api/axiosRefreshInstance";
 const useInterceptors = () => {
   const setLoading = useSetRecoilState(loadingStateAtom);
 
@@ -11,12 +11,11 @@ const useInterceptors = () => {
       setLoading(false);
       const ACCESS_TOKEN = localStorage.getItem("ACCESS_TOKEN");
       if (ACCESS_TOKEN) {
-        config.headers.Authorization = `Bearer ${ACCESS_TOKEN}`;
+        config.headers.Authorization = `Bearer ${localStorage.getItem(
+          "ACCESS_TOKEN"
+        )}`;
       }
       return config;
-    };
-    (error: any) => {
-      return Promise.reject(error);
     };
 
     const responseHandler = (response: any) => {
@@ -28,6 +27,8 @@ const useInterceptors = () => {
       setLoading(true);
       return Promise.reject(error);
     };
+
+    let isTokenRefreshing = false;
 
     const tokenInterceptor = api.interceptors.request.use(
       (config) => {
@@ -44,7 +45,7 @@ const useInterceptors = () => {
           return Promise.reject(new Error("토큰이 없습니다."));
         }
 
-        config.headers.Authorization = `Bearer ${accessToken}`;
+        // config.headers.Authorization = `Bearer ${accessToken}`;
         return config;
       },
       (error) => {
@@ -53,38 +54,67 @@ const useInterceptors = () => {
     );
 
     const tokenRefreshInterceptor = api.interceptors.response.use(
-      async (response) => {
+      (response) => {
         return response;
       },
       async (error) => {
-        if (error.response.status === 401) {
+        const originalRequest = error.config;
+
+        if (
+          error.response &&
+          error.response.status === 401 &&
+          error.response.data.message === "expired" &&
+          !isTokenRefreshing
+        ) {
+          isTokenRefreshing = true;
           try {
             const refresh_Token = localStorage.getItem("REFRESH_TOKEN");
-            const response = await api.post("/reissue", {
-              headers: {
-                Authorization: `Bearer ${refresh_Token}`,
-              },
-            });
-            // 새로발급된 억세스토큰을 로컬스토리지에 저장
-            const accessToken = response.data.access_token;
-            localStorage.setItem("ACCESS_TOKEN", accessToken);
+            if (!refresh_Token) {
+              throw new Error("Refresh token이 없습니다.");
+            }
 
-            // 원래 요청 헤더 업데이트
-            error.config.headers["Authorization"] = `Bearer ${accessToken}`;
+            const response = await refreshApi.post(
+              "/reissue",
+              {},
+              {
+                headers: {
+                  Authorization: `Bearer ${refresh_Token}`,
+                },
+              }
+            );
 
-            // 원래 요청 재시도
-            return api.request(error.config);
-          } catch (error) {
-            // refresh_token이 없을때 에러처리
-            console.error(error);
-            // 억세스토큰과 리프레시토큰을 삭제시키고 login페이지로 리디렉션
+            if (response.status === 200) {
+              const accessToken = response.data.access_token;
+              localStorage.setItem("ACCESS_TOKEN", accessToken);
+              originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+              return api(originalRequest);
+            } else {
+              localStorage.removeItem("ACCESS_TOKEN");
+              localStorage.removeItem("REFRESH_TOKEN");
+              alert("세션이 만료되었습니다.");
+
+              window.location.href = "/users/login";
+              throw new Error("토큰 갱신에 실패했습니다.");
+            }
+          } catch (refreshError) {
+            console.error("토큰 갱신 요청이 실패했습니다.", refreshError);
             localStorage.removeItem("ACCESS_TOKEN");
             localStorage.removeItem("REFRESH_TOKEN");
-            alert("로그인 세션이 만료되었습니다.");
+            alert("세션이 만료되었습니다.");
+
             window.location.href = "/users/login";
-            return Promise.reject(error);
+
+            return Promise.reject(refreshError);
+          } finally {
+            isTokenRefreshing = false;
           }
+        } else if (error.response.data.message === "invaild") {
+          alert("로그인 정보가 맞지 않습니다.");
+          localStorage.removeItem("ACCESS_TOKEN");
+          localStorage.removeItem("REFRESH_TOKEN");
+          window.location.href = "/users/login";
         }
+
         return Promise.reject(error);
       }
     );
