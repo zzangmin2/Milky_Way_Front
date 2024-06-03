@@ -1,0 +1,184 @@
+{
+  "currentArticle": [
+    {
+      "articleId": 1,
+      "articleMemberId": "user",
+      "articleType": "study",
+      "articleRecruitmentState": false,
+      "articleTitle": "[됐다] 스터디원 모집합니다.",
+      "articleContent": "안녕하십니까 !\n\n 컴퓨터정보학부 200030001 홍길동입니다. 취업 준비를 위한 토익스터디를 진행하려고 합니다. \n목표 점수는 800점이며, 매주 화요일, 목요일 오후 6시부터 8시까지 전산관에서 스터디를 진행하고자 합니다. \n 관심 있으신 분들은 신청바라며, 추가적으로 궁금하신 사항이 있으시다면 Q&A 게시판에 남겨주시기 바랍니다. \n",
+      "articleLikes": 10,
+      "articleApply": 4,
+      "articleApplyNow": 1,
+      "articleStartDay": "2024-03-02",
+      "articleEndDay": "2024-04-29",
+      "articleMentorNeeded": true,
+      "articleMentorTag": "#열정적인#잘 도와주는#멋진",
+      "articleApplyState": [
+        {
+          "id": 1,
+          "applicantName": "김복이",
+          "applicationDate": "2024-01-22",
+          "status": "선정"
+        },
+        {
+          "id": 2,
+          "applicantName": "김마니",
+          "applicationDate": "2024-01-29",
+          "status": "신청"
+        },
+        {
+          "id": 3,
+          "applicantName": "김정민",
+          "applicationDate": "2024-01-25",
+          "status": "반려"
+        }
+      ],
+      "id": "f145"
+    },
+    {
+      "articleId": 2,
+      "articleMemberId": "user",
+      "articleType": "project",
+      "articleRecruitmentState": false,
+      "articleTitle": "[리액트] 스터디원 모집합니다.",
+      "articleContent": "안녕하십니까 !\n 컴퓨터정보학부 200030001 홍길동입니다. 취업 준비를 위한 토익스터디를 진행하려고 합니다. \n목표 점수는 800점이며, 매주 화요일, 목요일 오후 6시부터 8시까지 전산관에서 스터디를 진행하고자 합니다. \n 관심 있으신 분들은 신청바라며, 추가적으로 궁금하신 사항이 있으시다면 Q&A 게시판에 남겨주시기 바랍니다. \n",
+      "articleLikes": 60,
+      "articleApply": 6,
+      "articleApplyNow": 1,
+      "articleStartDay": "2024-03-06",
+      "articleEndDay": "2024-05-02",
+      "articleMentorNeeded": true,
+      "articleMentorTag": "#열정적인#잘 도와주는#멋진",
+      "id": "228c"
+    },
+    {
+      "id": "926a",
+      "articleType": "study",
+      "articleApply": "2",
+      "articleMentorNeeded": "yes",
+      "articleMentorTag": "#열정적인#잘 도와주는#멋진",
+      "articleEndDay": "2024-05-03",
+      "articleTitle": "sefsfe",
+      "articleContent": "sedfsefsfed",
+      "articleId": 18,
+      "articleRecruitmentState": true
+    },
+    {
+      "id": "d539",
+      "articleType": "study",
+      "articleApply": "2",
+      "articleMentorNeeded": "no",
+      "articleMentorTag": [],
+      "articleEndDay": "2024-05-09",
+      "articleTitle": "sfe",
+      "articleContent": "sefsfedsedf",
+      "articleApplyNow": 0,
+      "articleId": 12,
+      "articleRecruitmentState": true,
+      "articleLikes": 0
+    },
+    {
+      "id": "3cda",
+      "articleType": "study",
+      "articleApply": "4",
+      "articleMentorNeeded": true,
+      "articleMentorTag": "열정적인#잘 도와주는#멋진",
+      "articleEndDay": "2024-05-03",
+      "articleTitle": "wfewefs",
+      "articleContent": "efwsefwsewfefwefw",
+      "articleApplyNow": 0,
+      "articleId": 19,
+      "articleRecruitmentState": true,
+      "articleLikes": 0
+    },
+    {
+      "id": "78f1",
+      "articleType": "study",
+      "articleApply": "4",
+      "articleMentorNeeded": true,
+      "articleMentorTag": "#few#efwef#efwfews#dsefe#ewfgreg#refsef#efw#essfde#efews#efw#ewffeef#fee#fwf#fsewf#sedfes#sfew#awefaweffwefa#rgvaerga#aerger#sareg#ege#rdfgvar#greag",
+      "articleEndDay": "2024-05-04",
+      "articleTitle": "이거다이거",
+      "articleContent": "ergreagaergearggerergarsd",
+      "articleApplyNow": 0,
+      "articleId": 16,
+      "articleRecruitmentState": true,
+      "articleLikes": 0
+    },
+    {
+      "id": "51b5",
+      "articleType": "project",
+      "articleApply": "5",
+      "articleMentorNeeded": false,
+      "articleMentorTag": "",
+      "articleEndDay": "2024-05-09",
+      "articleTitle": "이거이거이거",
+      "articleContent": "이거이거이거이거",
+      "articleApplyNow": 0,
+      "articleId": 20,
+      "articleRecruitmentState": true,
+      "articleLikes": 0
+    },
+    {
+      "id": "0337",
+      "articleType": "study",
+      "articleApply": "4",
+      "articleMentorNeeded": true,
+      "articleMentorTag": "#wefaewf#wfeaweaf#wfe#ㅁㄷㅊㄹㄴ#ㄴㄷㅈㄹ#ㄴㅈㄹㄷㄴㅇㄹ#ㄷㄹㄴㅈㄹㄷㄴ#ㄷㄴㅇ#ㅎㅍㄱ#ㄴㄷㄱㅎ4ㄴㄹㅍ",
+      "articleStartDay": "2024-05-05T06:24:05.788Z",
+      "articleEndDay": "2024-05-17",
+      "articleTitle": "연락수단테스트₩",
+      "articleContent": "연락수단테스트",
+      "articleApplyNow": 0,
+      "articleId": 11,
+      "articleRecruitmentState": true,
+      "articleContactMethod": "전화번호",
+      "articleContactInfo": "010-2222-3333",
+      "articleLikes": 0
+    }
+  ],
+  "memberInfo": [
+    {
+      "userName": "홍길동",
+      "userEmail": "ktg5679@gmail.com",
+      "userNickName": "ktg5670",
+      "userCareerCard": "ktg567923",
+      "userNumber": "01029925679",
+      "id": "d1b3"
+    }
+  ],
+  "memberCareer": [
+    {
+      "userName": "김태겸",
+      "userCareer": [
+        {
+          "id": 1,
+          "careerCompany": "이차돌",
+          "careerFirstDate": "2020-03-23",
+          "careerLastDate": "2020-03-23"
+        },
+        {
+          "id": 2,
+          "careerCompany": "흑돈",
+          "careerFirstDate": "2020-03-23",
+          "careerLastDate": "2020-03-23"
+        }
+      ],
+      "userCertificate": [
+        {
+          "id": 1,
+          "certificateName": "정보처리기사",
+          "certificateDate": "2020-03-26"
+        },
+        {
+          "id": 2,
+          "certificateName": "sqld",
+          "certificateDate": "2020-03-29"
+        }
+      ],
+      "userLineText": "heafesajgabdrhasfejsafhhgaerjfucean ruierajkhnujkjwaehfnkcjdf mjkwe"
+
+    }
+  ]
+}
