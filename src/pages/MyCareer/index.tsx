@@ -31,14 +31,13 @@ import { toast } from "react-toastify";
 
 const MyCareer = () => {
   const setCareerValue = useSetRecoilState(userCareerStateSelector);
-  const careerStateValueTest = useRecoilValue(userCareerStateSelector);
 
   const [userInfoValue, setUserInfoValue] = useRecoilState<any>(
     userCareerUserInfoStateSelector
   );
 
   const [careerPostState, setCareerPostState] = useState(false);
-
+  const [infoPostState, setInfoPostState] = useState(false);
   const {
     userName,
     userId,
@@ -51,6 +50,7 @@ const MyCareer = () => {
   const { userCareer, userCertificate } = useRecoilValue(
     userCareerStateSelector
   );
+
   const [edit, setEdit] = useState(true);
 
   const clickEdit: any = () => {
@@ -60,7 +60,7 @@ const MyCareer = () => {
   const sendCareerEdit = async () => {
     const sendCareerData = {
       careerDtoList: userCareer,
-      certificateDtoList: userCertificate,
+      certificationDtoList: userCertificate,
     };
 
     try {
@@ -69,18 +69,23 @@ const MyCareer = () => {
       }
       let response;
 
-      if (!careerPostState) {
-        response = await Promise.all([
-          editUserCareerList("post", sendCareerData),
-          editUserCareerInfo("post", userName, userId, userDpt),
-        ]);
+      /**
+       * put , post 구분 지어서 boolean값 확인
+       */
+
+      if (!infoPostState) {
+        response = await editUserCareerInfo("post", userInfoValue); // put으로 통일 ?
       } else {
-        response = await Promise.all([
-          editUserCareerList("put", sendCareerData),
-          editUserCareerInfo("put", userName, userId, userDpt),
-        ]);
+        response = await editUserCareerInfo("put", userInfoValue);
       }
-      if (response[0].success && response[1].success) {
+
+      if (!careerPostState) {
+        response = await editUserCareerList("post", sendCareerData);
+      } else {
+        response = await editUserCareerList("put", sendCareerData);
+      }
+
+      if (response.success) {
         toast.success("이력서 수정이 완료되었습니다!");
         setEdit(true);
       } else {
@@ -99,37 +104,46 @@ const MyCareer = () => {
         viewMyCareerList(),
       ]);
 
-      const member = careerInfo.data.basicInfos[0].member;
+      const member = careerInfo.data;
       const career = careerList.data.careerDtoList;
-      const ceritificate = careerList.data.certificateDtoList;
+      const ceritificate = careerList.data.certificationDtoList;
+
+      console.log(career);
 
       setCareerValue({
-        userCareer: career || [],
-        userCertificate: ceritificate || [],
+        userCareer: career,
+        userCertificate: ceritificate,
       });
 
       setUserInfoValue({
         userName: member.memberName,
         userId: member.memberId,
         userPhoneNumber: member.memberPhoneNum,
-        userDpt: member.memberDpt,
-        userLocation: member.memberLocation,
-        userLineText: member.memberLineText,
+        userDpt: member.studentMajor,
+        userLocation: member.studentLocate,
+        userLineText: member.studentOneLineShow,
       });
 
-      if (
-        career.careers.length > 0 &&
-        career.certifications.length > 0 &&
-        Object.keys(member).length > 0
-      ) {
+      if (career.length > 0 || ceritificate.length > 0) {
         setCareerPostState(true);
+      } else {
+        setCareerPostState(false);
       }
+      if (
+        member.studentMajor === null &&
+        member.studentLocate === null &&
+        member.studentOneLineShow === null
+      ) {
+        setInfoPostState(true);
+      } else {
+        setInfoPostState(false);
+      }
+
+      console.log(infoPostState);
     } catch (error) {
       console.error("error", error);
     }
   };
-
-  console.log(careerStateValueTest);
 
   const addCareerInput = () => {
     setCareerValue((prev) => ({

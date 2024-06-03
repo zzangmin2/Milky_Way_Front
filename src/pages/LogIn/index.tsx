@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { BottomSection, TopSection } from "./styles";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -25,7 +25,7 @@ const LogIn = () => {
         throw result;
       }
     } catch (error: any) {
-      toast.error(`실패: ${error.message}`);
+      toast.error(`아이디와 패스워드를 확인해주세요`);
     }
   };
 

@@ -13,7 +13,8 @@ import { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { emailSuccesses, userCompareValues } from "../../../utils/recoil/atom";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState } from "recoil";
+import { toast } from "react-toastify";
 
 const SignupEmail = () => {
   const [email, setEmail] = useState("");
@@ -91,7 +92,7 @@ const SignupEmail = () => {
           reject(error);
         }
       } else {
-        alert("이메일 형식에 맞게 입력해주세요");
+        toast.warning("이메일 형식에 맞게 입력해주세요");
       }
     });
   };
@@ -120,6 +121,7 @@ const SignupEmail = () => {
                     placeholder={"이메일을 입력해주세요"}
                     setValue={setEmail}
                   />
+
                   {/* <Button text={"이메일 인증하기"} onClick={sendEmailedOn} /> */}
                 </>
               ) : (

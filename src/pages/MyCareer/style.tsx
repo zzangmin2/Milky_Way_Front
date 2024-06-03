@@ -154,12 +154,13 @@ export const InputCareer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   height: 100%;
-  width: 100%;
+
   outline: none;
   align-items: center;
   border-bottom: 1px solid #f1f1f1;
   & > input {
     border: none;
+    width: 100%;
     padding: 0 10px 10px 10px;
     outline: none;
     margin-top: 10px;
