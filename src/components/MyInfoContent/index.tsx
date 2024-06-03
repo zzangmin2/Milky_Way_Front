@@ -26,6 +26,7 @@ const MyInfoContent = () => {
       );
       if (!isValid) {
         toast.warning(message);
+        setEdit(true);
         return;
       }
       const response: any = await sendUserEditInfo(
@@ -73,7 +74,7 @@ const MyInfoContent = () => {
             {edit ? (
               <input
                 type="text"
-                placeholder={userEmail}
+                placeholder={"이메일을 입력해주세요"}
                 value={userInfoState.userEmail || ""}
                 onChange={(e) => {
                   setUserInfoState({
@@ -93,7 +94,7 @@ const MyInfoContent = () => {
             {edit ? (
               <input
                 type="text"
-                placeholder={userName}
+                placeholder={"이름을 입력해주세요"}
                 value={userInfoState.userName || ""}
                 onChange={(e) => {
                   setUserInfoState({
@@ -113,7 +114,7 @@ const MyInfoContent = () => {
             {edit ? (
               <input
                 type="text"
-                placeholder={userNumber}
+                placeholder={"-를 제외한 전화번호를 입력해주세요"}
                 value={userInfoState.userNumber || ""}
                 onChange={(e) => {
                   setUserInfoState({
