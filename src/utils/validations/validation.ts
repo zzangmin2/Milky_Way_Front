@@ -176,3 +176,43 @@ export const validateSignupCompare = (
 
   return { isValid: true, message: "" };
 };
+
+/**
+ * myinfo에서 내정보 수정할시에 유효성 검사 ( Signup compare와 합치는거 생각해봐야함)
+ * @param userNumber
+ * @param userName
+ * @param userEmail
+ * @returns
+ */
+export const validateMyInfo = (
+  userNumber: any,
+  userName: string,
+  userEmail: any
+): { isValid: boolean; message: string } => {
+  const phoneNumberRegex = /^\d{11}$/; // 11자리 숫자
+  const nameRegex = /^[a-zA-Z가-힣]+$/; // 영문자와 한글 (int못오게)
+  const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // 이메일 형식 ( SignupEmail )
+
+  if (!phoneNumberRegex.test(userNumber)) {
+    return {
+      isValid: false,
+      message: "전화번호 형식이 일치하지 않습니다",
+    };
+  }
+
+  if (!nameRegex.test(userName)) {
+    return {
+      isValid: false,
+      message: "이름에는 숫자나 특수문자가 들어갈 수 없습니다.",
+    };
+  }
+
+  if (!emailRegex.test(userEmail)) {
+    return {
+      isValid: false,
+      message: "이메일 형식에 맞게 입력해주세요",
+    };
+  }
+
+  return { isValid: true, message: "" };
+};

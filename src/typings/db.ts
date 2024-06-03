@@ -47,7 +47,7 @@ export interface UserInfo {
 }
 
 export interface ModalProps {
-  // show: boolean;
+  show: any;
   handleClose: () => void;
   conMethod?: string;
   modalType?: any; // 추가한 type

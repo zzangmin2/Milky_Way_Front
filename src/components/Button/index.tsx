@@ -12,7 +12,7 @@ interface Props {
   type?: string;
   border?: string;
   fontColor?: string;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 const Button: React.FC<Props> = ({

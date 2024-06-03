@@ -67,13 +67,14 @@ const MyCareer = () => {
       if (!validateCareer(userCareer, userCertificate)) {
         return;
       }
+
       let response;
 
       /**
        * put , post 구분 지어서 boolean값 확인
        */
 
-      if (!infoPostState) {
+      if (infoPostState) {
         response = await editUserCareerInfo("post", userInfoValue); // put으로 통일 ?
       } else {
         response = await editUserCareerInfo("put", userInfoValue);
@@ -468,9 +469,17 @@ const MyCareer = () => {
       </TopSection>
       <BottomSection>
         {edit ? (
-          <Button text={"이력서 수정하기"} onClick={clickEdit} />
+          <Button
+            text={"이력서 수정하기"}
+            onClick={clickEdit}
+            disabled={false}
+          />
         ) : (
-          <Button text={"이력서 수정완료"} onClick={sendCareerEdit} />
+          <Button
+            text={"이력서 수정완료"}
+            onClick={sendCareerEdit}
+            disabled={false}
+          />
         )}
       </BottomSection>
     </Section>
