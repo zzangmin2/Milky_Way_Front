@@ -25,12 +25,12 @@ const ArticleRegister = () => {
 
   const articleMentorNeeded = watch("articleMentorNeeded");
   const articleType = watch("articleType");
-
-  // const userName: any = useSetRecoilState(isLoggedInUserName);
-
   const [articleMentorTag, setArticleMentorTag] = useState<string>();
   const [articleMentorTagArr, setArticleMentorTagArr] = useState<string>("");
+
   const navigate = useNavigate();
+
+  const today = new Date().toISOString().split("T")[0];
 
   // 멘토 취향 버튼 눌렀을 때 실행 함수
   const handleArticleMentorSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
@@ -95,7 +95,6 @@ const ArticleRegister = () => {
                 value="project"
                 {...register("articleType", { required: true })}
               />
-
               <span>프로젝트</span>
             </CustomRadioLabel>
           </div>
@@ -129,6 +128,7 @@ const ArticleRegister = () => {
             <input
               type="date"
               {...register("articleEndDay", { required: true })}
+              min={today}
             />
           </div>
           {errors.articleEndDay && (
@@ -144,13 +144,24 @@ const ArticleRegister = () => {
             매칭되기 전까지는 이 정보가 공개되지 않으니 안심하세요.
           </label>
           <div className="inputWrap">
-            <input
-              type="input"
-              placeholder="연락 방법 (예: 전화번호, 카카오톡 링크)
-              "
-              {...register("articleContactMethod", { required: true })}
-            />
+            <CustomRadioLabel>
+              <input
+                type="radio"
+                value="전화번호"
+                {...register("articleContactMethod", { required: true })}
+              />
+              <span>전화번호</span>
+            </CustomRadioLabel>
+            <CustomRadioLabel>
+              <input
+                type="radio"
+                value="카카오톡오픈채팅"
+                {...register("articleContactMethod", { required: true })}
+              />
+              <span>카카오톡 오픈채팅</span>
+            </CustomRadioLabel>
           </div>
+
           {errors.articleContactMethod && (
             <p style={{ color: "red", fontSize: "0.75rem", margin: "0" }}>
               소통 수단을 입력해 주세요
@@ -159,7 +170,7 @@ const ArticleRegister = () => {
           <div className="inputWrap" style={{ marginTop: "10px" }}>
             <input
               type="input"
-              placeholder="연락처 또는 링크를 입력해 주세요"
+              placeholder="전화번호 또는 카카오톡 오픈채팅 링크를 입력해 주세요"
               {...register("articleContactInfo", { required: true })}
             />
           </div>
@@ -219,7 +230,6 @@ const ArticleRegister = () => {
                     </button>
                   </div>
                   <div className="mentorTagWrap">
-                    {" "}
                     {articleMentorTagArr.length >= 1 &&
                       articleMentorTagArr.split("#").map((tag, index) => {
                         return <div key={index}>{tag}</div>;

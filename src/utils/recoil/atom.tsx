@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import { Article } from "../../typings/db";
+import { ArticleCard } from "../../typings/db";
 
 interface UserCompareState {
   email?: string;
@@ -259,13 +259,14 @@ export const ArticleCardCurrentState = atom({
     articleRecruitmentState: true,
     articleTitle: "",
     articleContent: "",
-    articleLikes: "",
+    articleLikes: 0,
     articleApply: 0,
     articleApplyNow: 0,
     articleStartDay: "",
     articleEndDay: "",
     articleMentorNeeded: false,
     articleMentorTag: "",
+    isAuthor: false,
   },
 });
 
@@ -358,11 +359,11 @@ export const filteredArticleListTypeState = selector({
     switch (filter) {
       case "study":
         return list.filter(
-          (article: Article) => article.articleType === "study"
+          (article: ArticleCard) => article.articleType === "study"
         );
       case "project":
         return list.filter(
-          (article: Article) => article.articleType === "project"
+          (article: ArticleCard) => article.articleType === "project"
         );
 
       default:
@@ -395,11 +396,11 @@ export const filteredArticleRecruitmentOptionListState = selector({
         return list;
       case "recruting":
         return list.filter(
-          (article: Article) => article.articleRecruitmentState
+          (article: ArticleCard) => article.articleRecruitmentState
         );
       case "recruitmentCompleted":
         return list.filter(
-          (article: Article) => !article.articleRecruitmentState
+          (article: ArticleCard) => !article.articleRecruitmentState
         );
 
       default:
@@ -429,20 +430,33 @@ export const filteredArticleLatestOrPopularOptionListState = selector({
 
     switch (option) {
       case "latest":
-        return list.slice().sort((a: Article, b: Article) => {
+        return list.slice().sort((a: ArticleCard, b: ArticleCard) => {
           const articleEndDayA = new Date(a.articleEndDay);
           const articleEndDayB = new Date(b.articleEndDay);
           return articleEndDayA.getTime() - articleEndDayB.getTime();
         });
 
       case "popular":
-        return list.slice().sort((a: Article, b: Article) => {
+        return list.slice().sort((a: ArticleCard, b: ArticleCard) => {
           return b.articleLikes - a.articleLikes;
         });
 
       default:
         return list;
     }
+  },
+});
+
+/**
+ * <atom> 게시물 상세 접속 시 사용자 상태 (작성, 좋아요, 지원 여부)
+ */
+
+export const UserArticleInteractionState = atom({
+  key: "userArticleInteractionState",
+  default: {
+    isAuthor: false,
+    isLike: false,
+    isApplier: false,
   },
 });
 
@@ -470,4 +484,13 @@ export const ArticleDetailIntroOrQnaTabState = atom({
 export const ArticleApplyUserListState = atom({
   key: "articleApplyUserListState",
   default: [],
+});
+
+/**
+ * <atom> 현재 지원자 리스트 이력서 모달 상태
+ */
+
+export const ArticleApplyUserResumeModalState = atom({
+  key: "articleApplyUserResumeModalState",
+  default: false,
 });

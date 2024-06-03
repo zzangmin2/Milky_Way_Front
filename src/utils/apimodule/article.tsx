@@ -1,6 +1,6 @@
 import api from "../api/axiosInstance";
 
-import { Article } from "../../typings/db";
+import { ArticleDetail } from "../../typings/db";
 
 /**
  * articleRegister 에서 작성자, article유형, 모집인원, 멘토필요 여부, 멘토 태그?, 모집 시작 날, 모집 끝나는 날, article 제목, article 내용 넘기기
@@ -13,8 +13,7 @@ import { Article } from "../../typings/db";
  * @param articleContent
 
  */
-
-const sendNewArticle = async (newArticleData: Article) => {
+const sendNewArticle = async (newArticleData: ArticleDetail) => {
   const {
     articleType,
     articleApply,
@@ -54,9 +53,16 @@ const sendNewArticle = async (newArticleData: Article) => {
   }
 };
 
+/**
+ * 게시물 상세 조회하기
+ * @param articleId
+ * @returns
+ */
 const viewCurrentArticle = async (articleId: number) => {
   try {
     const response = await api.get(`/posts/${articleId}`);
+    console.log(response.data);
+
     if (response.data) {
       return response.data;
     } else {
@@ -68,6 +74,11 @@ const viewCurrentArticle = async (articleId: number) => {
   }
 };
 
+/**
+ * 게시물 수정하기
+ * @param articleId
+ * @returns
+ */
 const editCurrentArticle = async (articleId: number) => {
   try {
     const response = await api.put(`/posts/done/${articleId}`, {
@@ -82,10 +93,14 @@ const editCurrentArticle = async (articleId: number) => {
   }
 };
 
+/**
+ * 게시물 삭제하기
+ * @param articleId
+ * @returns
+ */
 const deleteCurrentArticle = async (articleId: number) => {
   try {
     const response = await api.delete(`/posts/${articleId}`);
-    console.log("Success:", response.data);
 
     return { success: true };
   } catch (error) {
@@ -95,9 +110,39 @@ const deleteCurrentArticle = async (articleId: number) => {
 };
 
 /**
+ * 게시물 찜꽁!
+ * @returns
+ */
+const sendArticleLike = async (articleId: number) => {
+  try {
+    const response = await api.post(`posts/likes/${articleId}`);
+
+    return { success: true, response };
+  } catch (error: any) {
+    console.error("error:", error);
+    return { success: false, error: error.response.status };
+  }
+};
+
+/**
+ * 게시물 찜 취소
+ * @returns
+ */
+const deleteArticleLike = async (articleId: number) => {
+  try {
+    await api.delete(`posts/likes/${articleId}`);
+
+    return { success: true };
+  } catch (error: any) {
+    console.error("error:", error);
+    return { success: false, error: error.response.status };
+  }
+};
+
+/**
  * 게시물 지원하기 (헤더에 토큰 심어서 보냄)
  * @param articleId
- * @returns
+ * @returns sucess
  */
 const sendArticleApplyUser = async (articleId: number) => {
   try {
@@ -120,6 +165,7 @@ const viewArticleApplyUserList = async (articleId: number) => {
   try {
     const response = await api.get(`/posts/applylist/${articleId.toString()}`);
 
+    console.log(response.data);
     if (response.data) {
       return response.data;
     } else {
@@ -131,6 +177,10 @@ const viewArticleApplyUserList = async (articleId: number) => {
   }
 };
 
+/**
+ * 게시물 리스트
+ * @returns
+ */
 const viewArticleList = async () => {
   try {
     const response = await api.get("/posts/list");
@@ -272,6 +322,8 @@ const viewMyCareerList = async () => {
 
 export {
   sendNewArticle,
+  sendArticleLike,
+  deleteArticleLike,
   viewCurrentArticle,
   editCurrentArticle,
   deleteCurrentArticle,
