@@ -30,6 +30,7 @@ export const InfoContent = styled.div`
   display: flex;
   height: 70px;
   flex-direction: row;
+
   margin: 0 10px 10px 0;
   border-bottom: 1px solid #f1f1f1;
   outline: none;
@@ -46,6 +47,7 @@ export const InfoContent = styled.div`
     width: 50%;
     display: flex;
     & > input {
+      width: 100%;
       border: none;
       outline: none;
     }
