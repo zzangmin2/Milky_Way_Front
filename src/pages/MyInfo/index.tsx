@@ -83,9 +83,9 @@ const MyInfo = () => {
       const apply = applyData.data;
       const dibs = dibsData.data;
 
-      setApply(apply);
-      setArticle(article);
-      setDibs(dibs);
+      setApply(apply || []);
+      setArticle(article || []);
+      setDibs(dibs || []);
 
       infoValue({
         userName: member.memberName,

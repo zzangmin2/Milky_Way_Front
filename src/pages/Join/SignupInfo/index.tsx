@@ -28,7 +28,6 @@ import {
 const SignupInfo = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
-  const [dpt, setDpt] = useState("");
   const [number, setNumber] = useState("");
   const userCompare = useSetRecoilState(userCompareValues);
   const emailSuccessIn = useRecoilValue(emailSuccesses);

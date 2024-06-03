@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { BottomSection, TopSection } from "./styles";
 import Input from "../../components/Input";
 import Button from "../../components/Button";

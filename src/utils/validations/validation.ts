@@ -24,10 +24,16 @@ export const validateCareer = (
   const emptyCareerNames = userCareer.filter(
     (userCareer) => userCareer.carName.trim() === ""
   );
+
   const emptyCareerDates = userCareer.filter(
     (userCareer) =>
       userCareer.carStartDay.trim() === "" || userCareer.carEndDay.trim() === ""
   );
+
+  // const careerName = userCareer.filter((userCareer) => userCareer.carName);
+  // const certificateName = userCertificate.filter(
+  //   (userCerticicate) => userCerticicate.certName
+  // );
   const emptyCertificateNames = userCertificate.filter(
     (userCertificate) => userCertificate.certName.trim() === ""
   );
@@ -45,6 +51,10 @@ export const validateCareer = (
     return false;
   }
 
+  // if (careerName.length > 35 || certificateName.length > 35) {
+  //   alert("경력 및 자격증 이름은 35글자를 넘을 수 없습니다.");
+  //   return false;
+  // }
   return true;
 };
 
