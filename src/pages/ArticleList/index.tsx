@@ -187,7 +187,7 @@ const ArticleList = () => {
             <ArticleInfoCardWrap>
               {filteredArticleLatestOrPopularOptionList.length >= 1 ? (
                 filteredArticleLatestOrPopularOptionList?.map(
-                  (article: ArticleDetail, idx: any) => {
+                  (article: ArticleCard, idx: any) => {
                     return (
                       <ArticleInfoCard
                         key={idx}
@@ -202,7 +202,6 @@ const ArticleList = () => {
                         articleCurrentApply={article.articleApplyNow}
                         articleLikes={article.articleLikes}
                         articleEndDay={article.articleEndDay}
-                        // articleStartDay -> 아직 api에서 전달 x
                         articleStartDay={article.articleRegDate}
                       />
                     );

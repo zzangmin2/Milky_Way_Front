@@ -87,9 +87,12 @@ const ArticleIntroContainer = () => {
     }
   };
 
-  const handleModalState = () => {
+  const handleModalState = (applyNo: number) => {
     if (userArticleInteractionState.isAuthor) {
-      setArticleApplyUserResumeModalState(!articleApplyUserResumeModalState);
+      setArticleApplyUserResumeModalState({
+        applyNo: applyNo,
+        modalState: !articleApplyUserResumeModalState.modalState,
+      });
     }
   };
 
@@ -186,7 +189,9 @@ const ArticleIntroContainer = () => {
                   </div>
                   <div
                     className="tableCell tableCellButton"
-                    onClick={handleModalState}
+                    onClick={() =>
+                      applicant.applyNo && handleModalState(applicant.applyNo)
+                    }
                   >
                     {applicant.applyResult}
                   </div>

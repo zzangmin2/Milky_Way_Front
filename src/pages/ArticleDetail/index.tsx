@@ -62,10 +62,6 @@ const ArticleDetail = () => {
     ArticleApplyUserResumeModalState
   );
 
-  useEffect(() => {
-    console.log(articleApplyUserResumeModalState);
-  }, [articleApplyUserResumeModalState]);
-
   const { articleId } = useParams();
 
   // 마운트 시 해당 article 불러옴
@@ -274,7 +270,9 @@ const ArticleDetail = () => {
                   조금만 기다려주세요!
                 </div>
               )}
-              {articleApplyUserResumeModalState && <MemberListModal />}
+              {articleApplyUserResumeModalState.modalState && (
+                <MemberListModal />
+              )}
             </ArticleDetailWrap>
           )}
         </>

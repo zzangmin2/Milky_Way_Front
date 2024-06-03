@@ -2,8 +2,10 @@ import styled from "styled-components";
 
 export const Section = styled.div`
   width: 100%;
-  background-color: #fff;
+  height: 100%;
+
   overflow-y: scroll;
+  background-color: #f8f8f8;
 
   &::-webkit-scrollbar {
     display: none;
@@ -16,7 +18,8 @@ export const TopSection = styled.section`
   justify-content: space-between;
   padding: 20px 30px;
   box-sizing: border-box;
-  margin-bottom: 20px;
+
+  background-color: #fff;
 
   & > div > h2 {
     margin: 0 0 10px 0;
@@ -31,43 +34,33 @@ export const TopSection = styled.section`
   }
 `;
 
+export const BottomSectionRadiusBox = styled.div`
+  width: 100%;
+  height: 40px;
+  background-color: #fff;
+
+  > div {
+    width: 100%;
+    height: 100%;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+
+    background-color: #f8f8f8;
+  }
+`;
+
 export const BottomSection = styled.section`
   width: 100%;
-  /* height: 100%; */
-  padding: 30px 20px;
+  padding: 0px 20px 30px 20px;
   box-sizing: border-box;
-  border-top-left-radius: 40px;
-  border-top-right-radius: 40px;
   background-color: #f8f8f8;
-
-  /* data 없을 때 */
-  /* & > div:nth-child(1) > div {
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 20px;
-    text-align: center;
-  }
-
-  & > div:nth-child(1) > div > svg {
-    font-size: 2rem;
-    color: #717171;
-    margin-bottom: 5px;
-  }
-  & > div:nth-child(1) > div > div:nth-child(2) {
-    font-size: 0.75rem;
-  }
-  & > div:nth-child(1) > div > div:nth-child(3) {
-    color: #133488;
-    margin-top: 10px;
-    font-size: 0.75rem;
-    text-decoration: underline;
-  } */
 `;
 
 export const HomeContentContainer = styled.section`
   display: flex;
   width: 100%;
   box-sizing: border-box;
+  background-color: #f8f8f8;
 
   > div {
     width: 100%;
@@ -122,8 +115,20 @@ export const HomeContentContainer = styled.section`
       padding: 0 10px;
       border: 1px solid #d9d9d9;
       color: #d9d9d9;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       border-radius: 20px;
     }
+  }
+
+  > div > .dibsContainer > .dibsEmptyMessage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    background-color: #fff;
+    color: #d9d9d9;
   }
 `;
