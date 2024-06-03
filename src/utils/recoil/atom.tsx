@@ -270,6 +270,9 @@ export const ArticleCardCurrentState = atom({
   },
 });
 
+/**
+ * <atom> 현재 조회하고 있는 게시물 상세
+ * */
 export const ArticleCurrentState = atom<any>({
   key: "ArticleCurrentState",
   default: "",
@@ -492,5 +495,25 @@ export const ArticleApplyUserListState = atom({
 
 export const ArticleApplyUserResumeModalState = atom({
   key: "articleApplyUserResumeModalState",
-  default: false,
+  default: {
+    applyNo: 0,
+    modalState: false,
+  },
+});
+
+export const ArticleApplyUserResumeDataState = atom({
+  key: "articleApplyUserResumeDataState",
+  default: { careerDtoList: [], certificationDtoList: [] },
+});
+
+export const ArticleApplyUserInfoDataState = atom({
+  key: "articleApplyUserInfoDataState",
+  default: {
+    memberId: "",
+    memberName: "",
+    memberPhoneNum: "",
+    studentLocate: "",
+    studentMajor: "",
+    studentOneLineShow: "",
+  },
 });

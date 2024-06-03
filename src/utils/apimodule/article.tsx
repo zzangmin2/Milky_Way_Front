@@ -165,7 +165,67 @@ const viewArticleApplyUserList = async (articleId: number) => {
   try {
     const response = await api.get(`/posts/applylist/${articleId.toString()}`);
 
-    console.log(response.data);
+    if (response.data) {
+      return response.data;
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
+ * 게시물 지원자 정보 조회 ( 게시물 작성자만 조회 가능 )
+ * @param applyNo
+ * @returns
+ */
+const viewArticleApplyUserInfo = async (applyNo: number) => {
+  try {
+    const response = await api.get(`/apply/basicInfo/${applyNo}`);
+
+    if (response.data) {
+      return response.data;
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+
+/**
+ * 게시물 지원자 이력서 조회 ( 게시물 작성자만 조회 가능 )
+ * @param applyNo
+ * @returns
+ */
+const viewArticleApplyUserResume = async (applyNo: number) => {
+  try {
+    const response = await api.get(`/apply/careerAndCertification/${applyNo}`);
+
+    if (response.data) {
+      return response.data;
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
+/**
+ * 게시물 지원 결과 전송 (합격, 불합격 )
+ * @param applyNo
+ * @returns
+ */
+const sendArticleApplyResult = async (applyNo: number, applyResult: string) => {
+  try {
+    const response = await api.put(`/update/${applyNo}`, {
+      applyResult: applyResult,
+    });
+
     if (response.data) {
       return response.data;
     } else {
@@ -336,4 +396,7 @@ export {
   viewMyApplyInfo,
   viewMyCareerList,
   viewMyDibsInfo,
+  viewArticleApplyUserResume,
+  viewArticleApplyUserInfo,
+  sendArticleApplyResult,
 };

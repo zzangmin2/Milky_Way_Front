@@ -108,7 +108,7 @@ const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
                         </div>
                         <div className="tableCell">
                           <p>
-                            {apply.applyResult === "선정" ? (
+                            {apply.applyResult === "합격" ? (
                               <span
                                 onClick={() => {
                                   handleModalOpen(
