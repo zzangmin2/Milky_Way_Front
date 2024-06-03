@@ -16,8 +16,8 @@ import { BottomTableProps } from "../../typings/db";
 import { getTimeAgo } from "../../utils/utils";
 
 const InfoBottomTabTable: React.FC<BottomTableProps> = ({ type }) => {
-  const articleCard: any[] = useRecoilValue(ArticleArticleSelector);
-  const dibsCard: any[] = useRecoilValue(ArticleDibsStateSelector);
+  const articleCard: any[] = useRecoilValue(ArticleArticleSelector) || [];
+  const dibsCard: any[] = useRecoilValue(ArticleDibsStateSelector) || [];
   const applyGrid: any = useRecoilValue(ArticleApplySelector);
   const [page, setPage] = useState(1);
   const itemsPerPage = 3;

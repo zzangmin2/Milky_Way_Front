@@ -4,6 +4,7 @@ import { sendUserEditInfo } from "../../utils/apimodule/member";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userInfoStateSelector } from "../../utils/recoil/atom";
 import { toast } from "react-toastify";
+import { validateMyInfo } from "../../utils/validations/validation";
 
 const MyInfoContent = () => {
   const [edit, setEdit] = useState<boolean>(false);
@@ -18,9 +19,17 @@ const MyInfoContent = () => {
 
   const sendClickEdit = async () => {
     try {
+      const { isValid, message } = validateMyInfo(
+        userNumber,
+        userName,
+        userEmail
+      );
+      if (!isValid) {
+        toast.warning(message);
+        return;
+      }
       const response: any = await sendUserEditInfo(
         userName,
-
         userEmail,
         userNumber
       );
