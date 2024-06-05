@@ -19,75 +19,85 @@ import {
   userCareerUserInfoStateSelector,
   userCareerStateSelector,
   ArticleApplyUserResumeModalState,
+  ArticleApplyUserResumeDataState,
+  ArticleApplyUserInfoDataState,
 } from "../../utils/recoil/atom";
 import {
+  sendArticleApplyResult,
+  viewArticleApplyUserInfo,
+  viewArticleApplyUserResume,
   viewMyCareerInfo,
   viewMyCareerList,
 } from "../../utils/apimodule/article";
+import { toast } from "react-toastify";
 
-const MemberListModal: React.FC = () => {
-  const setCareerValue = useSetRecoilState(userCareerStateSelector);
-  const setUserInfoValue = useSetRecoilState(userCareerUserInfoStateSelector);
-  const { career }: any = useRecoilValue(userCareerStateSelector);
-  const { certificate }: any = useRecoilValue(userCareerStateSelector);
+const MemberListModal = () => {
+  // const setCareerValue = useSetRecoilState(userCareerStateSelector);
+  // const setUserInfoValue = useSetRecoilState(userCareerUserInfoStateSelector);
+  // const { career }: any = useRecoilValue(userCareerStateSelector);
+  // const { certificate }: any = useRecoilValue(userCareerStateSelector);
+  const [articleApplyUserResumeDataState, setArticleApplyUserResumeDataState] =
+    useRecoilState(ArticleApplyUserResumeDataState);
+
+  const [articleApplyUserInfoDataState, setArticleApplyUserInfoDataState] =
+    useRecoilState(ArticleApplyUserInfoDataState);
   const [
     articleApplyUserResumeModalState,
     setArticleApplyUserResumeModalState,
   ] = useRecoilState(ArticleApplyUserResumeModalState);
 
   const handleModalState = () => {
-    setArticleApplyUserResumeModalState(!articleApplyUserResumeModalState);
+    setArticleApplyUserResumeModalState((prev) => ({
+      ...prev,
+      modalState: false,
+    }));
   };
 
-  //구조분해 할당
-  const {
-    userName,
-    userId,
-    userDpt,
-    userPhoneNumber,
-    userLocation,
-    userLineText,
-  }: any = useRecoilValue(userCareerUserInfoStateSelector);
-
-  const userCareerData = async () => {
+  const loadApplyUserResume = async () => {
     try {
-      const [careerInfo, careerList] = await Promise.all([
-        viewMyCareerInfo(),
-        viewMyCareerList(),
-      ]);
+      const result = await viewArticleApplyUserResume(1);
+      setArticleApplyUserResumeDataState(result);
 
-      const member = careerInfo.data.basicInfos[0]?.member;
-      const careerData = careerList.data?.careers;
+      console.log(result);
+    } catch (error: any) {
+      console.log(`다시 시도해주세요: ${error.message}`);
+    }
+  };
 
-      if (member && careerData) {
-        setCareerValue({
-          userCareer: careerData.careers || [],
-          userCertificate: careerData.certifications || [],
-        });
+  const loadApplyUserInfo = async () => {
+    try {
+      const result = await viewArticleApplyUserInfo(1);
+      setArticleApplyUserInfoDataState(result);
 
-        setUserInfoValue({
-          userName: member.memberName,
-          userId: member.memberId,
-          userPhoneNumber: member.memberPhoneNum,
-          userDpt: member.memberDpt,
-          userLocation: member.memberLocation,
-          userUni: member.memberUniversity,
-        });
-      } else {
-        console.error("Data structure is not as expected");
-      }
-    } catch (error) {
-      console.error("Error fetching user career data:", error);
+      console.log(result);
+    } catch (error: any) {
+      console.log(`다시 시도해주세요: ${error.message}`);
+    }
+  };
+
+  const handleSendApplyResult = async (applyResult: string) => {
+    try {
+      const applyNo = articleApplyUserResumeModalState.applyNo;
+      await sendArticleApplyResult(applyNo, applyResult);
+
+      setArticleApplyUserResumeModalState((prev) => ({
+        ...prev,
+        modalState: false,
+      }));
+      toast.success("저장했습니다!");
+    } catch (error: any) {
+      console.log(`다시 시도해주세요: ${error.message}`);
     }
   };
 
   useEffect(() => {
-    if (articleApplyUserResumeModalState) {
-      userCareerData();
+    if (articleApplyUserResumeModalState.modalState) {
+      loadApplyUserResume();
+      loadApplyUserInfo();
     }
-  }, [articleApplyUserResumeModalState]);
+  }, [articleApplyUserResumeModalState.modalState]);
 
-  if (!articleApplyUserResumeModalState) return null;
+  if (!articleApplyUserResumeModalState.modalState) return null;
 
   return (
     <ModalWrapper>
@@ -95,36 +105,44 @@ const MemberListModal: React.FC = () => {
         <CloseButton onClick={handleModalState}>X</CloseButton>
         <MyInfoContent>
           <FirstInfoContentTitle>
-            {userName} @{userId}
+            {articleApplyUserInfoDataState.memberName} @
+            {articleApplyUserInfoDataState.memberId}
           </FirstInfoContentTitle>
-          <div>{userPhoneNumber}</div>
-          <div>{userDpt}</div>
-          <div>{userLocation}</div>
+          <div>{articleApplyUserInfoDataState.memberPhoneNum}</div>
+          <div>{articleApplyUserInfoDataState.studentMajor}</div>
+          <div>{articleApplyUserInfoDataState.studentLocate}</div>
         </MyInfoContent>
         <MyInfoCareer>
           <InfoContentTitle>경력</InfoContentTitle>
-          {career && career.length > 0 ? (
-            career.map((careerItem: any) => (
-              <InfoContentText key={careerItem.id}>
-                <div>{careerItem.careerCompany}</div>
-                <div>
-                  {careerItem.careerFirstDate}~{careerItem.careerLastDate}
-                </div>
-              </InfoContentText>
-            ))
+          {articleApplyUserResumeDataState.careerDtoList &&
+          articleApplyUserResumeDataState.careerDtoList.length > 0 ? (
+            articleApplyUserResumeDataState.careerDtoList.map(
+              (careerItem: any) => (
+                <InfoContentText key={careerItem.id}>
+                  <div>{careerItem.carName}</div>
+                  <div>
+                    {careerItem.carStartDay}
+                    <br />~{careerItem.carEndDay}
+                  </div>
+                </InfoContentText>
+              )
+            )
           ) : (
             <InfoContentText>등록된 경력이 없습니다.</InfoContentText>
           )}
         </MyInfoCareer>
         <MyInfocertificate>
           <InfoContentTitle>자격증</InfoContentTitle>
-          {certificate && certificate.length > 0 ? (
-            certificate.map((certificateItem: any) => (
-              <InfoContentText key={certificateItem.id}>
-                <div>{certificateItem.certificateName}</div>
-                <div>{certificateItem.certificateDate}</div>
-              </InfoContentText>
-            ))
+          {articleApplyUserResumeDataState.certificationDtoList &&
+          articleApplyUserResumeDataState.certificationDtoList.length > 0 ? (
+            articleApplyUserResumeDataState.certificationDtoList.map(
+              (certificateItem: any) => (
+                <InfoContentText key={certificateItem.id}>
+                  <div>{certificateItem.certName}</div>
+                  <div>{certificateItem.certDate}</div>
+                </InfoContentText>
+              )
+            )
           ) : (
             <InfoContentText>등록된 자격증이 없습니다.</InfoContentText>
           )}
@@ -132,7 +150,8 @@ const MemberListModal: React.FC = () => {
         <MyInfoText>
           <InfoContentTitle>한줄소개</InfoContentTitle>
           <InfoContentLineText>
-            {userLineText || "등록된 한줄소개가 없습니다."}
+            {articleApplyUserInfoDataState.studentOneLineShow ||
+              "등록된 한줄소개가 없습니다."}
           </InfoContentLineText>
         </MyInfoText>
         <BottomSection>
@@ -141,8 +160,14 @@ const MemberListModal: React.FC = () => {
             border="1px solid #133488"
             color="white"
             fontColor="#133488"
+            disabled={false}
+            onClick={() => handleSendApplyResult("불합격")}
           />
-          <Button text="승인하기" />
+          <Button
+            text="승인하기"
+            disabled={false}
+            onClick={() => handleSendApplyResult("합격")}
+          />
         </BottomSection>
       </ModalContent>
     </ModalWrapper>

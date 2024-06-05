@@ -6,6 +6,7 @@ export const StudyInfoCardWrap = styled.section`
   background-color: #fff;
   border-radius: 20px;
   padding: 20px 20px 10px 20px;
+  margin-bottom: 10px;
   box-sizing: border-box;
   cursor: pointer;
 `;
