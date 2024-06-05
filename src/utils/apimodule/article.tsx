@@ -265,8 +265,6 @@ const viewMyInfo = async () => {
     const response = await api.get(`/info`);
     const data = response.data;
 
-    console.log(data);
-
     if (response.status === 200) {
       return { success: true, data };
     } else {
@@ -368,8 +366,6 @@ const viewMyCareerList = async () => {
   try {
     const response = await api.get(`/myResume/careerAndCertification`);
     const data = response.data;
-
-    console.log(data);
 
     if (response.data) {
       return { success: true, data };

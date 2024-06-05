@@ -57,47 +57,6 @@ const MyCareer = () => {
     setEdit(false);
   };
 
-  const sendCareerEdit = async () => {
-    const sendCareerData = {
-      careerDtoList: userCareer,
-      certificationDtoList: userCertificate,
-    };
-
-    try {
-      if (!validateCareer(userCareer, userCertificate)) {
-        return;
-      }
-
-      let response;
-
-      /**
-       * put , post 구분 지어서 boolean값 확인
-       */
-
-      if (infoPostState) {
-        response = await editUserCareerInfo("post", userInfoValue); // put으로 통일 ?
-      } else {
-        response = await editUserCareerInfo("put", userInfoValue);
-      }
-
-      if (!careerPostState) {
-        response = await editUserCareerList("post", sendCareerData);
-      } else {
-        response = await editUserCareerList("put", sendCareerData);
-      }
-
-      if (response.success) {
-        toast.success("이력서 수정이 완료되었습니다!");
-        setEdit(true);
-      } else {
-        toast.error("서버연결 안됨!");
-      }
-    } catch (error) {
-      console.log("실패 : ", error);
-      toast.error("이력서 수정에 실패했습니다!");
-    }
-  };
-
   const userCareerData = async () => {
     try {
       const [careerInfo, careerList] = await Promise.all([
@@ -108,8 +67,6 @@ const MyCareer = () => {
       const member = careerInfo.data;
       const career = careerList.data.careerDtoList;
       const ceritificate = careerList.data.certificationDtoList;
-
-      console.log(career);
 
       setCareerValue({
         userCareer: career,
@@ -131,18 +88,61 @@ const MyCareer = () => {
         setCareerPostState(false);
       }
       if (
-        member.studentMajor === null &&
-        member.studentLocate === null &&
-        member.studentOneLineShow === null
+        member.studentMajor == "" &&
+        member.studentLocate == "" &&
+        member.studentOneLineShow == ""
       ) {
         setInfoPostState(true);
       } else {
         setInfoPostState(false);
       }
-
-      console.log(infoPostState);
     } catch (error) {
       console.error("error", error);
+    }
+  };
+
+  console.log(userCareer);
+
+  const sendCareerEdit = async () => {
+    const sendCareerData = {
+      careerDtoList: userCareer,
+      certificationDtoList: userCertificate,
+    };
+
+    try {
+      const validationResult = validateCareer(userCareer, userCertificate);
+      if (!validationResult.isValid) {
+        toast.warning(validationResult.message);
+        return; // 또는 유효성 검사 실패 시 처리할 로직을 추가합니다.
+      }
+
+      let response;
+
+      /**
+       * put , post 구분 지어서 boolean값 확인
+       */
+
+      if (!infoPostState) {
+        response = await editUserCareerInfo("post", userInfoValue); // put으로 통일 ?
+      } else {
+        response = await editUserCareerInfo("put", userInfoValue);
+      }
+
+      if (!careerPostState) {
+        response = await editUserCareerList("post", sendCareerData);
+      } else {
+        response = await editUserCareerList("put", sendCareerData);
+      }
+
+      if (response.success) {
+        toast.success("이력서 수정이 완료되었습니다!");
+        setEdit(true);
+      } else {
+        toast.error("서버연결 안됨!");
+      }
+    } catch (error) {
+      console.log("실패 : ", error);
+      toast.error("이력서 수정에 실패했습니다!");
     }
   };
 
@@ -279,7 +279,7 @@ const MyCareer = () => {
                   <InfoContentText key={career.id}>
                     <div>{career.carName}</div>
                     <div>
-                      {career.carStartDay}~{career.carEndDay}
+                      {career.carStartDay} &nbsp;~&nbsp;{career.carEndDay}
                     </div>
                   </InfoContentText>
                 ))

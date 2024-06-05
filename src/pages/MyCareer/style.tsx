@@ -52,11 +52,9 @@ export const MyInfoContentEdit = styled(MyInfoContent)`
 
   & > input {
     border: none;
-
     color: gray;
     background-color: none;
     padding: 0 10px 10px 0px;
-
     margin-top: 19px;
     font-size: 15px;
     width: 50%;

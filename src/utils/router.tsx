@@ -54,10 +54,7 @@ const router = createBrowserRouter([
         index: true,
         element: <Navigate to="/home" />,
       },
-      {
-        path: "users/login",
-        element: <LoginPage />,
-      },
+
       {
         path: "/home",
 
@@ -74,6 +71,27 @@ const router = createBrowserRouter([
           },
           { path: "myinfo", element: <MyInfo /> },
           { path: "mycareer", element: <MyCareer /> },
+        ],
+      },
+      {
+        path: "/users",
+        children: [
+          {
+            path: "login",
+            element: <LoginPage />,
+          },
+          {
+            path: "signupemail",
+            element: <SignupEmail />,
+          },
+          {
+            path: "signupcompare",
+            element: <SignupIdCompare />,
+          },
+          {
+            path: "signupinfo",
+            element: <SignupInfo />,
+          },
         ],
       },
       {
@@ -100,18 +118,6 @@ const router = createBrowserRouter([
       {
         path: "/loading",
         element: <Loading />,
-      },
-      {
-        path: "/users/signupemail",
-        element: <SignupEmail />,
-      },
-      {
-        path: "/users/signupcompare",
-        element: <SignupIdCompare />,
-      },
-      {
-        path: "/users/signupinfo",
-        element: <SignupInfo />,
       },
     ],
   },

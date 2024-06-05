@@ -20,42 +20,39 @@ interface Certificate {
 export const validateCareer = (
   userCareer: Career[],
   userCertificate: Certificate[]
-): boolean => {
+): { isValid: boolean; message: string } => {
   const emptyCareerNames = userCareer.filter(
-    (userCareer) => userCareer.carName.trim() === ""
+    (career) => career.carName.trim() === ""
   );
 
   const emptyCareerDates = userCareer.filter(
-    (userCareer) =>
-      userCareer.carStartDay.trim() === "" || userCareer.carEndDay.trim() === ""
+    (career) =>
+      career.carStartDay.trim() === "" || career.carEndDay.trim() === ""
   );
 
-  // const careerName = userCareer.filter((userCareer) => userCareer.carName);
-  // const certificateName = userCertificate.filter(
-  //   (userCerticicate) => userCerticicate.certName
-  // );
   const emptyCertificateNames = userCertificate.filter(
-    (userCertificate) => userCertificate.certName.trim() === ""
+    (certificate) => certificate.certName.trim() === ""
   );
+
   const emptyCertificateDates = userCertificate.filter(
-    (userCertificate) => userCertificate.certDate.trim() === ""
+    (certificate) => certificate.certDate.trim() === ""
   );
 
   if (emptyCareerDates.length > 0 || emptyCertificateDates.length > 0) {
-    alert("경력과 자격증의 날짜를 모두 작성해주세요.");
-    return false;
+    return {
+      isValid: false,
+      message: "경력과 자격증의 날짜를 모두 작성해주세요.",
+    };
   }
 
   if (emptyCareerNames.length > 0 || emptyCertificateNames.length > 0) {
-    alert("경력과 자격증의 이름을 모두 작성해주세요.");
-    return false;
+    return {
+      isValid: false,
+      message: "경력과 자격증의 이름을 모두 작성해주세요.",
+    };
   }
 
-  // if (careerName.length > 35 || certificateName.length > 35) {
-  //   alert("경력 및 자격증 이름은 35글자를 넘을 수 없습니다.");
-  //   return false;
-  // }
-  return true;
+  return { isValid: true, message: "" };
 };
 
 /**
