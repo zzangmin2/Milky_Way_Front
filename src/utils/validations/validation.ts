@@ -52,6 +52,13 @@ export const validateCareer = (
     };
   }
 
+  if (emptyCareerNames.length > 10 || emptyCertificateNames.length > 10) {
+    return {
+      isValid: false,
+      message: "경력과 자격증의 이름은 10글자를 넘을 수 없습니다.",
+    };
+  }
+
   return { isValid: true, message: "" };
 };
 

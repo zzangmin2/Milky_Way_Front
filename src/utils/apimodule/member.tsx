@@ -74,6 +74,7 @@ const sendUserCompareInfo = async (id: number | string) => {
  * @param id
  * @type {string | number} 이름 / 학과 / 전화번호
  * @returns {Promise<{ success: boolean, error?: string }>}
+ *
  */
 
 const sendUserInfo = async (
@@ -181,7 +182,7 @@ const editUserCareerList = async (method: string, sendCareerData: any) => {
  */
 const editUserCareerInfo = async (method: string, userInfoValue: any) => {
   try {
-    let response;
+    let response: any;
     if (method === "post") {
       response = await api.post(`/member/update/info`, {
         studentMajor: userInfoValue.userDpt,
@@ -201,9 +202,17 @@ const editUserCareerInfo = async (method: string, userInfoValue: any) => {
     if (response.status === 200) {
       return { success: true };
     } else {
-      return { success: false };
+      return { success: false, message: "sef" };
     }
-  } catch (error) {
+  } catch (error: any) {
+    if (error.response && error.response.status === 409) {
+      // 409 에러가 발생하면 다시 시도
+      Response = await api.put(`/member/modify/info`, {
+        studentMajor: userInfoValue.userDpt,
+        studentLocate: userInfoValue.userLocation,
+        studentOneLineShow: userInfoValue.userLineText,
+      });
+    }
     console.log(`${error}`);
     return { success: false };
   }

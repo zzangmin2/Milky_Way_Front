@@ -11,7 +11,6 @@ import SignupInfo from "../pages/Join/SignupInfo";
 import ErrorPage from "../pages/RoutePage/ErrorPage";
 import MyCareer from "../pages/MyCareer";
 import MyInfo from "../pages/MyInfo";
-import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 const ViewPortPage = lazy(() => import("../layouts/ViewPort"));
 const LayoutPage = lazy(() => import("../layouts/Layout"));
@@ -57,7 +56,6 @@ const router = createBrowserRouter([
 
       {
         path: "/home",
-
         element: <LayoutPage type={"home"} />,
 
         children: [

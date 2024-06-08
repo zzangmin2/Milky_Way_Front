@@ -65,8 +65,18 @@ const MyCareer = () => {
       ]);
 
       const member = careerInfo.data;
-      const career = careerList.data.careerDtoList;
-      const ceritificate = careerList.data.certificationDtoList;
+      const career = careerList.data.careerDtoList.map(
+        (career: any, index: any) => ({
+          ...career,
+          id: index + 1,
+        })
+      );
+      const ceritificate = careerList.data.certificationDtoList.map(
+        (certificate: any, index: any) => ({
+          ...certificate,
+          id: index + 1,
+        })
+      );
 
       setCareerValue({
         userCareer: career,
@@ -88,20 +98,19 @@ const MyCareer = () => {
         setCareerPostState(false);
       }
       if (
-        member.studentMajor == "" &&
-        member.studentLocate == "" &&
-        member.studentOneLineShow == ""
+        member.studentMajor.length == 0 &&
+        member.studentLocate.length == 0 &&
+        member.studentOneLineShow.length == 0
       ) {
         setInfoPostState(true);
       } else {
         setInfoPostState(false);
       }
+      console.log(ceritificate);
     } catch (error) {
       console.error("error", error);
     }
   };
-
-  console.log(userCareer);
 
   const sendCareerEdit = async () => {
     const sendCareerData = {
@@ -123,7 +132,7 @@ const MyCareer = () => {
        */
 
       if (!infoPostState) {
-        response = await editUserCareerInfo("post", userInfoValue); // put으로 통일 ?
+        response = await editUserCareerInfo("post", userInfoValue);
       } else {
         response = await editUserCareerInfo("put", userInfoValue);
       }
@@ -168,6 +177,7 @@ const MyCareer = () => {
         ...prev.userCertificate,
         {
           id: prev.userCertificate.length + 1,
+
           certName: "",
           certDate: "",
         },
