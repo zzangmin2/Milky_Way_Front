@@ -29,7 +29,7 @@ const sendEmailUserInfo = async (email: number | string) => {
  */
 const sendEmailVerify = async (verifyEmail: number | string) => {
   try {
-    const response = await api.post("users/signupemailverify", {
+    const response = await api.post("/users/signupemailverify", {
       verifyEmail,
     });
     if (response.data.success) {

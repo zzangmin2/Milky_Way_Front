@@ -130,7 +130,7 @@ const MyCareer = () => {
        * put , post 구분 지어서 boolean값 확인
        */
 
-      if (!infoPostState) {
+      if (infoPostState) {
         response = await editUserCareerInfo("post", userInfoValue);
       } else {
         response = await editUserCareerInfo("put", userInfoValue);

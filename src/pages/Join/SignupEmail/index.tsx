@@ -25,14 +25,17 @@ const SignupEmail = () => {
   const [emailInState, setEmailInState] = useState<boolean | undefined>(false);
   const [emailSendon, setEmailSendon] = useState<boolean | undefined>(false);
   const [verifyEmail, setVerifyEmail] = useState<string>("");
+  const [countdown, setCountdown] = useState<number>(180);
+  const [timer, setTimer]: any = useState<NodeJS.Timeout | null>(null);
   const userCompare = useSetRecoilState(userCompareValues);
   const compareValue = useRecoilValue(userCompareValues);
 
   const emailSuccessIn = useSetRecoilState(emailSuccesses);
-  // 라우터 프로텍트 위한 아톰
+
   const navigate = useNavigate();
+
   /**
-   * 최초 인증하기 버튼     * 테스트용으로 잠시 지우
+   * 최초 인증하기 버튼
    */
   const sendEmailedOn = async () => {
     console.log(email);
@@ -62,7 +65,7 @@ const SignupEmail = () => {
         throw result;
       }
     } catch (error: any) {
-      toast.error(`실패: ${error.message}`);
+      toast.error("인증번호가 일치하지 않습니다.");
     }
   };
 
@@ -100,6 +103,27 @@ const SignupEmail = () => {
       }
     });
   };
+
+  useEffect(() => {
+    if (emailSendon) {
+      const newTimer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+      setTimer(newTimer);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [emailSendon]);
+
+  useEffect(() => {
+    if (countdown === 0) {
+      clearInterval(timer);
+      setEmailSendon(false);
+      toast.error("시간이 초과되었습니다. 이메일 인증을 다시 시도해주세요.");
+    }
+  }, [countdown]);
 
   return (
     <>
@@ -141,12 +165,18 @@ const SignupEmail = () => {
                     name="emailVerify"
                     placeholder="인증번호를 입력해주세요"
                     setValue={setVerifyEmail}
+                    disabled={emailInState ? true : false}
                   />
                   <Button text={"인증 하기"} onClick={sendEmailedVerify} />
                   {emailInState ? (
                     <EmailText color={"green"}>✅ 이메일 인증 완료!</EmailText>
                   ) : (
-                    <EmailText color={"gray"}>00:00</EmailText>
+                    <EmailText color={"gray"}>
+                      {Math.floor(countdown / 60)}:
+                      {countdown % 60 < 10
+                        ? `0${countdown % 60}`
+                        : countdown % 60}
+                    </EmailText>
                   )}
                 </>
               )}
