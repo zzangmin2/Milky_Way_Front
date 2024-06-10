@@ -1,7 +1,6 @@
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import { RouterProvider } from "react-router-dom";
 import router from "./utils/router";
-import { lazy } from "react";
 import useInterceptors from "./hooks/useInterceptors";
 import Loading from "./pages/RoutePage/Loading";
 import { ToastContainer } from "react-toastify";

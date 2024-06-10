@@ -1,4 +1,3 @@
-import { send } from "process";
 import api from "../api/axiosInstance";
 
 /**
@@ -7,42 +6,42 @@ import api from "../api/axiosInstance";
  * @type {number | string} 이메일
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
-// const sendEmailUserInfo = async (email: number | string) => {
-//   try {
-//     const response = await api.post("/users/signupemailform", {
-//       signupEmail: email,
-//     });
-//     if (response.data.success) {
-//       return { success: true };
-//     } else {
-//       return { success: false };
-//     }
-//   } catch (error) {
-//     console.error("error:", error);
-//     return { success: false, error: "error" };
-//   }
-// };
+const sendEmailUserInfo = async (email: number | string) => {
+  try {
+    const response = await api.post("/users/signupemailform", {
+      signupEmail: email,
+    });
+    if (response.data.success) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
 /**
  * signupemail에서 이메일 인증번호 확인 => 다음으로 버튼 활성화
  * @param verifyEmail
  * @type {number | string} 이메일 인증번호
  * @returns {Promise<{ success: boolean, error?: string }>}
  */
-// const sendEmailVerify = async (verifyEmail: number | string) => {
-//   try {
-//     const response = await api.post("users/signupemailverify", {
-//       verifyEmail,
-//     });
-//     if (response.data.success) {
-//       return { success: true };
-//     } else {
-//       return { success: false };
-//     }
-//   } catch (error) {
-//     console.error("error:", error);
-//     return { success: false, error: "error" };
-//   }
-// };
+const sendEmailVerify = async (verifyEmail: number | string) => {
+  try {
+    const response = await api.post("users/signupemailverify", {
+      verifyEmail,
+    });
+    if (response.data.success) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("error:", error);
+    return { success: false, error: "error" };
+  }
+};
 /**
  * signupcompare에서 유저 아이디 중복확인 => 성공시 disabled  // atom으로 머지막에 한번에 넘김
  * @param id
@@ -54,8 +53,6 @@ const sendUserCompareInfo = async (id: number | string) => {
     const response = await api.post("/signup/checkId", {
       memberId: id,
     });
-
-    console.log(response);
 
     if (response.status === 200) {
       return { success: true };
@@ -77,6 +74,7 @@ const sendUserCompareInfo = async (id: number | string) => {
  * @param id
  * @type {string | number} 이름 / 학과 / 전화번호
  * @returns {Promise<{ success: boolean, error?: string }>}
+ *
  */
 
 const sendUserInfo = async (
@@ -98,8 +96,6 @@ const sendUserInfo = async (
     });
 
     if (response.status === 200) {
-      console.log(response.data);
-
       return { success: true };
     } else {
       return { success: false };
@@ -124,7 +120,6 @@ const sendUserEditInfo = async (
   editEmail: string,
   editNumber: string
 ) => {
-  console.log(editName, editEmail, editNumber);
   try {
     const response = await api.put(`/update`, {
       memberName: editName,
@@ -135,7 +130,6 @@ const sendUserEditInfo = async (
     const access_token = response.data.accessToken;
     const refresh_Token = response.data.refreshToken;
     const memberName = response.data.memberName;
-    console.log(response);
 
     if (response.status === 200) {
       localStorage.removeItem("ACCESS_TOKEN");
@@ -160,7 +154,6 @@ const sendUserEditInfo = async (
  * @param {string} method 'put' 또는 'post'
  */
 const editUserCareerList = async (method: string, sendCareerData: any) => {
-  console.log(sendCareerData);
   try {
     let response;
     if (method === "post") {
@@ -188,9 +181,8 @@ const editUserCareerList = async (method: string, sendCareerData: any) => {
  * @param {any} infoEdit
  */
 const editUserCareerInfo = async (method: string, userInfoValue: any) => {
-  console.log(userInfoValue.userLocation);
   try {
-    let response;
+    let response: any;
     if (method === "post") {
       response = await api.post(`/member/update/info`, {
         studentMajor: userInfoValue.userDpt,
@@ -210,9 +202,17 @@ const editUserCareerInfo = async (method: string, userInfoValue: any) => {
     if (response.status === 200) {
       return { success: true };
     } else {
-      return { success: false };
+      return { success: false, message: "sef" };
     }
-  } catch (error) {
+  } catch (error: any) {
+    if (error.response && error.response.status === 409) {
+      // 409 에러가 발생하면 다시 시도
+      Response = await api.put(`/member/modify/info`, {
+        studentMajor: userInfoValue.userDpt,
+        studentLocate: userInfoValue.userLocation,
+        studentOneLineShow: userInfoValue.userLineText,
+      });
+    }
     console.log(`${error}`);
     return { success: false };
   }
@@ -220,9 +220,9 @@ const editUserCareerInfo = async (method: string, userInfoValue: any) => {
 
 export {
   sendUserCompareInfo,
-  // sendEmailUserInfo,
+  sendEmailUserInfo,
   sendUserInfo,
-  // sendEmailVerify,
+  sendEmailVerify,
   sendUserEditInfo,
   editUserCareerList,
   editUserCareerInfo,
