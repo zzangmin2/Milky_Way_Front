@@ -50,11 +50,11 @@ const SignupIdCompare = () => {
       const result = await sendUserCompareInfo(id);
       console.log(result);
       if (result.success) {
-        alert("중복된 아이디가 없습니다");
+        toast.success("중복된 아이디가 없습니다");
         setCompareInState(true);
       } else {
         console.log(id);
-        alert("존재하는 아이디입니다");
+        toast.warning("존재하는 아이디입니다");
       }
     } catch (error: any) {
       alert(`실패: ${error.message}`);

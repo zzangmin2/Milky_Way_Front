@@ -12,7 +12,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { ArticleDibsStateSelector } from "../../utils/recoil/atom";
 import { useEffect } from "react";
 import { viewMyDibsInfo } from "../../utils/apimodule/article";
-import { ArticleCard } from "../../typings/db";
 
 const Home = () => {
   const userName = localStorage.getItem("memberName");
