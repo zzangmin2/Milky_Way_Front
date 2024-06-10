@@ -106,7 +106,6 @@ const MyCareer = () => {
       } else {
         setInfoPostState(false);
       }
-      console.log(ceritificate);
     } catch (error) {
       console.error("error", error);
     }
@@ -122,7 +121,7 @@ const MyCareer = () => {
       const validationResult = validateCareer(userCareer, userCertificate);
       if (!validationResult.isValid) {
         toast.warning(validationResult.message);
-        return; // 또는 유효성 검사 실패 시 처리할 로직을 추가합니다.
+        return;
       }
 
       let response;
@@ -177,7 +176,6 @@ const MyCareer = () => {
         ...prev.userCertificate,
         {
           id: prev.userCertificate.length + 1,
-
           certName: "",
           certDate: "",
         },

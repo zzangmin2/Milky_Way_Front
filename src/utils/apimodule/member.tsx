@@ -206,7 +206,6 @@ const editUserCareerInfo = async (method: string, userInfoValue: any) => {
     }
   } catch (error: any) {
     if (error.response && error.response.status === 409) {
-      // 409 에러가 발생하면 다시 시도
       Response = await api.put(`/member/modify/info`, {
         studentMajor: userInfoValue.userDpt,
         studentLocate: userInfoValue.userLocation,
