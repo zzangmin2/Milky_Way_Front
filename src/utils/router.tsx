@@ -11,7 +11,7 @@ import SignupInfo from "../pages/Join/SignupInfo";
 import ErrorPage from "../pages/RoutePage/ErrorPage";
 import MyCareer from "../pages/MyCareer";
 import MyInfo from "../pages/MyInfo";
-
+import { Navigate } from "react-router-dom";
 const ViewPortPage = lazy(() => import("../layouts/ViewPort"));
 const LayoutPage = lazy(() => import("../layouts/Layout"));
 const LoginPage = lazy(() => import("../pages/LogIn"));
@@ -50,12 +50,14 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "users/login",
-        element: <LoginPage />,
+        index: true,
+        element: <Navigate to="/home" />,
       },
+
       {
         path: "/home",
         element: <LayoutPage type={"home"} />,
+
         children: [
           {
             path: "",
@@ -67,6 +69,27 @@ const router = createBrowserRouter([
           },
           { path: "myinfo", element: <MyInfo /> },
           { path: "mycareer", element: <MyCareer /> },
+        ],
+      },
+      {
+        path: "/users",
+        children: [
+          {
+            path: "login",
+            element: <LoginPage />,
+          },
+          {
+            path: "signupemail",
+            element: <SignupEmail />,
+          },
+          {
+            path: "signupcompare",
+            element: <SignupIdCompare />,
+          },
+          {
+            path: "signupinfo",
+            element: <SignupInfo />,
+          },
         ],
       },
       {
@@ -93,18 +116,6 @@ const router = createBrowserRouter([
       {
         path: "/loading",
         element: <Loading />,
-      },
-      {
-        path: "/users/signupemail",
-        element: <SignupEmail />,
-      },
-      {
-        path: "/users/signupcompare",
-        element: <SignupIdCompare />,
-      },
-      {
-        path: "/users/signupinfo",
-        element: <SignupInfo />,
       },
     ],
   },
