@@ -5,9 +5,14 @@ import useInterceptors from "./hooks/useInterceptors";
 import Loading from "./pages/RoutePage/Loading";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import ReactGA from "react-ga";
 
 const App = () => {
   // const LoadingPage = lazy(() => import("./pages/RoutePage/Loading"));
+
+  const gaTrackingId = import.meta.env.VITE_GA_TRACKING_ID; // 환경 변수에 저장된 추적ID 가져오기
+  ReactGA.initialize(gaTrackingId, { debug: true }); // react-ga 초기화 및 debug 사용
+  ReactGA.pageview(window.location.pathname); // 추적하려는 page 설정
 
   useInterceptors();
 
