@@ -15,7 +15,6 @@ const LogIn = () => {
   const [loginId, setLoginId] = useState("");
 
   const sendLoginData = async () => {
-    console.log(import.meta.env.VITE_API_URL);
     try {
       const result: any = await loginedIn(loginId, loginPwd);
 
