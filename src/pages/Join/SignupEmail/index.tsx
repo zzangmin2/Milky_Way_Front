@@ -126,7 +126,7 @@ const SignupEmail = () => {
                     setValue={setEmail}
                   />
 
-                  {/* <Button text={"이메일 인증하기"} onClick={sendEmailedOn} /> */}
+                  <Button text={"이메일 인증하기"} onClick={sendEmailedOn} />
                 </>
               ) : (
                 <>
@@ -142,7 +142,7 @@ const SignupEmail = () => {
                     placeholder="인증번호를 입력해주세요"
                     setValue={setVerifyEmail}
                   />
-                  {/* <Button text={"인증 하기"} onClick={sendEmailedVerify} /> */}
+                  <Button text={"인증 하기"} onClick={sendEmailedVerify} />
                   {emailInState ? (
                     <EmailText color={"green"}>✅ 이메일 인증 완료!</EmailText>
                   ) : (
@@ -154,7 +154,7 @@ const SignupEmail = () => {
           </div>
         </TopSection>
         <BottomSection>
-          {email.trim() ? (
+          {emailInState ? (
             <Button text={"다음"} color={"#133488"} onClick={stateUserInfo} />
           ) : (
             <Button text={"다음"} color={"#a8a8a8"} />
